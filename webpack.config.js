@@ -18,13 +18,32 @@ module.exports = {
                 use: ["babel-loader"]
             },
             {
-                test: /\.(png|jpg|gif|svg|csv)$/,
+                test: /\.(png|jpg|gif|svg|css)$/,
                 use: [
                     {
                         loader: "file-loader",
                         options: {
                             name: '[path][name].[ext]'
                         }
+                    }
+                ]
+            },
+            {
+                test: /\.(css)$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: '[name].[ext]'
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.(eot|svg|ttf|woff|woff2|otf)$/,
+                use: [
+                    {
+                        loader: 'url-loader?name=./fonts/[name].[ext]'
                     }
                 ]
             }

@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Gilroy", sans-serif;
+}
+
+@font-face {
+    font-family: 'Gotham Pro';
+    src: url("./src/fonts/GothamPro/GothamPro-Light.ttf");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Nova';
+    src: url("./src/fonts/ProximaNova/ProximaNova-Light.ttf");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Gilroy';
+    src: url("./src/fonts/Gilroy/Radomir Tinkov - Gilroy-Light.otf");
+    font-style: normal;
+    font-weight: normal;
+}
+

@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-
+import MainTopBar from "./MainTopBar";
 
 class App extends Component {
     render() {
        console.log(this.a);
         return (
-            <div>
-            <h1>My React App! </h1>
-        </div>
-    );
+            <MainTopBar/>
+        );
     }
 }
 
