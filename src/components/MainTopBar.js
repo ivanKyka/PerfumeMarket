@@ -29,7 +29,6 @@ export default class MainTopBar extends React.Component{
                     <Counter>10</Counter>
                 </Cart>
                 <SignInButton>SIGN IN</SignInButton>
-                <div></div>
             </Container>
         )
     }
@@ -37,13 +36,12 @@ export default class MainTopBar extends React.Component{
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 4fr 8fr 3fr 2fr 1fr;
+  grid-template-columns: 1fr 1fr 4fr 8fr 2fr 2fr ;
   grid-template-rows: 60px;
   background: #222328;
   color: #ececed;
   padding: 0;
   margin: 0;
- 
 `;
 
 const Menu = styled.ul`
