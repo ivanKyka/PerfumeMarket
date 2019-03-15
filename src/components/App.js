@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import MainTopBar from "./MainTopBar";
 import Header from "./Header";
+import MainHeadSlider from "./MainHeadSlider";
 
 class App extends Component {
     render() {
@@ -9,6 +10,7 @@ class App extends Component {
             <div>
                 <MainTopBar/>
                 <Header/>
+                <MainHeadSlider/>
             </div>
         );
     }

@@ -18,7 +18,7 @@ module.exports = {
                 use: ["babel-loader"]
             },
             {
-                test: /\.(png|jpg|gif|svg|css)$/,
+                test: /\.(png|jpg|gif|svg)$/,
                 use: [
                     {
                         loader: "file-loader",
@@ -34,6 +34,7 @@ module.exports = {
                     {
                         loader: "file-loader",
                         options: {
+                            outputPath: './',
                             name: '[name].[ext]'
                         }
                     }

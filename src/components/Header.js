@@ -29,7 +29,7 @@ export default class Header extends React.Component{
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 250px;
+  grid-template-columns: 1fr 200px;
   background: #ececed;
 `;
 
@@ -48,7 +48,7 @@ const SearchInput = styled.input`
   border-bottom: 2px solid transparent;
   outline: none;
   background: transparent;
-  transition: .9s cubic-bezier(0, 0.8, 0, 1);
+  transition: .3s ease-out;
   position: absolute;
   top: 0;
   right: 0;
@@ -90,12 +90,11 @@ const Menu = styled.ul`
   
   li {
     display: inline-block;
-    padding: 20px 10px;
+    padding: 20px 20px;
     font-size: 12px;
     height: 20px;
     vertical-align: center;
     cursor: pointer;
-    margin: 0 10px;
   }
   
   li:last-child{
@@ -104,7 +103,7 @@ const Menu = styled.ul`
   }
   
   li:hover {
-  padding: 20px 8px 20px 7px;
+  padding: 20px 18px 20px 17px;
   background: #dbdbdc;
   font-weight: bold;
   }
