@@ -2,6 +2,8 @@ import React from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 import {faTwitter} from '@fortawesome/free-brands-svg-icons';
+import {faInstagram} from '@fortawesome/free-brands-svg-icons';
+import {faFacebook} from '@fortawesome/free-brands-svg-icons';
 export default class Footer extends React.Component{
     render() {
         return(
@@ -24,7 +26,21 @@ export default class Footer extends React.Component{
 
                     </Foot2>
                     <Foot3>
-                        <FontAwesomeIcon icon={faTwitter} size={'2x'}/>
+                        <a href="">
+                            <MenuIconFoot>
+                                <FontAwesomeIcon icon={faFacebook} size={'2x'}/>
+                            </MenuIconFoot>
+                        </a>
+                        <a href="">
+                            <MenuIconFoot>
+                                <FontAwesomeIcon icon={faInstagram} size={'2x'}/>
+                            </MenuIconFoot>
+                        </a>
+                        <a href="">
+                            <MenuIconFoot>
+                                <FontAwesomeIcon icon={faTwitter} size={'2x'}/>
+                            </MenuIconFoot>
+                        </a>
                     </Foot3>
                     <FootLine>
                         <Line/>
@@ -56,13 +72,6 @@ const Container = styled.div`
   margin: 0;
  
 `;
-
-const Link = styled.a`
-    text-decoration: none;
-    color: white;
-`;
-
-
 const Foot1 = styled.div`
   color: #ffffff;
   padding-left: 100px;
@@ -86,8 +95,20 @@ const ListPoint = styled.li`
     color: white;
   }
 `;
-
 const Foot3 = styled.div`
+   display: grid;
+   grid-template-columns: 45px 45px 45px;
+   align-content: center;
+   justify-content: right;
+   padding-right: 100px;
+`;
+
+const MenuIconFoot = styled.svg`
+  margin-right: 20px;
+  height: 32px;
+  width: 28px;
+  color: #ececed;
+  cursor: pointer;
 
 `;
 const FootLine = styled.div`
@@ -124,7 +145,7 @@ const F1 = styled.a`
 color: rgba(111, 110, 119, 0.3);
 text-decoration: none;
 font-size: 11pt;
-padding-right: 40px;
+margin-right: 40px;
 `;
 const F2 = styled.a`
 color: rgba(111, 110, 119, 0.3);
