@@ -4,6 +4,7 @@ import Header from "./Header";
 import MainHeadSlider from "./MainHeadSlider";
 import ContentContainer from "./ContentContainer";
 import Footer from "./Footer";
+import PageCounter from "./PageCounter";
 
 class App extends Component {
     render() {
@@ -14,6 +15,7 @@ class App extends Component {
                 <Header/>
                 <MainHeadSlider/>
                 <ContentContainer/>
+                <PageCounter/>
                 <Footer />
             </div>
         );

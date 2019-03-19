@@ -52,8 +52,8 @@ export default class Footer extends React.Component{
 
                     </Foot4>
                     <Foot5>
-                        <TextRightBottom><F1 href="" >PRIVACY POLICY</F1></TextRightBottom>
-                        <TextRightBottom><F2 href="" >TERMS AND CONDITIONS</F2></TextRightBottom>
+                        <a href="" >PRIVACY POLICY</a>
+                        <a href="" >TERMS AND CONDITIONS</a>
                     </Foot5>
 
 
@@ -123,7 +123,7 @@ const Line = styled.hr`
 `;
 const Foot4 = styled.div`
  grid-column: 1/3;
- color: rgba(111, 110, 119, 0.3);
+ color: #CAC9D2;
  font-size: 14pt;
  padding-left: 100px;
  align-self: center;
@@ -137,21 +137,17 @@ grid-column-end: 5;
 align-self: center;
 justify-self: end;
 padding-right: 100px;
-`;
-const TextRightBottom = styled.span`
 
+ a:link{
+  color: #CAC9D2;
+  text-decoration: none;
+  font-size: 11pt;
+  margin-right: 40px;
+ }
+ a:visited{
+  color: #CAC9D2;
+ }
+ 
+ a:last-of-type {margin-right: 0;}
 `;
-const F1 = styled.a`
-color: rgba(111, 110, 119, 0.3);
-text-decoration: none;
-font-size: 11pt;
-margin-right: 40px;
-`;
-const F2 = styled.a`
-color: rgba(111, 110, 119, 0.3);
-text-decoration: none;
-font-size: 11pt;
-
-`;
-
 
