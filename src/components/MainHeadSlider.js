@@ -1,23 +1,34 @@
 import React from 'react';
 import {Carousel} from 'react-responsive-carousel';
-import Image1 from '../resources/image/Dior-Addict-або-Miss-Dior.jpg'
-import Image4 from '../resources/image/skyrim-dragon-word-wall.jpg';
-import Image3 from '../resources/image/Vybiraem-aromat-dlya-leta.jpg';
-import Image2 from '../resources/image/zbytek_top10_714x350.jpg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
-export default class MainHeadSlider extends React.Component {
-    render() {
-        let images = [ Image1, Image2, Image3, Image4];
-        return(
-            <Carousel autoPlay showThumbs={false} infiniteLoop={true} showStatus={false} stopOnHover={false}>
-                {images.map((img, index) =>
-                    <a href={`/${index}`}>
-                        <div key={index}>
-                            <img src={img} alt="" style={{height: '450px', width: '100%'}}/>
-                        </div>
-                    </a>)}
-            </Carousel>
-        );
-    }
-}
+const MainHeadSlider = () => (
+            <Query query={gql`{
+                      slidercontents{
+                        link
+                        image {
+                          url
+                        }
+                      }
+                    }`}>
+                {({loading, error, data}) => {
+                    if (loading) return <p>Loading...</p>;
+                    if (error) return <p>Error :(</p>;
+
+                    return(
+                        <Carousel autoPlay showThumbs={false} infiniteLoop={true} showStatus={false} stopOnHover={false}>
+                            {data.slidercontents.map((content, index) =>
+                                <a href={`${content.link}`}>
+                                    <div key={index}>
+                                        <img src={`http://localhost:1337${content.image.url}`} alt="" style={{height: '450px', width: '100%'}}/>
+                                    </div>
+                                </a>)}
+                        </Carousel>
+                    )
+                }}
+            </Query>);
+
+
+export default MainHeadSlider

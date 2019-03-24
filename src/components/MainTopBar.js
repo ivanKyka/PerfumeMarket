@@ -10,7 +10,19 @@ export default class MainTopBar extends React.Component{
             <Container>
                 <div></div>
                 <MenuIcon>
-                    <FontAwesomeIcon icon={faBars} size={'2x'}/>
+                    <FontAwesomeIcon icon={faBars} size={'2x'} onClick={
+                        () => {
+                            console.log("OK");
+                            fetch('http://localhost:1337/graphql',{
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YzkxZWYxYjMxMDA0YjMxN2Y0ZTkyMzIiLCJpYXQiOjE1NTMwNjgzODIsImV4cCI6MTU1NTY2MDM4Mn0.-KViabW6pHBQmaeMAJDBq6jWsvWNx9lRufIT3bbG8MQ"},
+                                body: JSON.stringify({query:'{users{username}}'})
+                            }).then((response) => response.json())
+                                .then((users) => console.log(users));
+                        }
+                    }/>
                 </MenuIcon>
                 <Logo>
                     LOGO
