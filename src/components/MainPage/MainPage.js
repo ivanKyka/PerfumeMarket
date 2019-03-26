@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import MainTopBar from "./MainTopBar";
-import Header from "./Header";
+import Header from "../public/Header";
 import MainHeadSlider from "./MainHeadSlider";
 import ContentContainer from "./ContentContainer";
-import Footer from "./Footer";
+import Footer from "../public/Footer";
 import PageCounter from "./PageCounter";
 
 export default class MainPage extends Component{

@@ -21,7 +21,7 @@ const MainHeadSlider = () => (
                         <Carousel autoPlay showThumbs={false} infiniteLoop={true} showStatus={false} stopOnHover={false}>
                             {data.slidercontents.map((content, index) =>
                                 <a href={`${content.link}`}>
-                                    <div key={index}>
+                                    <div key={index} style={{background:'white'}}>
                                         <img src={`http://localhost:1337${content.image.url}`} alt="" style={{height: '450px', width: '100%'}}/>
                                     </div>
                                 </a>)}
