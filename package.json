@@ -36,7 +36,6 @@
     "apollo-client": "^2.5.1",
     "apollo-link-context": "^1.0.17",
     "apollo-link-http": "^1.5.14",
-    "babel-plugin-styless": "^1.4.16",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
     "mobx": "^5.8.0",

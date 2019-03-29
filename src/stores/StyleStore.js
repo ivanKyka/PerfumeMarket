@@ -1,10 +1,10 @@
 const theme = {
     primary : '#e36f64',
-    primary_light: '#f98771',
-    error: '#ff0fc8',
-    info : '#0fc8ff',
-    warning : '#ff460f',
-    success : '#0fff46'
+    primary_light: '#F1958C',
+    error: '#942B20',
+    info : '#3F808C',
+    warning : '#E3A264',
+    success : '#4CAC61'
 };
 
 export {

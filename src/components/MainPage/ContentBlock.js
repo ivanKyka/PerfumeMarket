@@ -9,17 +9,18 @@ import {faGift, faCartPlus} from '@fortawesome/free-solid-svg-icons';
 import {faHotjar} from "@fortawesome/free-brands-svg-icons/faHotjar";
 import {theme} from "../../stores/StyleStore";
 
+
 export default class ContentBlock extends React.Component{
 
     render() {
        return(
            <ThemeProvider theme={theme}>
                <Block>
-                   <Image src={Image5}/>
+                   <Image src={this.props.options.image}/>
                    <Head>
                        <Grade>
                            <StarRatings
-                               rating={3.5}
+                               rating={this.props.options.rating}
                                starRatedColor={"black"}
                                starEmptyColor={'gray'}
                                numberOfStars={5}
@@ -28,15 +29,15 @@ export default class ContentBlock extends React.Component{
                                starSpacing={'1px'}
                            />
                        </Grade>
-                       <a>Отзывы: 60</a>
+                       <a>Отзывы: {this.props.options.reviews}</a>
                    </Head>
                    <Describe>
-                       <Link>Product</Link>
+                       <Link href={`/product/${this.props.options.id}`}>{this.props.options.name}</Link>
                        <br/>
-                       <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, sit.</span>
+                       <span>{this.props.options.desc}</span>
                    </Describe>
                    <Button>Купить</Button>
-                   <Price>550 грн.</Price>
+                   <Price>{this.props.options.price} грн.</Price>
                    <Bottom>
                        <FontAwesomeIcon icon={faGift} size={'2x'}/>
                        <FontAwesomeIcon icon={faCartPlus} size={'2x'}/>

@@ -111,11 +111,11 @@ const MenuIconFoot = styled.svg`
   margin-right: 20px;
   height: 32px;
   width: 28px;
-  color: #ececed;
+  color: #e1e1e2;
   cursor: pointer;
   
   &:hover{
-    color: #9fa1bb;
+    color: #fff;
   }
 `;
 const FootLine = styled.div`

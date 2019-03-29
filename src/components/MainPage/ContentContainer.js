@@ -1,6 +1,6 @@
 import React from 'react';
-import ContentBlock from "./ContentBlock";
 import styled from "styled-components";
+import Content from "./Content";
 
 
 export default class ContentContainer extends React.Component {
@@ -9,17 +9,7 @@ export default class ContentContainer extends React.Component {
 
         return(
             <Container>
-                <ContentBlock/>
-                <ContentBlock/>
-                <ContentBlock/>
-                <ContentBlock/>
-                <ContentBlock/>
-                <ContentBlock/>
-                <ContentBlock/>
-                <ContentBlock/>
-                <ContentBlock/>
-                <ContentBlock/>
-                <ContentBlock/>
+                <Content/>
             </Container>
         )
     }
