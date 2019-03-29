@@ -22,7 +22,7 @@ const MainHeadSlider = () => (
                             {data.slidercontents.map((content, index) =>
                                 <a href={`${content.link}`}>
                                     <div key={index} style={{background:'white'}}>
-                                        <img src={`http://localhost:1337${content.image.url}`} alt="" style={{height: '450px', width: '100%'}}/>
+                                        <img src={`https://pure-chamber-16886.herokuapp.com${content.image.url}`} alt="" style={{height: '450px', width: '100%'}}/>
                                     </div>
                                 </a>)}
                         </Carousel>

@@ -1,5 +1,4 @@
 import React from 'react'
-import Image5 from "../../resources/image/Content/5.jpg";
 import {keyframes} from "styled-components";
 import {ThemeProvider} from 'styled-components';
 import styled from "styled-components";

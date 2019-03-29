@@ -28,7 +28,7 @@ const Content = () => (
                     data.products.map((content, index) =>
                         <ContentBlock options={
                             {
-                                image: `http://localhost:1337${content.photos[0].url}`,
+                                image: `https://pure-chamber-16886.herokuapp.com${content.photos[0].url}`,
                                 rating: content.rating,
                                 reviews: content.comments.length,
                                 name: content.name_ru,

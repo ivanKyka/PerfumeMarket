@@ -15,7 +15,7 @@ import Profile from "./Profile/Profile";
 
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:1337/ZW5kcG9pbnQK',
+    uri: 'https://pure-chamber-16886.herokuapp.com/ZW5kcG9pbnQK',
 });
 
 const authLink = setContext((_, { headers }) => {
