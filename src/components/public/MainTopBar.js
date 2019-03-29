@@ -38,7 +38,7 @@ export default class MainTopBar extends React.Component{
                 <Cart>
                     <FontAwesomeIcon icon={faShoppingCart}/>
                     <span>Cart</span>
-                    <Counter>10</Counter>
+                    <Counter>15</Counter>
                 </Cart>
                 <SignInButton>SIGN IN</SignInButton>
             </Container>
@@ -94,10 +94,11 @@ const Counter = styled.div`
   background: #ececed;
   color: #222328;
   width: 15px;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: bold;
   text-align: center;
   height: 15px;
-  margin-top: -1px;
+  margin-top: 1px;
 `;
 
 const Cart = styled.div`

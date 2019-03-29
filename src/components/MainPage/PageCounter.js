@@ -46,7 +46,7 @@ const PageButton = styled.button`
   width: 40px;
   height: 40px;
   background: ${props => !props.active?'rgb(236, 236, 237)':'rgb(96, 96, 97)'};
-  color: black;
+  color: ${props => props.active?'white':'black'};
   font-size: 15px;
   margin: 0 10px;
   border: 1px solid #bbb;

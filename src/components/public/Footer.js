@@ -93,14 +93,18 @@ const ListPoint = styled.li`
   a{
     text-decoration: none;
     color: white;
+    
+    &:hover{
+      text-decoration: underline;
+    }
   }
 `;
 const Foot3 = styled.div`
    display: grid;
    grid-template-columns: 45px 45px 45px;
-   align-content: center;
-   justify-content: right;
-   padding-right: 100px;
+   align-self: center;
+   justify-self: center;
+   //margin-right: 100px;
 `;
 
 const MenuIconFoot = styled.svg`
@@ -109,7 +113,10 @@ const MenuIconFoot = styled.svg`
   width: 28px;
   color: #ececed;
   cursor: pointer;
-
+  
+  &:hover{
+    color: #9fa1bb;
+  }
 `;
 const FootLine = styled.div`
  grid-column-start: 1;
@@ -135,8 +142,8 @@ const Foot5 = styled.div`
 grid-column-start: 3;
 grid-column-end: 5;
 align-self: center;
-justify-self: end;
-padding-right: 100px;
+justify-self: center;
+//padding-right: 100px;
 
  a:link{
   color: #CAC9D2;
