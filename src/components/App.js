@@ -19,7 +19,7 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YzkxZWYxYjMxMDA0YjMxN2Y0ZTkyMzIiLCJpYXQiOjE1NTMwNjgzODIsImV4cCI6MTU1NTY2MDM4Mn0.-KViabW6pHBQmaeMAJDBq6jWsvWNx9lRufIT3bbG8MQ';
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YzkwZDhmMWVlZDAyZDAwMTcyMDAxMzEiLCJpYXQiOjE1NTI5OTg4NTYsImV4cCI6MTU1NTU5MDg1Nn0.dfEKGOHbyq0nqKaqYainR1KI_AH_gzkkvIB9ks97Ld4';
     return {
         headers: {
             ...headers,

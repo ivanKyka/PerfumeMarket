@@ -15,7 +15,10 @@ const MainHeadSlider = () => (
                     }`}>
                 {({loading, error, data}) => {
                     if (loading) return <p>Loading...</p>;
-                    if (error) return <p>Error :(</p>;
+                    if (error) {
+                        console.log(error);
+                        return <p>Error :(</p>;
+                    }
 
                     return(
                         <Carousel autoPlay showThumbs={false} infiniteLoop={true} showStatus={false} stopOnHover={false}>
