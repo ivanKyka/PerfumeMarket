@@ -33,7 +33,7 @@ export default class ContentBlock extends React.Component{
                    <Describe>
                        <Link href={`/product/${this.props.options.id}`}>{this.props.options.name}</Link>
                        <br/>
-                       <span>{this.props.options.desc}</span>
+                       <span>{this.props.options.vendor}</span>
                    </Describe>
                    <Button>Купить</Button>
                    <Price>{this.props.options.price} грн.</Price>
@@ -69,6 +69,7 @@ const ShowText = keyframes`
 `;
 
 const Block = styled.div`
+  padding-top: 5px;
   width: 250px;
   height: 350px;
   z-index: 5;
@@ -83,7 +84,7 @@ const Block = styled.div`
     grid-template-rows: 250px 30px 70px 50px 30px 70px;
     border-radius: 5px;
     z-index: 6;
-    box-shadow: 0 0  10px rgba(227,111,100,0.5);
+    box-shadow: 0 0  10px  ${props => props.theme.primary} ;
     animation: ${BlockHover} .2s ease-out forwards;
     
   }
@@ -146,6 +147,7 @@ const Button = styled.button`
   font-size: 12pt;
   justify-self: center;
   align-self: center;
+  cursor: pointer;
   border: ${props => props.theme.primary} solid 1px;
   &:hover {
     background: ${props => props.theme.primary_light};

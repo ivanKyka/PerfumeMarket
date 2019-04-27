@@ -29,17 +29,21 @@ module.exports = {
                     }
                 ]
             },
+            // {
+            //     test: /\.(css)$/,
+            //     use: [
+            //         {
+            //             loader: "file-loader",
+            //             options: {
+            //                 outputPath: './',
+            //                 name: '[name].[ext]'
+            //             }
+            //         }
+            //     ]
+            // },
             {
                 test: /\.(css)$/,
-                use: [
-                    {
-                        loader: "file-loader",
-                        options: {
-                            outputPath: './',
-                            name: '[name].[ext]'
-                        }
-                    }
-                ]
+                use:  [{ loader: 'style-loader' }, { loader: 'css-loader' }]
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2|otf)$/,
@@ -66,7 +70,7 @@ module.exports = {
         historyApiFallback: true,
         watchOptions: {
             ignored: /\/node_modules\/.*/
-        },
+        }
     }
 
 };

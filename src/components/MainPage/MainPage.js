@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MainTopBar from "../public/MainTopBar";
-import Header from "./Header";
+import Header from "../public/Header";
 import MainHeadSlider from "./MainHeadSlider";
 import ContentContainer from "./ContentContainer";
 import Footer from "../public/Footer";

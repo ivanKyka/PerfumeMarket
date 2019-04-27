@@ -6,21 +6,21 @@ body {
 
 @font-face {
     font-family: 'Gotham Pro';
-    src: url("./src/fonts/GothamPro/GothamPro-Light.ttf");
+    src: url("./fonts/GothamPro/GothamPro-Light.ttf");
     font-style: normal;
     font-weight: normal;
 }
 
 @font-face {
     font-family: 'Proxima Nova';
-    src: url("./src/fonts/ProximaNova/ProximaNova-Light.ttf");
+    src: url("./fonts/ProximaNova/ProximaNova-Light.ttf");
     font-style: normal;
     font-weight: normal;
 }
 
 @font-face {
     font-family: 'Gilroy';
-    src: url("./src/fonts/Gilroy/Radomir Tinkov - Gilroy-Light.otf");
+    src: url("./fonts/Gilroy/Radomir Tinkov - Gilroy-Light.otf");
     font-style: normal;
     font-weight: normal;
 }

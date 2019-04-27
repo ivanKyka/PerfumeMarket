@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
-import { ApolloProvider } from 'react-apollo';
+import React, {Component} from "react";
+import {Route, Switch, BrowserRouter} from 'react-router-dom';
+import {ApolloProvider} from 'react-apollo';
 import ApolloClient from 'apollo-client';
 import {createHttpLink} from "apollo-link-http";
 import {setContext} from "apollo-link-context";
@@ -12,18 +12,20 @@ import Catalog from "./Catalog/Catalog";
 import Checkout from "./Checkout/Checkout";
 import Product from "./Product/Product";
 import Profile from "./Profile/Profile";
+import UrlStore from "../stores/UrlStore";
+import {Provider} from 'mobx-react';
 
+const urlStore = new UrlStore();
 
 const httpLink = createHttpLink({
-    uri: 'https://pure-chamber-16886.herokuapp.com/ZW5kcG9pbnQK',
+    uri: urlStore.MAIN_GRAPHQL_URI
 });
 
-const authLink = setContext((_, { headers }) => {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YzkwZDhmMWVlZDAyZDAwMTcyMDAxMzEiLCJpYXQiOjE1NTI5OTg4NTYsImV4cCI6MTU1NTU5MDg1Nn0.dfEKGOHbyq0nqKaqYainR1KI_AH_gzkkvIB9ks97Ld4';
+const authLink = setContext((_, {headers}) => {
     return {
         headers: {
             ...headers,
-            authorization: token ? `Bearer ${token}` : "",
+            authorization: urlStore.TOKEN ? `Bearer ${urlStore.TOKEN}` : "",
         }
     }
 });
@@ -33,23 +35,26 @@ const client = new ApolloClient({
     cache: new InMemoryCache()
 });
 
+const store = {urlStore: urlStore};
+
 class App extends Component {
     render() {
-       console.log(this.a);
         return (
-            <ApolloProvider client={client}>
-                <BrowserRouter>
-                    <Switch>
-                        <Route exact path={'/'} component={MainPage}/>
-                        <Route path={'/cabinet'} component={Cabinet}/>
-                        <Route path={'/cart'} component={Cart}/>
-                        <Route path={'/catalog'} component={Catalog}/>
-                        <Route path={'/checkout'} component={Checkout}/>
-                        <Route path={'/product/:id'} component={Product}/>
-                        <Route path={'/profile'} component={Profile}/>
-                    </Switch>
-                </BrowserRouter>
-            </ApolloProvider>
+            <Provider store={store}>
+                <ApolloProvider client={client}>
+                    <BrowserRouter>
+                        <Switch>
+                            <Route exact path={'/'} component={MainPage}/>
+                            <Route path={'/cabinet'} component={Cabinet}/>
+                            <Route path={'/cart'} component={Cart}/>
+                            <Route path={'/catalog'} component={Catalog}/>
+                            <Route path={'/checkout'} component={Checkout}/>
+                            <Route path={'/product/:id'} component={Product}/>
+                            <Route path={'/profile'} component={Profile}/>
+                        </Switch>
+                    </BrowserRouter>
+                </ApolloProvider>
+            </Provider>
         );
     }
 }
