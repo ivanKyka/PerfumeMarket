@@ -12,6 +12,9 @@ import Catalog from "./Catalog/Catalog";
 import Checkout from "./Checkout/Checkout";
 import Product from "./Product/Product";
 import Profile from "./Profile/Profile";
+import Login from "./Login/Login";
+import AboutUs from "./About/AboutUs";
+
 
 
 const httpLink = createHttpLink({
@@ -47,6 +50,12 @@ class App extends Component {
                         <Route path={'/checkout'} component={Checkout}/>
                         <Route path={'/product/:id'} component={Product}/>
                         <Route path={'/profile'} component={Profile}/>
+                        <Route path={'/signIn'} component={Profile}/>
+                        <Route path={'/login'} component={Login}/>
+                        <Route path={'/aboutUs'} component={AboutUs}/>
+
+
+
                     </Switch>
                 </BrowserRouter>
             </ApolloProvider>
