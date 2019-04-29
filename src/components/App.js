@@ -6,7 +6,8 @@ import {createHttpLink} from "apollo-link-http";
 import {setContext} from "apollo-link-context";
 import {InMemoryCache} from "apollo-cache-inmemory";
 import MainPage from "./MainPage/MainPage";
-import Cabinet from "./Cabinet/Cabinet";
+import Contact from "./Cabinet/Contact";
+import Address from "./Cabinet/Address";
 import Cart from "./Cart/Cart";
 import Catalog from "./Catalog/Catalog";
 import Checkout from "./Checkout/Checkout";
@@ -14,6 +15,8 @@ import Product from "./Product/Product";
 import Profile from "./Profile/Profile";
 import Login from "./Login/Login";
 import AboutUs from "./About/AboutUs";
+import Iwantit from "./Cabinet/Iwantit";
+import Purchase from "./Cabinet/Purchase";
 
 
 
@@ -44,7 +47,7 @@ class App extends Component {
                 <BrowserRouter>
                     <Switch>
                         <Route exact path={'/'} component={MainPage}/>
-                        <Route path={'/cabinet'} component={Cabinet}/>
+                        <Route path={'/cabinet'} component={Contact}/>
                         <Route path={'/cart'} component={Cart}/>
                         <Route path={'/catalog'} component={Catalog}/>
                         <Route path={'/checkout'} component={Checkout}/>
@@ -53,6 +56,10 @@ class App extends Component {
                         <Route path={'/signIn'} component={Profile}/>
                         <Route path={'/login'} component={Login}/>
                         <Route path={'/aboutUs'} component={AboutUs}/>
+                        <Route path={'/contact'} component={Contact}/>
+                        <Route path={'/address'} component={Address}/>
+                        <Route path={'/iWantIt'} component={Iwantit}/>
+                        <Route path={'/purchase'} component={Purchase}/>
 
 
 
