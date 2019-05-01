@@ -42,6 +42,24 @@ export default class PurchaseBlock extends React.Component {
             <Query query={
                 gql`query MyProductCategory($id: ID!){
                           product(id: $id){
+                            name_ru
+                          }
+                        }`
+            }
+                   variables={{"id":this.props.ProductID}}>
+                {({loading, error, data}) => {
+                    if (loading) return <p>Loading...</p>;
+                    if (error) {
+                        return <p>Error :(</p>;
+                    }
+                    return(
+                        <Price>{data.product.name_ru}</Price>
+                    );
+                }}
+            </Query>
+            <Query query={
+                gql`query MyProductCategory($id: ID!){
+                          product(id: $id){
                             price
                           }
                         }`
@@ -116,7 +134,7 @@ export default class PurchaseBlock extends React.Component {
 const Container = styled.div`
     display: grid;
     width: calc(100% - 60px);
-    grid-template-rows: 3fr 7fr 3fr 6fr 10fr 6fr;
+    grid-template-rows: 3fr 4fr 4fr 3fr 6fr 10fr 6fr;
     padding: 30px;
 `;
 
