@@ -6,7 +6,6 @@ import {createHttpLink} from "apollo-link-http";
 import {setContext} from "apollo-link-context";
 import {InMemoryCache} from "apollo-cache-inmemory";
 import MainPage from "./MainPage/MainPage";
-import Cabinet from "./Cabinet/Cabinet";
 import Cart from "./Cart/Cart";
 import Catalog from "./Catalog/Catalog";
 import Checkout from "./Checkout/Checkout";
@@ -14,7 +13,9 @@ import Product from "./Product/Product";
 import Profile from "./Profile/Profile";
 import UrlStore from "../stores/UrlStore";
 import {Provider} from 'mobx-react';
-import Login from "./Login/Login";
+import Login from './Login/Login';
+import AboutUs from './About/AboutUs';
+
 
 const urlStore = new UrlStore();
 
@@ -46,12 +47,16 @@ class App extends Component {
                     <BrowserRouter>
                         <Switch>
                             <Route exact path={'/'} component={MainPage}/>
-                            <Route path={'/cabinet'} component={Cabinet}/>
                             <Route path={'/cart'} component={Cart}/>
                             <Route path={'/catalog'} component={Catalog}/>
                             <Route path={'/checkout'} component={Checkout}/>
                             <Route path={'/product/:id'} component={Product}/>
                             <Route path={'/profile'} component={Profile}/>
+                            <Route path={'/signIn'} component={Profile}/>
+                            <Route path={'/login'} component={Login}/>
+                            <Route path={'/aboutUs'} component={AboutUs}/>
+
+
                         </Switch>
                     </BrowserRouter>
                 </ApolloProvider>

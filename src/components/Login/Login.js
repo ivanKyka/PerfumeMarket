@@ -11,7 +11,6 @@ import {faKey} from '@fortawesome/free-solid-svg-icons';
 import {faPhone} from '@fortawesome/free-solid-svg-icons';
 import {faArrowRight} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { bindAll } from 'lodash';
 
 
 export default class Login  extends React.Component{
@@ -355,22 +354,24 @@ const Password = styled.input`
     border: 1px solid ${props => props.Correct?'#CCC':'red'};
     outline: none;
     width: 90%;
-    padding: 6px 5px;
+    padding: 6px 5px 6px 30px;
     display: inline-block;
     border-radius: 4px;
     box-sizing: border-box; 
-    padding-left: 30px;
+    background: #fff;
+    color: #000;
 `;
 
 const Input = styled.input`
         outline: none;
         width: 90%;
-        padding: 6px 5px;
+        padding: 6px 5px 6px 30px;
         display: inline-block;
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box; 
-        padding-left: 30px;
+        background: #fff;
+        color: #000;
 `;
 
 

@@ -2,6 +2,7 @@ import React from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faBars, faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import {Link} from 'react-router-dom';
 
 export default class MainTopBar extends React.Component{
 
@@ -40,7 +41,9 @@ export default class MainTopBar extends React.Component{
                     <span>Cart</span>
                     <Counter>15</Counter>
                 </Cart>
-                <SignInButton>SIGN IN</SignInButton>
+                <Link to={'/login'}>
+                    <SignInButton>SIGN IN</SignInButton>
+                </Link>
             </Container>
         )
     }
@@ -54,6 +57,7 @@ const Container = styled.div`
   color: #ececed;
   padding: 0;
   margin: 0;
+  align-items: center;
 `;
 
 const Menu = styled.ul`
@@ -113,7 +117,6 @@ const Cart = styled.div`
 
 const SignInButton = styled.button`
   font-family: "Gilroy", sans-serif;
-  align-self: center;
   height: 30px;
   border: 2px #ececed solid;
   background: #222328;
