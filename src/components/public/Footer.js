@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import {faTwitter} from '@fortawesome/free-brands-svg-icons';
 import {faInstagram} from '@fortawesome/free-brands-svg-icons';
 import {faFacebook} from '@fortawesome/free-brands-svg-icons';
+import {Link} from 'react-router-dom';
+
 export default class Footer extends React.Component{
     render() {
         return(
@@ -20,7 +22,7 @@ export default class Footer extends React.Component{
                             <ListPoint><a href="">HOME</a></ListPoint>
                             <ListPoint><a href="">SHOP</a></ListPoint>
                             <ListPoint><a href="">TEAM</a></ListPoint>
-                            <ListPoint><a href="">ABOUT US</a></ListPoint>
+                            <ListPoint><Link to={'/aboutUs'}>ABOUT US</Link></ListPoint>
                             <ListPoint><a href="">CONTACTS</a></ListPoint>
                         </Menu>
 

@@ -40,7 +40,7 @@ render() {
                     <Box>
                         <Form>
                             <TitleForm>
-                                <h3>РЕГЕСТРАЦИЯ</h3>
+                                <h3>РЕГИСТРАЦИЯ</h3>
                             </TitleForm>
                             <Information>
                                 <Add>

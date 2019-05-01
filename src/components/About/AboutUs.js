@@ -139,11 +139,13 @@ const ThirdAdv = styled.div`
     grid-template-rows:1fr 3fr 3fr 
 `
 const LogoBrands = styled.div`
-    margin-left: 80px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    margin:  0 80px;
     height: 150px;
     img{
-      height: 150px;
-      width: 200px;
+      max-height: 150px;
+      max-width: 200px;
       padding-left: 20px;
       
     }
