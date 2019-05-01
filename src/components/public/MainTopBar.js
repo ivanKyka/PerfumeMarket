@@ -26,7 +26,9 @@ export default class MainTopBar extends React.Component{
                     }/>
                 </MenuIcon>
                 <Logo>
+                    <Link to={'/'}>
                     LOGO
+                    </Link>
                 </Logo>
                 <Menu>
                     <li>Lorem</li>
@@ -87,6 +89,12 @@ const MenuIcon = styled.svg`
 const Logo = styled.div`
   align-self: center;
   justify-content: right;
+  cursor: pointer;
+  
+  a{
+    text-decoration: none;
+    color: white;
+  }
 `;
 
 const Counter = styled.div`
