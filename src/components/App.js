@@ -14,6 +14,7 @@ import Product from "./Product/Product";
 import Profile from "./Profile/Profile";
 import UrlStore from "../stores/UrlStore";
 import {Provider} from 'mobx-react';
+import Login from "./Login/Login";
 
 const urlStore = new UrlStore();
 
