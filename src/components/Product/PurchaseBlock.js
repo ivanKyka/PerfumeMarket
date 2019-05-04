@@ -21,7 +21,7 @@ export default class PurchaseBlock extends React.Component {
     }).bind(this);
     decreaseCountOfProducts = (() => {
         this.setState(oldState => {
-            if (oldState.countOfProducts >= 1)
+            if (oldState.countOfProducts > 1)
             return {
                 countOfProducts: --oldState.countOfProducts
             }
