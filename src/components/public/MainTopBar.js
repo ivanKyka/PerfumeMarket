@@ -3,6 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faBars, faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
+import LogoImg from '../../resources/image/Logo.svg'
 
 export default class MainTopBar extends React.Component{
 
@@ -10,26 +11,10 @@ export default class MainTopBar extends React.Component{
         return(
             <Container>
                 <div></div>
-                <MenuIcon>
-                    <FontAwesomeIcon icon={faBars} size={'2x'} onClick={
-                        () => {
-                            console.log("OK");
-                            fetch('http://localhost:1337/graphql',{
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YzkxZWYxYjMxMDA0YjMxN2Y0ZTkyMzIiLCJpYXQiOjE1NTMwNjgzODIsImV4cCI6MTU1NTY2MDM4Mn0.-KViabW6pHBQmaeMAJDBq6jWsvWNx9lRufIT3bbG8MQ"},
-                                body: JSON.stringify({query:'{users{username}}'})
-                            }).then((response) => response.json())
-                                .then((users) => console.log(users));
-                        }
-                    }/>
-                </MenuIcon>
-                <Logo>
                     <Link to={'/'}>
-                    LOGO
-                    </Link>
-                </Logo>
+                    <Logo src={LogoImg}/>
+
+            </Link>
                 <Menu>
                     <li>Lorem</li>
                     <li>Lorem</li>
@@ -53,7 +38,7 @@ export default class MainTopBar extends React.Component{
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 4fr 8fr 2fr 2fr ;
+  grid-template-columns:  1fr 4fr 8fr 2fr 2fr ;
   grid-template-rows: 60px;
   background: #222328;
   color: #ececed;
@@ -86,11 +71,12 @@ const MenuIcon = styled.svg`
   cursor: pointer;
 `;
 
-const Logo = styled.div`
+const Logo = styled.img`
   align-self: center;
   justify-content: right;
   cursor: pointer;
-  
+  max-height: 100%;
+  max-width: 100%;
   a{
     text-decoration: none;
     color: white;

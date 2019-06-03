@@ -23,14 +23,14 @@ const httpLink = createHttpLink({
     uri: urlStore.MAIN_GRAPHQL_URI
 });
 
-const authLink = setContext((_, {headers}) => {
-    return {
-        headers: {
-            ...headers,
-            authorization: urlStore.TOKEN ? `Bearer ${urlStore.TOKEN}` : "",
-        }
-    }
-});
+// const authLink = setContext((_, {headers}) => {
+//     return {
+//         headers: {
+//             ...headers,
+//             authorization: urlStore.TOKEN ? `Bearer ${urlStore.TOKEN}` : "",
+//         }
+//     }
+// });
 
 const client = new ApolloClient({
     link: httpLink,

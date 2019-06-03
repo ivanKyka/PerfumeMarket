@@ -10,7 +10,8 @@ const theme = {
     error: '#942B20',
     info : '#3F808C',
     warning : '#E3A264',
-    success : '#4CAC61'
+    success : '#4CAC61',
+    bgCol: '#222328'
 };
 
 export {

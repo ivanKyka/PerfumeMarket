@@ -46,7 +46,7 @@ module.exports = {
                 use:  [{ loader: 'style-loader' }, { loader: 'css-loader' }]
             },
             {
-                test: /\.(eot|svg|ttf|woff|woff2|otf)$/,
+                test: /\.(eot|ttf|woff|woff2|otf)$/,
                 use: [
                     {
                         loader: 'url-loader?name=./fonts/[name].[ext]'
