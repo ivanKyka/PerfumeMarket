@@ -11,16 +11,15 @@ import Catalog from "./Catalog/Catalog";
 import Checkout from "./Checkout/Checkout";
 import Product from "./Product/Product";
 import Profile from "./Profile/Profile";
-import UrlStore from "../stores/UrlStore";
+import {UrlStore} from "../stores/UrlStore";
 import {Provider} from 'mobx-react';
-import Login from './Login/Login';
+import Register from './Auth/Register';
 import AboutUs from './About/AboutUs';
 
 
-const urlStore = new UrlStore();
 
 const httpLink = createHttpLink({
-    uri: urlStore.MAIN_GRAPHQL_URI
+    uri: UrlStore.MAIN_GRAPHQL_URI
 });
 
 // const authLink = setContext((_, {headers}) => {
@@ -37,7 +36,7 @@ const client = new ApolloClient({
     cache: new InMemoryCache()
 });
 
-const store = {urlStore: urlStore};
+const store = {urlStore: UrlStore};
 
 class App extends Component {
     render() {
@@ -53,7 +52,7 @@ class App extends Component {
                             <Route path={'/product/:id'} component={Product}/>
                             <Route path={'/profile'} component={Profile}/>
                             <Route path={'/signIn'} component={Profile}/>
-                            <Route path={'/login'} component={Login}/>
+                            <Route path={'/register'} component={Register}/>
                             <Route path={'/aboutUs'} component={AboutUs}/>
 
 

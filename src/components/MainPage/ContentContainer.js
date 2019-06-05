@@ -33,7 +33,7 @@ const Container = styled.div`
   
   grid-column-gap: 5px;
   grid-row-gap: 20px;
-  grid-auto-rows: 350px;
+  grid-auto-rows: 380px;
   justify-items: center;
 `;
 

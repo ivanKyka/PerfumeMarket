@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import Footer from "../public/Footer"
-import MainTopBar from "../public/MainTopBar";
+import Header from "../public/Header";
 
 export default class Contact extends React.Component {
 
 render() {
     return(
         <div>
-            <MainTopBar/>
+            <Header/>
             <Main>
                 <Title>
                     <h2> Personal account </h2>

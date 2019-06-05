@@ -51,11 +51,11 @@ export default class ContentBlock extends React.Component{
 const BlockHover = keyframes`
   0% { 
     width: 280px;
-    height: 350px; 
+    height: 380px; 
   }
   100%  { 
     width: 300px;
-    height: 500px; 
+    height: 580px; 
   }
 `;
 
@@ -71,17 +71,17 @@ const ShowText = keyframes`
 const Block = styled.div`
   padding-top: 5px;
   width: 250px;
-  height: 350px;
+  height: 380px;
   z-index: 5;
   background: #fff;
   overflow: hidden;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 250px 30px 70px;
+  grid-template-rows: 250px 30px 120px;
  
     
   &:hover {
-    grid-template-rows: 250px 30px 70px 50px 30px 70px;
+    grid-template-rows: 250px 30px 130px 50px 30px 70px;
     border-radius: 5px;
     z-index: 6;
     box-shadow: 0 0  10px  ${props => props.theme.primary} ;

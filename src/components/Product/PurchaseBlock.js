@@ -48,7 +48,7 @@ export default class PurchaseBlock extends React.Component {
             }
                    variables={{"id":this.props.ProductID}}>
                 {({loading, error, data}) => {
-                    if (loading) return <p>Loading...</p>;
+                    if (loading) return <p></p>;
                     if (error) {
                         return <p>Error :(</p>;
                     }
@@ -66,7 +66,7 @@ export default class PurchaseBlock extends React.Component {
             }
                    variables={{"id":this.props.ProductID}}>
                 {({loading, error, data}) => {
-                    if (loading) return <p>Loading...</p>;
+                    if (loading) return <p></p>;
                     if (error) {
                         return <p>Error :(</p>;
                     }
@@ -134,7 +134,7 @@ export default class PurchaseBlock extends React.Component {
 const Container = styled.div`
     display: grid;
     width: calc(100% - 60px);
-    grid-template-rows: 3fr 4fr 4fr 3fr 6fr 10fr 6fr;
+    grid-template-rows: 60px minmax(min-content, min-content) 40px 35px 60px 100px 55px;
     padding: 30px;
 `;
 

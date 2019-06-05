@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import PhotoGalerry from "./PhotoGalerry";
 import PurchaseBlock from "./PurchaseBlock";
-import MainTopBar from "../public/MainTopBar";
-import Header from '../public/Header';
+import Header from "../public/Header";
+import HeadCatalog from '../public/HeadCatalog';
 import Description from "./Description";
 import CommentsContainer from "./CommentsContainer";
 import Footer from "../public/Footer";
@@ -14,8 +14,8 @@ export default class Product extends React.Component {
 render() {
     return(
         <div>
-            <MainTopBar />
             <Header />
+            <HeadCatalog />
             <Container>
                 <PhotoGalerry ProductID={this.props.match.params.id}/>
                 <PurchaseBlock ProductID={this.props.match.params.id}/>

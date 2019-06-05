@@ -28,7 +28,7 @@ export default class Content extends React.Component {
                   }
                 }`}>
                 {({loading, error, data}) => {
-                    if (loading) return <p>Loading...</p>;
+                    if (loading) return <p></p>;
                     if (error) return <p>Error :(</p>;
 
                     return (

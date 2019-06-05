@@ -5,16 +5,19 @@ import {faTwitter} from '@fortawesome/free-brands-svg-icons';
 import {faInstagram} from '@fortawesome/free-brands-svg-icons';
 import {faFacebook} from '@fortawesome/free-brands-svg-icons';
 import {Link} from 'react-router-dom';
+import LogoImg from "../../resources/image/Logo.svg";
 
 export default class Footer extends React.Component{
     render() {
         return(
             <Container>
 
-
                     <Foot1>
-                        <span>Portland</span>
-
+                        <Logo>
+                            <Link to={'/'}>
+                                <img src={LogoImg}/>
+                            </Link>
+                        </Logo>
                     </Foot1>
 
                     <Foot2>
@@ -51,7 +54,6 @@ export default class Footer extends React.Component{
 
                     <Foot4>
                         <span>She gave my mother such a turn, that I have always been convinced I am indebted to Miss <br/>Betsey for having been born on a Friday.</span>
-
                     </Foot4>
                     <Foot5>
                         <a href="" >PRIVACY POLICY</a>
@@ -137,8 +139,6 @@ const Foot4 = styled.div`
  padding-left: 100px;
  align-self: center;
  font-family: 'Dancing Script', cursive;
-//https://fonts.googleapis.com/css?family=Dancing+Script
- 
 `;
 const Foot5 = styled.div`
 grid-column-start: 3;
@@ -160,3 +160,21 @@ justify-self: center;
  a:last-of-type {margin-right: 0;}
 `;
 
+const Logo = styled.div`
+  display: block;
+  height: 50px;
+  align-self: center;
+  a{
+    display: block;
+    height: 50px;
+    text-decoration: none;
+    color: white;
+  }
+  img{
+      height: 50px;
+      align-self: center;
+      display: block;
+      justify-content: right;
+      cursor: pointer;
+  }
+`;

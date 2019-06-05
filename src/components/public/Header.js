@@ -1,27 +1,37 @@
-import React from 'react';
+import React from 'react'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSearch} from "@fortawesome/free-solid-svg-icons";
+import {Link} from 'react-router-dom';
+import LogoImg from '../../resources/image/Logo.svg'
 
 export default class Header extends React.Component{
 
     render() {
         return(
             <Container>
+                <div></div>
+                   <Logo>
+                       <Link to={'/'}>
+                           <img src={LogoImg}/>
+                       </Link>
+                   </Logo>
                 <Menu>
-                    <li>LOREM</li>
-                    <li>LOREM</li>
-                    <li>LOREM</li>
-                    <li>LOREM</li>
-                    <li>LOREM</li>
-                    <li>LOREM</li>
+                    <li>Lorem</li>
+                    <li>Lorem</li>
+                    <li>Lorem</li>
+                    <li>Lorem</li>
+                    <li>Lorem</li>
+                    <li>Lorem</li>
                 </Menu>
-                <Search>
-                    <SearchInput type="text" placeholder="Искать здесь..."/>
-                    <SearchButton type="submit">
-                        <FontAwesomeIcon icon={faSearch} size={'2x'}/>
-                    </SearchButton>
-                </Search>
+                <Cart>
+                    <FontAwesomeIcon icon={faShoppingCart}/>
+                    <span>Cart</span>
+                    <Counter>0</Counter>
+                </Cart>
+                <Link to={'/register'}>
+                    <SignInButton>SIGN IN</SignInButton>
+                </Link>
             </Container>
         )
     }
@@ -29,83 +39,90 @@ export default class Header extends React.Component{
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 200px;
-  background: #ececed;
-`;
-
-const Search = styled.div`
-  position: relative;
-  width: 200px;
-  margin: 10px auto 0 auto;
-  height: 42px;
-`;
-
-const SearchInput = styled.input`
-  height: 42px;
-  width: 0;
-  padding: 0 42px 0 15px;
-  border: none;
-  border-bottom: 2px solid transparent;
-  outline: none;
-  background: transparent;
-  transition: .3s ease-out;
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 2;
-  color: #222328;
-  cursor: pointer;
-  font-size: 16px;
-  
-  &:focus{
-  width: 200px;
-  z-index: 1;
-  border-bottom: 2px solid #222328;
-  }
-`;
-
-const SearchButton = styled.button`
-  background: #ececed;
-  border: none;
-  height: 42px;
-  width: 42px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  cursor: pointer;
-  
-  &:before{
+  grid-template-columns:  1fr 4fr 8fr 2fr 2fr ;
+  grid-template-rows: 60px;
+  background: #222328;
   color: #ececed;
-  }
-  svg{
-    cursor: pointer;
-    color: #222328;
-  }
+  padding: 0;
+  margin: 0;
+  align-items: center;
 `;
 
 const Menu = styled.ul`
   list-style: none;
-  padding: 0 60px;
+  padding: 0;
   margin: 0;
-  
   li {
     display: inline-block;
-    padding: 20px 20px;
+    padding: 20px 10px;
     font-size: 12px;
     height: 20px;
     vertical-align: center;
     cursor: pointer;
   }
-  
-  li:last-child{
-    float: right;
-    margin-right: 50px;
-  }
-  
-  li:hover {
-  padding: 20px 18px 20px 17px;
-  background: #dbdbdc;
-  font-weight: bold;
+  li:hover{
+    background:#0d0e11;
   }
 `;
 
+
+const Logo = styled.div`
+  display: block;
+  height: 50px;
+  align-self: center;
+  a{
+    display: block;
+    height: 50px;
+    text-decoration: none;
+    color: white;
+  }
+  img{
+      height: 50px;
+      align-self: center;
+      display: block;
+      justify-content: right;
+      cursor: pointer;
+  }
+`;
+
+const Counter = styled.div`
+  justify-self: left;
+  padding: 2px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background: #ececed;
+  color: #222328;
+  width: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  height: 15px;
+  margin-top: -2px;
+`;
+
+const Cart = styled.div`
+  display: grid;
+  align-content: center;
+  grid-template-columns: 20px 35px 15px;
+  cursor: pointer;
+  span {
+    font-size: 12px;
+  }
+`;
+
+const SignInButton = styled.button`
+  font-family: "Gilroy", sans-serif;
+  height: 30px;
+  border: 2px #ececed solid;
+  background: #222328;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  width: 80px;
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    background: #0d0e11;
+  }
+`;

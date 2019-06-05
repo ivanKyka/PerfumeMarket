@@ -38,7 +38,7 @@ export default class PhotoGalerry extends React.Component {
     }`}
         variables={{"id":this.props.ProductID}}>
             {({loading, error, data}) => {
-                if (loading) return <p>Loading...</p>;
+                if (loading) return <p></p>;
                 if (error) {
                     return <p>Error :(</p>;
                 }
@@ -101,7 +101,7 @@ const Catalog = styled.div`
     justify-items: center;
     align-items: start;
     grid-template-columns: 1fr;
-    grid-auto-rows: minmax(min-content, max-content);
+    grid-auto-rows: minmax(400px, min-content);
 `;
 
 const Image = styled.img`

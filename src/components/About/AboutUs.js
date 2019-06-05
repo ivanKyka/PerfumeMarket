@@ -1,7 +1,7 @@
 import React from "react"
 import styled from 'styled-components';
 import Footer from "../public/Footer"
-import MainTopBar from "../public/MainTopBar";
+import Header from "../public/Header";
 import {faCircle} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import dior from "../../resources/image/LogoBrand/dior.png";
@@ -16,7 +16,7 @@ export default class AboutUs  extends React.Component{
     render(){
         return(
             <div>
-                <MainTopBar/>
+                <Header/>
                 <MainAbout>
                     <Title>
                         <h2> About Us </h2>

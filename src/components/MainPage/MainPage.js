@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import MainTopBar from "../public/MainTopBar";
 import Header from "../public/Header";
+import HeadCatalog from "../public/HeadCatalog";
 import MainHeadSlider from "./MainHeadSlider";
 import ContentContainer from "./ContentContainer";
 import Footer from "../public/Footer";
@@ -11,8 +11,8 @@ export default class MainPage extends Component{
     render() {
         return (
             <div>
-                <MainTopBar/>
                 <Header/>
+                <HeadCatalog/>
                 <MainHeadSlider/>
                 <ContentContainer/>
                 <PageCounter/>

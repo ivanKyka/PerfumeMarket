@@ -32,32 +32,37 @@ render() {
             }
                    variables={{"id":this.props.ProductID}}>
                 {({loading, error, data}) => {
-                    if (loading) return <p>Loading...</p>;
+                    if (loading) return <p></p>;
                     if (error) {
                         return <p>Error :(</p>;
                     }
-                    if (data.product.category.parent.parent === null)
-                        return(
+                    try{
+                        if (data.product.category.parent.parent === null)
+                            return(
+                                <div>
+                                    <Link id={data.product.category.parent.id}
+                                          theme={theme}>{data.product.category.parent.name_ru}</Link>
+                                    <FontAwesomeIcon icon={faChevronRight}/>
+                                    <Link id={data.product.category.id}
+                                          theme={theme}>{data.product.category.name_ru}</Link>
+                                </div>
+                            );
+                        else return(
                             <div>
+                                <Link id={data.product.category.parent.parent.id}
+                                      theme={theme}>{data.product.category.parent.parent.name_ru}</Link>
+                                <FontAwesomeIcon icon={faChevronRight}/>
                                 <Link id={data.product.category.parent.id}
                                       theme={theme}>{data.product.category.parent.name_ru}</Link>
                                 <FontAwesomeIcon icon={faChevronRight}/>
                                 <Link id={data.product.category.id}
                                       theme={theme}>{data.product.category.name_ru}</Link>
                             </div>
-                        );
-                    else return(
-                        <div>
-                            <Link id={data.product.category.parent.parent.id}
-                                  theme={theme}>{data.product.category.parent.parent.name_ru}</Link>
-                            <FontAwesomeIcon icon={faChevronRight}/>
-                            <Link id={data.product.category.parent.id}
-                                  theme={theme}>{data.product.category.parent.name_ru}</Link>
-                            <FontAwesomeIcon icon={faChevronRight}/>
-                            <Link id={data.product.category.id}
-                                  theme={theme}>{data.product.category.name_ru}</Link>
-                        </div>
-                    )
+                        )
+                    } catch (e) {
+                        console.log(e);
+                    }
+                    return <div/>
                 }}
             </Query>
         </Links>
