@@ -22,8 +22,8 @@ export default class Footer extends React.Component{
 
                     <Foot2>
                         <Menu>
-                            <ListPoint><a href="">HOME</a></ListPoint>
-                            <ListPoint><a href="">SHOP</a></ListPoint>
+                            <ListPoint><Link to={'/'}>HOME</Link></ListPoint>
+                            <ListPoint><Link to={'/catalog'}>SHOP</Link></ListPoint>
                             <ListPoint><a href="">TEAM</a></ListPoint>
                             <ListPoint><Link to={'/aboutUs'}>ABOUT US</Link></ListPoint>
                             <ListPoint><a href="">CONTACTS</a></ListPoint>

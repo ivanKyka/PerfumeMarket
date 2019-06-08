@@ -78,15 +78,14 @@ const Block = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 250px 30px 120px;
- 
-    
+  border-radius: 5px;
+  justify-self: center;
+  justify-items: center;  
   &:hover {
     grid-template-rows: 250px 30px 130px 50px 30px 70px;
-    border-radius: 5px;
     z-index: 6;
     box-shadow: 0 0  10px  ${props => props.theme.primary} ;
     animation: ${BlockHover} .2s ease-out forwards;
-    
   }
 `;
 
@@ -94,7 +93,7 @@ const Image = styled.img`
   justify-self: center;
   align-self: center;
   max-width: 250px;
-  margin: 30px 10%;
+  //margin: 30px 10%;
   height: 250px;
 `;
 
@@ -165,6 +164,7 @@ const Price = styled.p`
 const Bottom = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 30px;
   grid-template-rows: 70px;
   justify-items: center;
   align-items: center;

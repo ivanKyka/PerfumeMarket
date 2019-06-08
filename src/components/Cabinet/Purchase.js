@@ -14,7 +14,7 @@ export default class Iwantit extends React.Component{
                     </Title>
                     <Menu>
                         <ul>
-                            <li><a href="Contact.js"> Contact Information </a></li>
+                            <li><a href="Address.js"> Contact Information </a></li>
                             <li><a href=""> Address </a></li>
                             <li><a href=""> I want it </a></li>
                             <li><a href=""> Purchase history </a></li>

@@ -15,7 +15,7 @@ export default class AboutUs  extends React.Component{
 
     render(){
         return(
-            <div>
+            <React.Fragment>
                 <Header/>
                 <MainAbout>
                     <Title>
@@ -30,7 +30,7 @@ export default class AboutUs  extends React.Component{
                         <h3> Why choose us </h3>
                     </WhyOur>
                     <Advantages>
-                        <FirstAdv>
+                        <Adv>
                             <TitleAdv>
                                 <span> Cause </span>
                             </TitleAdv>
@@ -39,8 +39,8 @@ export default class AboutUs  extends React.Component{
                             </Icon>
                             <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?</span>
-                        </FirstAdv>
-                        <SecondAdv>
+                        </Adv>
+                        <Adv>
                             <TitleAdv>
                                 <span> Cause </span>
                             </TitleAdv>
@@ -49,8 +49,8 @@ export default class AboutUs  extends React.Component{
                             </Icon>
                             <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?</span>
-                        </SecondAdv>
-                        <ThirdAdv>
+                        </Adv>
+                        <Adv>
                             <TitleAdv>
                                 <span> Cause </span>
                             </TitleAdv>
@@ -59,7 +59,7 @@ export default class AboutUs  extends React.Component{
                             </Icon>
                             <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?</span>
-                        </ThirdAdv>
+                        </Adv>
                     </Advantages>
                     <WhyOur>
                         <h3> Our Brands </h3>
@@ -74,7 +74,7 @@ export default class AboutUs  extends React.Component{
                     </LogoBrands>
                 </MainAbout>
                 <Footer/>
-            </div>
+            </React.Fragment>
         )
     }
 }
@@ -105,9 +105,9 @@ const Advantages = styled.div`
     grid-template-columns: 1fr 1fr 1fr;
 `
 
-const FirstAdv = styled.div`
+const Adv = styled.div`
     justify-self: right;
-    width: 400px;
+    min-width: 300px;
     display: grid;
     grid-template-rows:1fr 3fr 3fr 
 `
@@ -126,30 +126,18 @@ const Icon = styled.svg`
     
     
 `
-const SecondAdv = styled.div`
-    justify-self: center;
-    width: 400px;
-    display: grid;
-    grid-template-rows:1fr 3fr 3fr 
-`
-const ThirdAdv = styled.div`
-    justify-self: left;
-    width: 400px;
-    display: grid;
-    grid-template-rows:1fr 3fr 3fr 
-`
 const LogoBrands = styled.div`
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    margin:  0 80px;
     height: 150px;
+    width: calc(100% - 160px);
+    justify-self: center;
     img{
-      max-height: 150px;
-      max-width: 200px;
+      max-height: 100px;
+      max-width: 140px;
       padding-left: 20px;
-      
+      display: block;
     }
-    
     
 `
 

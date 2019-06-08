@@ -43,7 +43,9 @@ export default class Content extends React.Component {
                                     vendor: content.vendor,
                                     price: content.price
                                 }
-                            }/>)
+                            }
+                            key={content._id}
+                            />)
 
                     )
                 }}

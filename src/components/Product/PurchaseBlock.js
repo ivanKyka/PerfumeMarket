@@ -84,7 +84,7 @@ export default class PurchaseBlock extends React.Component {
             }
                    variables={{"id":this.props.ProductID}}>
                 {({loading, error, data}) => {
-                    if (loading) return <p>Loading...</p>;
+                    if (loading) return <p></p>;
                     if (error) {
                         return <p>Error :(</p>;
                     }

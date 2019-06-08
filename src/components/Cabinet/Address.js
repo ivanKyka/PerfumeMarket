@@ -1,186 +1,169 @@
 import React from 'react';
 import styled from 'styled-components';
-import Footer from "../public/Footer"
-import Header from "../public/Header";
+import ReactSelect from 'react-select'
+import {theme} from "../../stores/StyleStore";
+import {getCitiesByName, getPostOffices} from "../../api/NovaPoshta";
 
-export default class Address extends React.Component{
-    render() {
-        return (
-            <div>
-                <Header/>
-                <Main>
-                    <Title>
-                        <h2> Personal account </h2>
-                    </Title>
-                    <Menu>
-                        <ul>
-                            <li><a href="Contact.js"> Contact Information </a></li>
-                            <li><a href=""> Address </a></li>
-                            <li><a href=""> I want it </a></li>
-                            <li><a href=""> Purchase history </a></li>
-                            <li><a href=""> Exit </a></li>
-                        </ul>
-                    </Menu>
-                    <Form>
-                        <TitleColumn>
-
-                        </TitleColumn>
-                        <TitleColumn>
-                            <p> Add New Address </p>
-                        </TitleColumn>
-                        <TitleColumn>
-
-                        </TitleColumn>
-                        <Inp>
-
-                        </Inp>
-                        <Inp>
-                            <label htmlFor=""> First Name</label><br/>
-                            <Input type="text"/>
-                        </Inp>
-                        <Inp>
-                            <label htmlFor=""> Phone</label><br/>
-                            <Input type="text"/>
-                        </Inp>
-                        <Inp>
-
-                        </Inp>
-                        <Inp>
-                            <label htmlFor=""> Last Name</label><br/>
-                            <Input type="text"/>
-                        </Inp>
-                        <Inp>
-                            <label htmlFor=""> City</label><br/>
-                            <Input type="text"/>
-                        </Inp>
-                        <Inp>
-
-                        </Inp>
-                        <Inp>
-
-                        </Inp>
-                        <Inp>
-                            <label htmlFor=""> Street</label><br/>
-                            <Input type="text"/>
-                        </Inp>
-                        <Inp>
-
-                        </Inp>
-                        <Inp>
-
-                        </Inp>
-                        <InpOther>
-                            <Dop>
-                                <label htmlFor=""> Home</label><br/>
-                                <Input type="text"/>
-                            </Dop>
-                            <Dop>
-                                <label htmlFor=""> Ap.</label><br/>
-                                <Input type="text"/>
-                            </Dop>
-                            <Dop>
-                                <label htmlFor=""> Zip-code</label><br/>
-                                <Input type="text"/>
-                            </Dop>
-                            <Button>Save</Button>
-
-                        </InpOther>
+const reactSelectStyles = {
+        container: styles => ({...styles, height: '38px', display: 'block'}),
+        control: (styles, state) => (
+            {...styles,
+                border: state.isFocused?`2px solid ${theme.primary} !important`:'1px solid black',
+                height: state.isFocused?'36px':'38px',
+                borderRadius: '10px',
+                boxShadow: 'none',
+                cursor: 'text',
+                '&:hover':{
+                    border: `1px solid black`,
+                }
+            }),
+        dropdownIndicator: styles => ({...styles, color: 'black',cursor: 'pointer', '&:hover':{color: 'black'}}),
+        indicatorSeparator: styles => ({...styles, backgroundColor: 'black', '&:hover':{backgroundColor: 'black'}}),
+        input: styles => ({...styles, fontSize: '14pt', color: 'black', cursor: 'text'}),
+        singleValue: styles  => ({...styles, color: 'black',fontSize: '12pt'}),
+        clearIndicator: styles  => ({...styles, cursor: 'pointer'})
+};
 
 
-                    </Form>
-                </Main>
-                <Footer/>
-            </div>
-        );
-    }
 
-}
-const Main = styled.div`
-    display: grid;
-    background-color: white;
-    height: 1000px;
-    grid-template-rows: 80px 80px 800px;
-`;
-const Title = styled.div`
-    justify-self: center;
-    align-self: center;
-`
-const Menu = styled.div`
-    justify-self: center;
-    font-size: 20px;
-    ul{
-      life-style: none;
-    }
-    li{
-      display: inline;
-      margin: 0 80px;
-    }
-    a{
-      text-decoration: none;
-      color: #ccc;
-      cursor: pointer;
-        &:hover{
-          text-decoration: underline;
-          color: #000;
+export default class Address extends React.Component {
+
+    setCities = (name => {
+        if (name.length >= 3)
+            getCitiesByName(name).then(data => {return data.map(elem => {
+                return {
+                    value: elem.DeliveryCity,
+                    label: elem.Present
+                }
+            })}).then(options => this.setState({
+                cities: options
+            }));
+    }).bind(this);
+    setPostOffice = (option => {
+        if (option !== null)
+        getPostOffices(option.value).then(data => {return data.map(elem => {
+            return {
+                value: elem.SiteKey,
+                label: elem.Description
+            }
+        })}).then(options => this.setState({
+            postOffices: options,
+            postOffice: {label:'', value:''}
+        }))
+        else this.setState({
+            postOffices: [],
+            postOffice: {label:'', value:''}
+        })
+    }).bind(this);
+    setCurrentPostOffice = (e => {
+        this.setState({
+            postOffice: e
+        })
+    }).bind(this);
+
+    constructor(props){
+        super(props);
+        this.state = {
+            cities: [],
+            postOffices: [],
+            postOffice: {label:'', value:''}
         }
-     }
-`
-const Form = styled.div`
-    justify-self: center;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 50px 100px 100px 100px 150px ;
-    width: 1380px;
-`
-const TitleColumn = styled.div`
-    margin-left: 120px;
-`
-const Inp = styled.div`
-    margin-left: 120px;
-`
-const Input = styled.input`
-    outline: none;
-    width: 77%;
-    margin-top:10px;
-    padding: 12px 5px;
-    display: inline-block;
-    border: 2px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box; 
-    
-`
-
-const InpOther = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    width: 280px;
-    justify-self: center;
-    margin-left: 65px;
-    
-`
-
-const  Dop = styled.div`
-    
-`
-const Button = styled.button`
-    grid-column-start: 1;
-    grid-column-end: 6;
-    width: 92%;
-    padding: 10px;
-    color: #fff;
-    background-color: #d54040;
-    border-radius: 6px;
-    box-sizing: border-box; 
-    margin-top: 15px;
-    font-size: 16px;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    &:hover{
-      background-color: darkred;
-      box-shadow: 5px 5px 5px #ccc;
     }
-    
-`
 
+render() {
+    return(
+        <Form>
+            <div>
+                <Label>
+                    <span>Имя</span>
+                    <Input type={'text'}/>
+                </Label>
+                <Label>
+                    <span>Фамилия</span>
+                    <Input type={'text'}/>
+                </Label>
+                <Label>
+                    <span>Телефон</span>
+                    <Input type={'text'}/>
+                </Label>
+            </div>
+            <div>
+                <Label>
+                    <span>Город</span>
+                    <ReactSelect
+                        noOptionsMessage={() => 'Загрузка'}
+                        placeholder={''}
+                        styles={reactSelectStyles}
+                        onInputChange={e => {this.setCities(e)}}
+                        onChange={this.setPostOffice}
+                        options={this.state.cities}
+                        isClearable={true}
+                    />
+                </Label>
+                <Label>
+                    <span>Отделение</span>
+                    <ReactSelect
+                        noOptionsMessage={() => 'Загрузка'}
+                        placeholder={''}
+                        styles={reactSelectStyles}
+                        options={this.state.postOffices}
+                        isClearable={true}
+                        value={this.state.postOffice}
+                        onChange={this.setCurrentPostOffice}
+                    />
+                </Label>
+                <Button>Сохранить</Button>
+            </div>
+        </Form>
+    )
+    }
+}
 
+const Form = styled.form`
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-auto-rows: auto;
+    padding: 0 40px;
+    grid-gap: 20px;
+`;
+
+const Input = styled.input`
+    display: block;
+    width: 90%;
+    background: #fff;
+    height: 34px; 
+    border: ${props => props.theme.bgCol} 1px solid;
+    border-radius: 10px;
+    padding-left: 10px;
+    font-size: 14pt;
+    color: #000;
+    &:focus{
+      border: ${props => props.theme.primary_light} 2px solid;
+      height: 32px;
+    }
+`;
+
+const Label = styled.label`
+    margin-top: 10px;
+    display: block;
+    span{
+      display: block;
+      margin-bottom: 5px;
+    }  
+`;
+
+const Button = styled.button`
+    width: 200px;
+    background: ${props => props.theme.primary};
+    color: white;
+    font-size: 1em;
+    height: 38px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 34px;
+    margin-left: calc(50% - 100px);
+    cursor: pointer; 
+    &:hover{
+      background: ${props => props.theme.primary_light};
+    }
+`;
