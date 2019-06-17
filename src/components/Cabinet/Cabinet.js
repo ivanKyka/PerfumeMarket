@@ -7,6 +7,9 @@ import {theme} from "../../stores/StyleStore";
 import Address from "./Address";
 import Preference from "./Preference";
 import Purchase from "./Purchase";
+import {deleteCookie} from "../../controllers/Cookies";
+import {me} from "../../api/Users";
+import {Redirect} from "react-router";
 
 export default class Cabinet extends React.Component {
 
@@ -20,8 +23,24 @@ export default class Cabinet extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            currentPage: 'Contacts'
+            currentPage: 'Contacts',
+            authorized: true
         }
+    }
+
+    componentDidMount() {
+        me().then(data => {
+            console.log(!data);
+            if(!data){
+                this.setState({
+                    authorized: false
+                })
+            } else {
+                this.setState({
+                    authorized: true
+                })
+            }
+        });
     }
 
     returnPage = page => {
@@ -34,6 +53,9 @@ export default class Cabinet extends React.Component {
     };
 
 render() {
+    if (!this.state.authorized){
+        return <Redirect to={'/'}/>
+    }
     return(
         <ThemeProvider  theme={theme}>
         <React.Fragment>
@@ -56,7 +78,13 @@ render() {
                     onClick={e => {this.setPage(e,'Purchase')}}
                     active={!!(this.state.currentPage === 'Purchase')}
                 >История покупок</Li>
-                <Li>Выход</Li>
+                <Li
+                    onClick={e => {
+                        e.preventDefault();
+                        deleteCookie('jwt')
+                        location.reload();
+                    }}
+                >Выход</Li>
             </Head>
             <Page>
                 {this.returnPage(this.state.currentPage)}

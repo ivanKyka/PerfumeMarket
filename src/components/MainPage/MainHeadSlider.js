@@ -42,7 +42,7 @@ export default class MainHeadSlider extends React.Component {
                                               return (
                                                   <div className={'image-gallery-image'}>
                                                       <a href={item.link}>
-                                                          <img src={item.original} alt="" height={500}/>
+                                                          <img src={item.original} alt=""/>
                                                       </a>
                                                   </div>
                                               )
