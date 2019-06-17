@@ -102,14 +102,14 @@ export default class Header extends React.Component{
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns:  1fr 4fr 1fr 2fr ;
+  grid-template-columns:  1fr 4fr 1fr 150px ;
   padding: 0 50px;
   grid-template-rows: 60px;
   background: #222328;
   color: #ececed;
   margin: 0;
   align-items: center;
-  width: calc(100% - 100px);
+  width: 100%;
 `;
 
 const Menu = styled.ul`
@@ -117,13 +117,15 @@ const Menu = styled.ul`
   padding: 0 10px;
   margin: 0;
   justify-self: center;
+  height: 100%;
   li {
     display: inline-block;
     padding: 20px 10px;
-    font-size: 12px;
-    height: 20px;
+    font-size: 1vw;
+    height: 100%;
     vertical-align: center;
     cursor: pointer;
+    margin: 0;
   }
   li:hover{
     background:#0d0e11;

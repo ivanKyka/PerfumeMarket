@@ -31,5 +31,5 @@ render() {
 const Container = styled.div`
   display: grid;
   grid-template-columns: 5fr 4fr 5fr;
-  min-height: 450px;
+  min-height: calc(100vh - 412px);
 `;

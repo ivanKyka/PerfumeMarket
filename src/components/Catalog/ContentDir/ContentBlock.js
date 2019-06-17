@@ -104,7 +104,8 @@ const Link = styled.a`
     cursor: pointer;
     color: ${props => props.theme.primary};
     &:hover{
-    text-decoration: underline;
+      text-decoration: underline;
+      color: ${props => props.theme.primary};
     }
 `;
 

@@ -179,7 +179,7 @@ const Count = styled.input`
     font-size: 13pt;
 `;
 
-const AddToCartButton = styled.button`
+const AddToCartButton = styled.div`
     height: 38px;
     width: 100%;
     margin-top: 10px;
@@ -208,7 +208,7 @@ const AddToCartButton = styled.button`
     }
 `;
 
-const BuyButton = styled.button`
+const BuyButton = styled.div`
     display: grid;
     width: 100%;
     grid-template-columns: 3fr 1fr;
@@ -226,7 +226,7 @@ const BuyButton = styled.button`
       background: ${props => props.theme.primary_light};
     }
     span{
-      font-size: 30pt;
+      font-size: 3vw;
       font-weight: bold;
       text-align: center;
       align-self: center;

@@ -16,7 +16,7 @@ export default class SignInButton extends React.Component {
                         <Name theme={theme}>
                             <Link to={'/cabinet'}>
                                 <FontAwesomeIcon icon={faUser}/>
-                                <span>{this.props.data.username}</span>
+                                <span>{this.props.data.name} {this.props.data.surname}</span>
                             </Link>
                         </Name>
                 );
