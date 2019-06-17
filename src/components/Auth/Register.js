@@ -83,7 +83,7 @@ render() {
                                         <div>
                                             <p>Имя</p>
                                             <InputBlock>
-                                                <FontAwesomeIcon icon={faUser}/>
+                                                <FontAwesomeIcon icon={faUser} size={'1x'}/>
                                                 <Input
                                                     pattern="[А-Яа-яЁё`ЇїЄєІі]{2,}"
                                                     type="text"
@@ -96,7 +96,7 @@ render() {
                                     <div>
                                         <p>Фамилия</p>
                                         <InputBlock>
-                                            <FontAwesomeIcon icon={faUser}/>
+                                            <FontAwesomeIcon icon={faUser} size={'1x'}/>
                                             <Input
                                                 pattern="[А-Яа-яЁё`ЇїЄєІі]{2,}"
                                                 type="text"
@@ -110,7 +110,7 @@ render() {
                                     <div>
                                         <p>Эл. почта</p>
                                         <InputBlock>
-                                            <FontAwesomeIcon icon={faAt}/>
+                                            <FontAwesomeIcon icon={faAt} size={'1x'}/>
                                             <Input
                                                 type="email"
                                                 placeholder="Введите вашу эл. почту"
@@ -122,7 +122,7 @@ render() {
                                     <div>
                                         <p>Номер телефона</p>
                                         <InputBlock>
-                                            <FontAwesomeIcon icon={faPhone}/>
+                                            <FontAwesomeIcon icon={faPhone} size={'1x'}/>
                                             <Input
                                                 pattern="[+]{0,1}[0-9]{10,12}"
                                                 type="tel" placeholder="Введите ваш моб.номер"
@@ -135,7 +135,7 @@ render() {
                                     <div>
                                         <p>Пароль</p>
                                         <InputBlock>
-                                            <FontAwesomeIcon icon={faKey}/>
+                                            <FontAwesomeIcon icon={faKey} size={'1x'}/>
                                             <Input pattern="((?=.*\d)(?=.*[a-zа-яё])(?=.*[A-ZA-ЯЁ]).{6,})"
                                                    type="password"
                                                    placeholder="Введите пароль"
@@ -149,7 +149,7 @@ render() {
                                     <div>
                                         <p>Повторите пароль</p>
                                         <InputBlock>
-                                            <FontAwesomeIcon icon={faKey}/>
+                                            <FontAwesomeIcon icon={faKey} size={'1x'}/>
                                             <Password pattern="((?=.*\d)(?=.*[a-zа-яё])(?=.*[A-ZA-ЯЁ]).{6,})"
                                                       type="password"
                                                       placeholder="Повторно введите пароль"
@@ -220,6 +220,7 @@ const MainFromLogin = styled.div`
     display: grid;
     background-color: white;
     grid-template-rows: 1fr;
+    
  
 `;
 const Box = styled.div`
@@ -276,7 +277,7 @@ const Add = styled.div`
 const InputBlock = styled.div`
     svg{
       position: absolute;
-      padding-left: 20px;
+      margin-left: 20px;
       margin-top: 6px;
       color: #ccc;
   }

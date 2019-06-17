@@ -100,6 +100,7 @@ const ListPoint = styled.li`
     
     &:hover{
       text-decoration: underline;
+      color: white;
     }
   }
 `;
