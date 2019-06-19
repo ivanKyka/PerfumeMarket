@@ -6,7 +6,7 @@ import StarRatings from 'react-star-ratings'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faGift, faCartPlus} from '@fortawesome/free-solid-svg-icons';
 import {faHotjar} from "@fortawesome/free-brands-svg-icons/faHotjar";
-import {theme} from "../../stores/StyleStore";
+import {theme} from "../../../stores/StyleStore";
 
 
 export default class ContentBlock extends React.Component{

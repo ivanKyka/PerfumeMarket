@@ -4,7 +4,7 @@ import Header from "../public/Header";
 import Footer from "../public/Footer";
 import Contacts from "./Contacts";
 import {theme} from "../../stores/StyleStore";
-import Address from "./Address";
+//import Address from "./Address";
 import Preference from "./Preference";
 import Purchase from "./Purchase";
 
@@ -26,7 +26,7 @@ export default class Cabinet extends React.Component {
 
     returnPage = page => {
         switch (page) {
-            case 'Address': return <Address/>;
+            //case 'Address': return <Address/>;
             case 'Contacts': return <Contacts/>;
             case 'Preference': return <Preference/>;
             case 'Purchase': return <Purchase/>;
