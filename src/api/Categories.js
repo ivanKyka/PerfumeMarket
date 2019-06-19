@@ -18,6 +18,7 @@ function transformTree(obj){
     };
     else return {
         id: obj.key,
-        label: obj.label
+        label: obj.label,
+        lastChild: true
     }
 }

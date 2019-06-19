@@ -36,7 +36,7 @@ export default class PhotoGalerry extends React.Component {
         }
       }
     }`}
-        variables={{"id":this.props.ProductID}}>
+        variables={{"id": this.props.ProductID}}>
             {({loading, error, data}) => {
                 if (loading) return <p></p>;
                 if (error) {
