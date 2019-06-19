@@ -25,7 +25,7 @@ export default class SignInButton extends React.Component {
                 return (
                     <Button
                         onClick={this.props.openLogin}
-                    >SIGN IN</Button>
+                    >ВХОД</Button>
                 )
             }
         }

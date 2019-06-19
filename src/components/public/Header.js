@@ -7,7 +7,6 @@ import LogoImg from '../../resources/image/Logo.svg'
 import SignInButton from '../Auth/SignInButton';
 import {theme} from "../../stores/StyleStore";
 import SignIn from "../Auth/SignIn";
-import {deleteCookie} from "../../controllers/Cookies";
 import {me} from "../../api/Users";
 import User from "../../entities/User";
 import {inject} from "mobx-react";
@@ -68,19 +67,15 @@ export default class Header extends React.Component{
                             </Link>
                         </Logo>
                         <Menu>
-                            <li onClick={e => {
-                                e.preventDefault();
-                                deleteCookie('jwt')
-                            }}>Logout</li>
-                            <li>Lorem</li>
-                            <li>Lorem</li>
-                            <li>Lorem</li>
-                            <li>Lorem</li>
-                            <li>Lorem</li>
+                            <li>Домой</li>
+                            <li>Каталог</li>
+                            <li>О нас</li>
+                            <li>Контакты</li>
+                            <li>Доставка</li>
                         </Menu>
                         <Cart>
                             <FontAwesomeIcon icon={faShoppingCart}/>
-                            <span>Cart</span>
+                            <span>Корзина</span>
                             <Counter>0</Counter>
                         </Cart>
                         <SignInButton
@@ -105,8 +100,8 @@ const Container = styled.div`
   grid-template-columns:  1fr 4fr 1fr 150px ;
   padding: 0 50px;
   grid-template-rows: 60px;
-  background: #222328;
-  color: #ececed;
+  background: ${props => props.theme.bgCol};
+  color: #fff;
   margin: 0;
   align-items: center;
   width: 100%;
@@ -128,15 +123,17 @@ const Menu = styled.ul`
     margin: 0;
   }
   li:hover{
-    background:#0d0e11;
+    background: ${props => props.theme.bgDarkCol};
   }
 `;
 
 
 const Logo = styled.div`
   display: block;
-  height: 50px;
+  height: 60px;
+  padding: 5px;
   align-self: center;
+  width: min-content;
   a{
     display: block;
     height: 50px;
@@ -150,6 +147,11 @@ const Logo = styled.div`
       justify-content: right;
       cursor: pointer;
   }
+  &:hover{
+    background: ${props => props.theme.bgDarkCol};
+  }
+ 
+
 `;
 
 const Counter = styled.div`
@@ -158,23 +160,31 @@ const Counter = styled.div`
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
-  background: #ececed;
-  color: #222328;
-  width: 15px;
-  font-size: 12px;
+  background: #fff;
+  color: ${props => props.theme.bgCol};
+  width: 18px;
+  font-size: 14px;
   font-weight: bold;
   text-align: center;
-  height: 15px;
+  height: 18px;
   margin-top: -2px;
 `;
 
 const Cart = styled.div`
   display: grid;
   align-content: center;
-  grid-template-columns: 20px 35px 15px;
+  grid-template-columns: 20px 1fr 15px;
   cursor: pointer;
   justify-self: right;
+  padding: 10px;
+  height: 100%;
   span {
-    font-size: 12px;
+    font-size: 14px;
+    padding: 0 10px;
   }
+  
+  &:hover {
+    background: ${props => props.theme.bgDarkCol};
+    text-decoration: underline;
+   }
 `;

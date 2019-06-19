@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {categoryTree} from "../../api/Categories";
 import {Menubar} from "primereact/menubar";
-import 'primereact/resources/themes/nova-light/theme.css';
+import './HeadCatalogStyles.css';
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css'
 
@@ -25,10 +25,7 @@ export default class HeadCatalog extends React.Component{
     componentDidMount() {
         categoryTree().then(a => {
             this.setState({
-                items: [{
-                    label: 'Каталог товаров',
-                    items: a
-                }]
+                items: a
             })
         })
     }
