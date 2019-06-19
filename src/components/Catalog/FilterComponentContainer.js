@@ -9,7 +9,7 @@ export default class FilterComponentContainer extends Component{
     render(){
         return(
             <Container>
-                <FiltersLeftBar/>
+                <FiltersLeftBar CategoryID={this.props.CategoryID}/>
                 <FiltersTopBar/>
                 <ContentContainer/>
             </Container>

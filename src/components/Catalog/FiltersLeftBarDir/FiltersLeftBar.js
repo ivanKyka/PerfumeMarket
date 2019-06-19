@@ -1,86 +1,110 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import styled from 'styled-components'
-import CategoriesContainer from "./CategoriesDir/CategoriesContainer";
 import OptionsContainer from "./AbstractOptionsComponentDir/OptionsContainer";
-import {UrlStore} from "../../../stores/UrlStore";
+import {PanelMenu} from "primereact/PanelMenu";
+import {Query} from "react-apollo";
+import gql from "graphql-tag";
+import {categoryTree} from "../../../api/Categories";
+import CatalogStore from "../../../stores/CatalogStore";
 
 export default class FiltersLeftBar extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            categories: []
-        }
+            categories: [],
+            model: []
+        };
+
+        this.checkIsIn = this.checkIsIn.bind(this);
     }
 
     componentDidMount() {
-        //console.log(new URL(window.location.href));
+        CatalogStore.setID(this.props.CategoryID);
 
-        fetch(UrlStore.CATEGORIES_URL).then((response) => {
-            return response.json();
-        }).then(data => {
-            this.setState({categories: data.map((el) => {
-                return {
-                    key: el.key,
-                    categoryTitle: el.label,
-                    subcategories: el.children.map(el => {
-                        return {
-                            subcategoryTitle: el.label,
-                            key: el.key
-                        }
-                    })
+        categoryTree().then(data => {
+            for(let i = 0;i < data.length;i++){
+                if (this.checkIsIn(data[i], this.props.CategoryID)){
+                    console.log(data[i]);
+                    let temp = [];
+                    temp.push(data[i]);
+                    this.setState({model : temp});
                 }
-                })})
-        })
+            }
+        });
     }
+
+    checkIsIn(categories, id) {
+        if (categories.items === undefined){
+            for (let i = 0; i < categories.length;i++){
+                if(categories[i].id === id){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return this.checkIsIn(categories.items, id);
+    };
 
     render() {
         return (
             <Container>
-                <CategoriesContainer categories={this.state.categories}/>
-                <OptionsContainer
-                    optionsTitle={"Lorem"}
-                    linkTitle={"Lorem"}
-                    contentType={"selection"}
-                    content={[
-                        {
-                            description: 'Lorem',
-                            quantity: '40'
-                        },
-                        {
-                            description: 'Lorem',
-                            quantity: '100'
+                <Query
+                    query={gql`
+                        query GET_CATEGORIES($id: ID!){
+                            category(id: $id){
+                                name_ru
+                                properties{
+                                    property_name
+                                    id
+                                    property_val
+                                }
+                            }
                         }
-                    ]}
-                />
-                <OptionsContainer
-                    optionsTitle={"Lorem"}
-                    contentType={"selection"}
-                    content={[
-                        {
-                            description: 'Lorem',
+                    `}
+                    variables={{"id": this.props.CategoryID}}
+                >
+                    {({loading, error, data}) => {
+                        if (loading) return "Loading...";
+                        if (error) return `Error! ${error.message}`;
+
+                        let properties = data.category.properties.reduce((ac, cv) => {
+                            ac[cv.property_name] = ac[cv.property_name] || [];
+                            ac[cv.property_name].push({
+                                property_val : cv.property_val,
+                                id: cv.id
+                            });
+                            return ac;
+                        }, []);
+
+                        let propertiesIndexed = [];
+
+                        for(let property in properties){
+                            propertiesIndexed.push({
+                                title: property,
+                                content: properties[property],
+                            })
                         }
-                    ]}
-                />
-                <OptionsContainer
-                    optionsTitle={"Lorem"}
-                    linkTitle={"Lorem"}
-                    contentType={"radio"}
-                    content={[
-                        {
-                            description: 'Lorem',
-                            quantity: '40'
-                        },
-                        {
-                            description: 'Lorem',
-                            quantity: '100'
-                        },
-                        {
-                            description: 'Lorem',
-                            quantity: '1000'
-                        }
-                    ]}
-                />
+
+                        return (
+                            <Fragment>
+                                <PanelMenu model={this.state.model}/>
+                                {
+                                    propertiesIndexed.map((el, i, arr) => {
+                                        return(
+                                            <OptionsContainer
+                                                optionsTitle={el.title}
+                                                contentType={"selection"}
+                                                content={el.content}
+                                            />)
+                                    })
+                                }
+                            </Fragment>
+
+                        );
+                    }}
+                </Query>
             </Container>
         );
     }
@@ -90,6 +114,15 @@ const Container = styled.div`
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 2;
+    z-index: 20;
     
-    padding: 0 60px;
+    padding-left: 60px;
+    
+    > .p-menubar{
+        border: none;
+        
+        > ul .p-menuitem{
+            display: block;
+        }
+    }
 `;

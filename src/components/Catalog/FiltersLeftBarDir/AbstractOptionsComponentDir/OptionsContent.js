@@ -4,6 +4,7 @@ import RadioButtonClickedImg from '../../../../resources/image/OptionsComponent/
 import RadioButtonDefaultImg from '../../../../resources/image/OptionsComponent/RadionButtonDefault.png'
 import SelectionButtonClickedImg from '../../../../resources/image/OptionsComponent/SelectionButtonClicked.png'
 import SelectionButtonDefaultImg from '../../../../resources/image/OptionsComponent/SelectionButtonDefault.png'
+import CatalogStore from "../../../../stores/CatalogStore";
 
 
 export default class OptionsContent extends Component {
@@ -14,7 +15,7 @@ export default class OptionsContent extends Component {
             contentType: props.contentType,
             content: props.content || [],
             clickedRadioID : 0,
-            selections : props.content ? props.content.map(() => false) : []
+            selections : props.content ? props.content.map(() => false) : [],
     };
 
         this.renderRadios = this.renderRadios.bind(this);
@@ -27,14 +28,16 @@ export default class OptionsContent extends Component {
         this.setState({clickedRadioID: index});
     }
 
-    selectionClicked(e, index) {
+    selectionClicked(e, index, id) {
         this.state.selections[index] = !this.state.selections[index];
+        CatalogStore.setFiltersFromLeftBar(id, !this.state.selections[index]);
 
         this.setState({clickedRadioID: 0})
     }
 
 
     renderRadios() {
+
         return (
             <Container>
                 {this.state.content.map((el, i) => {
@@ -45,14 +48,14 @@ export default class OptionsContent extends Component {
                                 onClick={(e) => this.radioClicked(e, i)}
                             />
                             <OptionDescription>
-                                {el.description}
+                                {el}
                             </OptionDescription>
-                            {el.quantity ? <OptionQuantity>
+                            {/*{el.quantity ? <OptionQuantity>
                                     {el.quantity}
                                 </OptionQuantity>
                                 :
                                 ""
-                            }
+                            }*/}
                         </Option>
                     )
                 })}
@@ -62,16 +65,18 @@ export default class OptionsContent extends Component {
 
     renderSelections() {
         return (
-            <Container>
+            <Container isOpened={this.props.isOpened}>
                 {this.state.content.map((el, i) => {
                     return (
                         <Option key={i}>
                             <OptionButton
                                 src={this.state.selections[i] ? SelectionButtonClickedImg : SelectionButtonDefaultImg}
-                                onClick={(e) => this.selectionClicked(e, i)}
+                                onClick={(e) => {
+                                    this.selectionClicked(e, i, el.id);
+                                }}
                             />
                             <OptionDescription>
-                                {el.description}
+                                {el.property_val}
                             </OptionDescription>
                             {el.quantity ? <OptionQuantity>
                                     {el.quantity}
@@ -97,10 +102,11 @@ const Container = styled.ul`
     width: 280px;
     padding: 0;
     list-style: none;
+    display: ${props => props.isOpened ? 'block' : 'none'};
 `;
 
 const Option = styled.li`
-    padding: 20px;
+    padding: 5px;
     
     > * {
         vertical-align: middle;

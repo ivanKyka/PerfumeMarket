@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
 import OptionsContent from "./OptionsContent";
+import HideImgClosed from '../../../../resources/image/OptionsComponent/HideImgClosed.png'
+import HideImgOpened from '../../../../resources/image/OptionsComponent/HideImgOpened.png'
 
 export default class OptionsContainer extends Component {
     constructor(props) {
@@ -11,7 +13,14 @@ export default class OptionsContainer extends Component {
             linkTitle: props.linkTitle, // if present || null
             contentType: props.contentType, //    selection || radio
             content: props.content,
-        }
+            isOpened: false
+        };
+
+        this.toggleOpen = this.toggleOpen.bind(this);
+    }
+
+    toggleOpen(){
+        this.setState({isOpened : !this.state.isOpened})
     }
 
     render(){
@@ -21,13 +30,12 @@ export default class OptionsContainer extends Component {
                     <OptionsTitle>
                         {this.state.optionsTitle}
                     </OptionsTitle>
-                    <OptionsLink>
-                        {this.state.linkTitle ? this.state.linkTitle : ''}
-                    </OptionsLink>
+                    <OptionsHideButton onClick={this.toggleOpen} src={this.state.isOpened ? HideImgOpened : HideImgClosed}/>
                 </OptionsTitleContainer>
                 <OptionsContent
                     contentType = {this.state.contentType}
                     content = {this.state.content}
+                    isOpened = {this.state.isOpened}
                 />
             </Container>
         )
@@ -36,16 +44,22 @@ export default class OptionsContainer extends Component {
 
 const Container = styled.div`
     width: 280px;
-    margin-top: 50px;
+    margin-top: 10px;
 `;
 
 const OptionsTitleContainer = styled.div`
     border-bottom: 1px solid #DADADA;
-    padding: 20px;
+    padding: 10px;
 `;
 
 const OptionsTitle = styled.span`
     font-size: 13px;
+`;
+
+const OptionsHideButton = styled.img`
+    float: right;
+    width: 18px;
+    height: 15px;
 `;
 
 const OptionsLink = styled.a`

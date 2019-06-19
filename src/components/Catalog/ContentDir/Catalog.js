@@ -1,18 +1,16 @@
 import React, {Fragment} from 'react';
 import Footer from "../../public/Footer";
 import Header from "../../public/Header";
-import HeadCatalog from "../../public/HeadCatalog";
 import FilterComponentContainer from "../FilterComponentContainer";
 
 
 export default class Catalog extends React.Component {
 
-render() {
+    render() {
     return(
         <Fragment>
             <Header/>
-            <HeadCatalog/>
-            <FilterComponentContainer/>
+            <FilterComponentContainer CategoryID={this.props.match.params.id}/>
             <Footer/>
         </Fragment>
         )
