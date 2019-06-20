@@ -39,7 +39,7 @@ export default class Content extends React.Component {
                 query={gql`query Products_by_filters($filters: JSON!){
                         products(where : $filters){
                             category{
-                                id
+                                _id
                             }
                             properties{
                                 property_name

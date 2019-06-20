@@ -6,6 +6,8 @@ import {Query} from "react-apollo";
 import gql from "graphql-tag";
 import {categoryTree} from "../../../api/Categories";
 import CatalogStore from "../../../stores/CatalogStore";
+import Catalog from "../ContentDir/Catalog";
+import {toJS} from "mobx";
 
 export default class FiltersLeftBar extends Component {
     constructor(props) {
@@ -13,45 +15,82 @@ export default class FiltersLeftBar extends Component {
 
         this.state = {
             categories: [],
-            model: []
+            model: [],
+            isLastChildID : false
         };
 
         this.checkIsIn = this.checkIsIn.bind(this);
+        //this.getCategories = this.getCategories.bind(this);
     }
 
     componentDidMount() {
-        CatalogStore.setID(this.props.CategoryID);
-
-        categoryTree().then(data => {
-            for(let i = 0;i < data.length;i++){
-                if (this.checkIsIn(data[i], this.props.CategoryID)){
-                    console.log(data[i]);
+        categoryTree().then(categories => {
+            for(let i = 0;i < categories.length;i++){
+                if (this.checkIsIn(categories[i], this.props.CategoryID)){
                     let temp = [];
-                    temp.push(data[i]);
+                    temp.push(categories[i]);
                     this.setState({model : temp});
                 }
             }
+
+            console.log(this.state.model[0]);
+            //this.getCategories(this.state.model[0]);
         });
     }
 
+    /*getCategories(topLevelCategory){
+        if (topLevelCategory.lastChild){
+            CatalogStore.setCategory(topLevelCategory.id);
+            return;
+        }
+
+        if (topLevelCategory.items){
+            topLevelCategory.items.forEach(el => {
+                this.getCategories(el);
+            });
+        }
+
+    }*/
+
     checkIsIn(categories, id) {
-        if (categories.items === undefined){
-            for (let i = 0; i < categories.length;i++){
-                if(categories[i].id === id){
-                    return true;
+        if (categories.id !== id){
+            if (categories.items !== undefined){
+                for (let i = 0;i < categories.items.length;i++){
+                    if (categories.items[i].id === id) {
+                        if (categories.items[i].lastChild){
+                            this.setState({isLastChildID : true})
+                        }
+                        return true;
+                    }
                 }
+                return this.checkIsIn(categories.items, id);
             }
             return false;
         }
 
-        return this.checkIsIn(categories.items, id);
+        if (categories.lastChild){
+            this.setState({isLastChildID : true})
+        }
+
+        return true;
     };
 
     render() {
+        let filters = CatalogStore.filters;
+        let filtersJS = toJS(filters);
+
+        if (!filtersJS.category._id) {
+            filtersJS.category._id = this.props.CategoryID;
+        }
+
+        console.trace(filtersJS);
+
         return (
             <Container>
-                <Query
-                    query={gql`
+                <PanelMenu model={this.state.model}/>
+                {this.state.isLastChildID ?
+                    <Query
+                        query={gql`
                         query GET_CATEGORIES($id: ID!){
                             category(id: $id){
                                 name_ru
@@ -63,48 +102,53 @@ export default class FiltersLeftBar extends Component {
                             }
                         }
                     `}
-                    variables={{"id": this.props.CategoryID}}
-                >
-                    {({loading, error, data}) => {
-                        if (loading) return "Loading...";
-                        if (error) return `Error! ${error.message}`;
+                        variables={{"id": filtersJS.category._id}}
+                    >
+                        {({loading, error, data, refetch}) => {
+                            CatalogStore.refetchCategories = refetch;
 
-                        let properties = data.category.properties.reduce((ac, cv) => {
-                            ac[cv.property_name] = ac[cv.property_name] || [];
-                            ac[cv.property_name].push({
-                                property_val : cv.property_val,
-                                id: cv.id
-                            });
-                            return ac;
-                        }, []);
+                            if (loading) return "Loading...";
+                            if (error) return `Error! ${error.message}`;
 
-                        let propertiesIndexed = [];
+                            let properties = data.category.properties.reduce((ac, cv) => {
+                                ac[cv.property_name] = ac[cv.property_name] || [];
+                                ac[cv.property_name].push({
+                                    property_val : cv.property_val,
+                                    id: cv.id
+                                });
+                                return ac;
+                            }, []);
 
-                        for(let property in properties){
-                            propertiesIndexed.push({
-                                title: property,
-                                content: properties[property],
-                            })
-                        }
+                            let propertiesIndexed = [];
 
-                        return (
-                            <Fragment>
-                                <PanelMenu model={this.state.model}/>
-                                {
-                                    propertiesIndexed.map((el, i, arr) => {
-                                        return(
-                                            <OptionsContainer
-                                                optionsTitle={el.title}
-                                                contentType={"selection"}
-                                                content={el.content}
-                                            />)
-                                    })
-                                }
-                            </Fragment>
+                            for(let property in properties){
+                                propertiesIndexed.push({
+                                    title: property,
+                                    content: properties[property],
+                                })
+                            }
 
-                        );
-                    }}
-                </Query>
+                            return (
+                                <Fragment>
+                                    {
+                                        propertiesIndexed.map((el, i, arr) => {
+                                            return(
+                                                <OptionsContainer
+                                                    optionsTitle={el.title}
+                                                    contentType={"selection"}
+                                                    content={el.content}
+                                                />)
+                                        })
+                                    }
+                                </Fragment>
+
+                            );
+                        }}
+                    </Query>
+                    :
+                    ""
+                }
+
             </Container>
         );
     }

@@ -18,6 +18,7 @@ export default class FiltersTopBar extends Component {
         this.onKeyWordsChange = this.onKeyWordsChange.bind(this);
         this.onLowerPriceChange = this.onLowerPriceChange.bind(this);
         this.onHigherPriceChange = this.onHigherPriceChange.bind(this);
+        this.resetChanges = this.resetChanges.bind(this);
     }
 
     onKeyWordsChange(){
@@ -32,6 +33,16 @@ export default class FiltersTopBar extends Component {
         this.setState({higherPrice: this.state.higherPriceRef.current.value});
     }
 
+    resetChanges(){
+        this.setState({
+            keyWords: "",
+            lowerPrice: "",
+            higherPrice: ""
+        });
+
+        CatalogStore.clearFiltersFormTopBar();
+    }
+
     render() {
         return (
             <Container>
@@ -40,7 +51,7 @@ export default class FiltersTopBar extends Component {
                 </li>
                 <li>
                     <Label>KEYWORDS</Label>
-                    <Input ref={this.state.keyWordsRef} value={this.state.keyWords} onChange={this.onKeyWordsChange} width={`150px`} placeholder={"Men,Туалетная вода"}/>
+                    <Input ref={this.state.keyWordsRef} value={this.state.keyWords} onChange={this.onKeyWordsChange} width={`150px`} placeholder={"Туалетная вода"}/>
                 </li>
                 <li>
                     <Label>PRICE</Label>
@@ -58,6 +69,9 @@ export default class FiltersTopBar extends Component {
                     }}>
                         Apply Changes
                     </ApplyButton>
+                    <ResetButton onClick={this.resetChanges}>
+                        Reset Changes
+                    </ResetButton>
                 </li>
             </Container>
         );
@@ -97,21 +111,38 @@ const Input = styled.input`
     :focus{
         outline: none;
     }
+    
+    ::placeholder{
+        color: #d4d7d2;
+    }
 `;
 
-const ApplyButton = styled.button`
+const Button = styled.button`
     font-size: 13px;
     padding: 5px;
-    background-color: #F0F2F7;
     border-radius: 10px;
-    border: 1px solid #d8dadf;
-    
-    :hover{
-        cursor: pointer;
-        background-color: #e7e9ee;
-    }
+    cursor: pointer;
+    margin-left: 15px;
     
     :focus{
         outline: none;
+    }
+`;
+
+const ApplyButton = styled(Button)`
+    background-color: #F0F2F7;
+    border: 1px solid #d8dadf;
+    
+    :hover{
+        background-color: #e7e9ee;
+    }
+`;
+
+const ResetButton = styled(Button)`
+    background-color: rgba(254,151,147,0.61);
+    border: 1px solid #f08a86;
+    
+    :hover{
+        background-color: rgba(254,151,147,0.74);
     }
 `;

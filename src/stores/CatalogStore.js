@@ -1,4 +1,4 @@
-import {observable, action} from 'mobx'
+import {observable, action, toJS} from 'mobx'
 
 
 class CatalogStore {
@@ -10,11 +10,26 @@ class CatalogStore {
         },
         price_lte: null,
         price_gte: null,
-        _q : null
+        _q: null
     };
 
     refetch = null;
+    refetchCategories = null;
 
+    @action
+    setCategory = (category) => {
+        let filtersCopy = {...this.filters};
+
+        filtersCopy.category._id = category;
+
+        this.filters = filtersCopy;
+
+        console.trace(toJS(this.filters));
+        this.refetch();
+
+        if (this.refetchCategories)
+            this.refetchCategories();
+    };
 
     @action
     setFiltersFromLeftBar = (filter, isErasing) => {
@@ -34,15 +49,15 @@ class CatalogStore {
 
     @action
     setFiltersFromTopBar = (filters) => {
-        let filterCopy = {...this.filters};
+        let filtersCopy = {...this.filters};
 
-        filterCopy = {...filterCopy, ...filters};
-        this.filters = filterCopy;
+        filtersCopy = {...filtersCopy, ...filters};
+        this.filters = filtersCopy;
 
         this.refetch();
     };
 
-    @action
+    /*@action
     clearFiltersFromLeftBar = () => {
         this.filters = {
             properties: {_id: []},
@@ -50,6 +65,19 @@ class CatalogStore {
                 _id: null
             }
         };
+
+        this.refetch();
+    };*/
+
+    @action
+    clearFiltersFormTopBar = () => {
+        let filtersCopy = {...this.filters};
+
+        filtersCopy.price_lte = null;
+        filtersCopy.price_gte = null;
+        filtersCopy._q = null;
+
+        this.filters = {...this.filters, ...filtersCopy};
 
         this.refetch();
     };
