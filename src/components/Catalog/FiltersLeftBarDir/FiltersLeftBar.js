@@ -20,11 +20,12 @@ export default class FiltersLeftBar extends Component {
         };
 
         this.checkIsIn = this.checkIsIn.bind(this);
-        //this.getCategories = this.getCategories.bind(this);
+        this.getCategories = this.getCategories.bind(this);
     }
 
     componentDidMount() {
         categoryTree().then(categories => {
+            console.trace(categories);
             for(let i = 0;i < categories.length;i++){
                 if (this.checkIsIn(categories[i], this.props.CategoryID)){
                     let temp = [];
@@ -34,13 +35,13 @@ export default class FiltersLeftBar extends Component {
             }
 
             console.log(this.state.model[0]);
-            //this.getCategories(this.state.model[0]);
+            this.getCategories(this.state.model[0]);
         });
     }
 
-    /*getCategories(topLevelCategory){
+    getCategories(topLevelCategory){
         if (topLevelCategory.lastChild){
-            CatalogStore.setCategory(topLevelCategory.id);
+            CatalogStore.addCategoriesToFilters(topLevelCategory.id);
             return;
         }
 
@@ -50,7 +51,7 @@ export default class FiltersLeftBar extends Component {
             });
         }
 
-    }*/
+    }
 
     checkIsIn(categories, id) {
         if (categories.id !== id){
@@ -76,14 +77,12 @@ export default class FiltersLeftBar extends Component {
     };
 
     render() {
-        let filters = CatalogStore.filters;
-        let filtersJS = toJS(filters);
+        let category = CatalogStore.category;
+        let categoryJS = toJS(category);
 
-        if (!filtersJS.category._id) {
-            filtersJS.category._id = this.props.CategoryID;
+        if (!categoryJS._id) {
+            categoryJS._id = this.props.CategoryID;
         }
-
-        console.trace(filtersJS);
 
         return (
             <Container>
@@ -102,7 +101,7 @@ export default class FiltersLeftBar extends Component {
                             }
                         }
                     `}
-                        variables={{"id": filtersJS.category._id}}
+                        variables={{"id": categoryJS._id}}
                     >
                         {({loading, error, data, refetch}) => {
                             CatalogStore.refetchCategories = refetch;

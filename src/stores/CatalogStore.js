@@ -6,29 +6,35 @@ class CatalogStore {
     filters = {
         properties: {_id: []},
         category: {
-            _id: null
+            _id: []
         },
         price_lte: null,
         price_gte: null,
         _q: null
     };
 
+    @observable
+    category = {
+        _id : null
+    };
+
     refetch = null;
-    refetchCategories = null;
 
     @action
     setCategory = (category) => {
+        let categoryCopy = {...this.category};
+
+        categoryCopy._id = category;
+
+        this.category = categoryCopy;
+    };
+
+    @action
+    addCategoriesToFilters = (category) => {
         let filtersCopy = {...this.filters};
 
-        filtersCopy.category._id = category;
-
+        filtersCopy.category._id.push(category);
         this.filters = filtersCopy;
-
-        console.trace(toJS(this.filters));
-        this.refetch();
-
-        if (this.refetchCategories)
-            this.refetchCategories();
     };
 
     @action
