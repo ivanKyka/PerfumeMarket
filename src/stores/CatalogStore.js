@@ -19,6 +19,7 @@ class CatalogStore {
     };
 
     refetch = null;
+    refetchCategory = null;
 
     @action
     setCategory = (category) => {
@@ -27,6 +28,10 @@ class CatalogStore {
         categoryCopy._id = category;
 
         this.category = categoryCopy;
+
+        /*if (this.refetchCategory)
+            console.trace('REFETCHING');
+            this.refetchCategory();*/
     };
 
     @action

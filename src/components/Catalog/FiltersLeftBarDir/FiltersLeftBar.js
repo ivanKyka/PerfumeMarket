@@ -25,17 +25,15 @@ export default class FiltersLeftBar extends Component {
 
     componentDidMount() {
         categoryTree().then(categories => {
-            console.trace(categories);
             for(let i = 0;i < categories.length;i++){
                 if (this.checkIsIn(categories[i], this.props.CategoryID)){
                     let temp = [];
                     temp.push(categories[i]);
                     this.setState({model : temp});
+                    this.getCategories(this.state.model[0]);
+                    return;
                 }
             }
-
-            console.log(this.state.model[0]);
-            this.getCategories(this.state.model[0]);
         });
     }
 
@@ -54,40 +52,29 @@ export default class FiltersLeftBar extends Component {
     }
 
     checkIsIn(categories, id) {
-        if (categories.id !== id){
-            if (categories.items !== undefined){
-                for (let i = 0;i < categories.items.length;i++){
-                    if (categories.items[i].id === id) {
-                        if (categories.items[i].lastChild){
-                            this.setState({isLastChildID : true})
-                        }
-                        return true;
-                    }
-                }
-                return this.checkIsIn(categories.items, id);
+        if (categories.id === id){
+            if (categories.lastChild){
+                this.setState({isLastChildID : true});
             }
+
+            return true;
+        }
+
+        if (categories.items){
+            return categories.items.map(el => this.checkIsIn(el, id));
+        } else {
             return false;
         }
-
-        if (categories.lastChild){
-            this.setState({isLastChildID : true})
-        }
-
-        return true;
     };
 
     render() {
         let category = CatalogStore.category;
         let categoryJS = toJS(category);
 
-        if (!categoryJS._id) {
-            categoryJS._id = this.props.CategoryID;
-        }
-
         return (
             <Container>
                 <PanelMenu model={this.state.model}/>
-                {this.state.isLastChildID ?
+                {this.state.isLastChildID && categoryJS._id ?
                     <Query
                         query={gql`
                         query GET_CATEGORIES($id: ID!){
@@ -104,7 +91,7 @@ export default class FiltersLeftBar extends Component {
                         variables={{"id": categoryJS._id}}
                     >
                         {({loading, error, data, refetch}) => {
-                            CatalogStore.refetchCategories = refetch;
+                            CatalogStore.refetchCategory = refetch;
 
                             if (loading) return "Loading...";
                             if (error) return `Error! ${error.message}`;
