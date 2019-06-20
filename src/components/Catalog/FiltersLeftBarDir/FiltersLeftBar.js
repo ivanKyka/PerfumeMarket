@@ -185,12 +185,12 @@ const Container = styled.div`
     }
     
     > .p-panelmenu .p-panelmenu-header.p-highlight > a {
-        border: none !important;;
+        border: 1px solid rgba(128,128,128,0.58) !important;
         background-color: transparent !important;
     }
     
     > .p-panelmenu .p-panelmenu-header.p-highlight > a:hover{
-        border: none !important;
+        border: 1px solid rgba(128,128,128,0.58) !important;
         background-color: transparent !important;
     }
     

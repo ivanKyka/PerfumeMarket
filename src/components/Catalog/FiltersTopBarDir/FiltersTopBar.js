@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
 import CatalogStore from "../../../stores/CatalogStore";
+import SortSelection from "./SortSelection";
 
 export default class FiltersTopBar extends Component {
     constructor(props){
@@ -48,6 +49,7 @@ export default class FiltersTopBar extends Component {
             <Container>
                 <li>
                     <Label>SORT BY</Label>
+                    <SortSelection/>
                 </li>
                 <li>
                     <Label>KEYWORDS</Label>
@@ -84,6 +86,7 @@ const Container = styled.ul`
     grid-column-start: 1;
     grid-column-end: 3;
     padding: 0;
+    z-index: 100;
     
     list-style: none;
     

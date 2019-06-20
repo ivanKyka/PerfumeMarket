@@ -32,15 +32,18 @@ export default class Content extends React.Component {
 
     render() {
         let filters = CatalogStore.filters;
+        let sortOption = CatalogStore.sortOption;
+        let sortOptionJS = toJS(sortOption);
         let filtersJS = toJS(filters);
         console.log(filtersJS);
+        console.log(sortOptionJS);
 
         this.optimizeFilterObject(filtersJS);
 
         return (
             <Query
-                query={gql`query Products_by_filters($filters: JSON!){
-                        products(where : $filters){
+                query={gql`query Products_by_filters($filters: JSON!, $sortOptions: String!){
+                        products(sort:$sortOptions, where : $filters){
                             category{
                                 _id
                             }
@@ -62,10 +65,11 @@ export default class Content extends React.Component {
                           _id
                           desc
                           price
+                          createdAt
                       }
                 }`}
                 fetchPolicy={'no-cache'}
-                variables={{filters: /*filtersJS.properties._id.length === 0 ? {} : */filtersJS}}
+                variables={{filters : filtersJS, sortOptions : sortOptionJS}}
             >
                 {({loading, error, data, refetch}) => {
                     CatalogStore.refetch = refetch;

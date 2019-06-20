@@ -14,12 +14,48 @@ class CatalogStore {
     };
 
     @observable
+    sortOption = 'price:asc';
+
+    @observable
     category = {
         _id : null
     };
 
     refetch = null;
     refetchCategory = null;
+
+    @action
+    togglePrice = (priceState) => {
+        if (!priceState) {
+            this.sortOption = "price:desc";
+        } else {
+            this.sortOption = "price:asc";
+        }
+
+        this.refetch();
+    };
+
+    @action
+    toggleRating = (ratingState) => {
+        if (!ratingState) {
+            this.sortOption = "rating:desc";
+        } else {
+            this.sortOption = "rating:asc";
+        }
+
+        this.refetch();
+    };
+
+    @action
+    toggleNewest = (newestState) => {
+        if (!newestState) {
+            this.sortOption = "createdAt:desc";
+        } else {
+            this.sortOption = "createdAt:asc";
+        }
+
+        this.refetch();
+    };
 
     @action
     setCategory = (category) => {
@@ -40,6 +76,7 @@ class CatalogStore {
 
         if (typeof filtersCopy.category._id === "Object")
             filtersCopy.category._id = [];
+
         filtersCopy.category._id.push(category);
         this.filters = filtersCopy;
 
