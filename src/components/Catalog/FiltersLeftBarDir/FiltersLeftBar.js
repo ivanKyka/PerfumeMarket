@@ -71,6 +71,7 @@ export default class FiltersLeftBar extends Component {
         let category = CatalogStore.category;
         let categoryJS = toJS(category);
 
+        console.log("Category filter", categoryJS);
         return (
             <Container>
                 <PanelMenu model={this.state.model}/>
