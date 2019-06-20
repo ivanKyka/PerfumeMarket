@@ -24,7 +24,7 @@ export default class FilterComponentContainer extends Component{
 
 const Container = styled.div`
     display: grid;
-    grid-template-columns: 400px 1fr;
+    grid-template-columns: 250px 1fr;
     grid-template-rows: 50px 1fr;
-    grid-gap: 20px;
+    grid-gap: 20px 10px;
 `;

@@ -17,9 +17,9 @@ export default class Content extends React.Component {
     }
 
     optimizeFilterObject = (filterObject) => {
-        /*if (filterObject.category._id.length === 0){
+        if (filterObject.category._id.length === 0){
             filterObject.category._id = {};
-        }*/
+        }
         if (filterObject.properties._id.length === 0)
             filterObject.properties._id = {};
         if (filterObject.price_gte === null)

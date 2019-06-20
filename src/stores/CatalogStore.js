@@ -38,8 +38,12 @@ class CatalogStore {
     addCategoriesToFilters = (category) => {
         let filtersCopy = {...this.filters};
 
+        if (typeof filtersCopy.category._id === "Object")
+            filtersCopy.category._id = [];
         filtersCopy.category._id.push(category);
         this.filters = filtersCopy;
+
+        this.refetch();
     };
 
     @action

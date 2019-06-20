@@ -43,7 +43,6 @@ export default class OptionsContainer extends Component {
 }
 
 const Container = styled.div`
-    width: 280px;
     margin-top: 10px;
 `;
 

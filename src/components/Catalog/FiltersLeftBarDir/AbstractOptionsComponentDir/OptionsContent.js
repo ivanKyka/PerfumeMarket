@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
+import ScrollArea from 'react-scrollbar'
 import RadioButtonClickedImg from '../../../../resources/image/OptionsComponent/RadionButtonClicked.png'
 import RadioButtonDefaultImg from '../../../../resources/image/OptionsComponent/RadionButtonDefault.png'
 import SelectionButtonClickedImg from '../../../../resources/image/OptionsComponent/SelectionButtonClicked.png'
@@ -39,55 +40,63 @@ export default class OptionsContent extends Component {
     renderRadios() {
 
         return (
-            <Container>
-                {this.state.content.map((el, i) => {
-                    return (
-                        <Option key={i}>
-                            <OptionButton
-                                src={this.state.clickedRadioID == i ? RadioButtonClickedImg : RadioButtonDefaultImg}
-                                onClick={(e) => this.radioClicked(e, i)}
-                            />
-                            <OptionDescription>
-                                {el}
-                            </OptionDescription>
-                            {/*{el.quantity ? <OptionQuantity>
+                <Container>
+                    {this.state.content.map((el, i) => {
+                        return (
+                            <Option key={i}>
+                                <OptionButton
+                                    src={this.state.clickedRadioID == i ? RadioButtonClickedImg : RadioButtonDefaultImg}
+                                    onClick={(e) => this.radioClicked(e, i)}
+                                />
+                                <OptionDescription>
+                                    {el}
+                                </OptionDescription>
+                                {/*{el.quantity ? <OptionQuantity>
                                     {el.quantity}
                                 </OptionQuantity>
                                 :
                                 ""
                             }*/}
-                        </Option>
-                    )
-                })}
-            </Container>
+                            </Option>
+                        )
+                    })}
+                </Container>
+
         )
     }
 
     renderSelections() {
         return (
-            <Container isOpened={this.props.isOpened}>
-                {this.state.content.map((el, i) => {
-                    return (
-                        <Option key={i}>
-                            <OptionButton
-                                src={this.state.selections[i] ? SelectionButtonClickedImg : SelectionButtonDefaultImg}
-                                onClick={(e) => {
-                                    this.selectionClicked(e, i, el.id);
-                                }}
-                            />
-                            <OptionDescription>
-                                {el.property_val}
-                            </OptionDescription>
-                            {el.quantity ? <OptionQuantity>
-                                    {el.quantity}
-                                </OptionQuantity>
-                                :
-                                ""
-                            }
-                        </Option>
-                    )
-                })}
-            </Container>
+                <Container isOpened={this.props.isOpened}>
+                    <ScrollArea
+                        speed={0.5}
+                        className={'scrollbar'}
+                        contentClassName={'scrollbar-content'}
+                        horizontal={false}
+                    >
+                    {this.state.content.map((el, i) => {
+                        return (
+                            <Option key={i}>
+                                <OptionButton
+                                    src={this.state.selections[i] ? SelectionButtonClickedImg : SelectionButtonDefaultImg}
+                                    onClick={(e) => {
+                                        this.selectionClicked(e, i, el.id);
+                                    }}
+                                />
+                                <OptionDescription>
+                                    {el.property_val}
+                                </OptionDescription>
+                                {el.quantity ? <OptionQuantity>
+                                        {el.quantity}
+                                    </OptionQuantity>
+                                    :
+                                    ""
+                                }
+                            </Option>
+                        )
+                    })}
+                    </ScrollArea>
+                </Container>
         )
     }
 
@@ -99,10 +108,21 @@ export default class OptionsContent extends Component {
 }
 
 const Container = styled.ul`
-    width: 280px;
     padding: 0;
     list-style: none;
     display: ${props => props.isOpened ? 'block' : 'none'};
+    
+    > .scrollarea{
+        max-height: 200px;
+    }
+    
+    > .scrollarea .scrollbar-container.vertical .scrollbar{
+        background-color: #da6d64;
+    }
+    
+    > .scrollarea .scrollbar-container.vertical{
+        background-color: rgba(246,113,102,0.37);
+    }
 `;
 
 const Option = styled.li`

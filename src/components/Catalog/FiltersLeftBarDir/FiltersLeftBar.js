@@ -6,12 +6,13 @@ import {Query} from "react-apollo";
 import gql from "graphql-tag";
 import {categoryTree} from "../../../api/Categories";
 import CatalogStore from "../../../stores/CatalogStore";
-import Catalog from "../ContentDir/Catalog";
 import {toJS} from "mobx";
 
 export default class FiltersLeftBar extends Component {
     constructor(props) {
         super(props);
+
+        this.currentCategory = null;
 
         this.state = {
             categories: [],
@@ -25,12 +26,13 @@ export default class FiltersLeftBar extends Component {
 
     componentDidMount() {
         categoryTree().then(categories => {
+            console.log(categories);
             for(let i = 0;i < categories.length;i++){
                 if (this.checkIsIn(categories[i], this.props.CategoryID)){
                     let temp = [];
                     temp.push(categories[i]);
                     this.setState({model : temp});
-                    this.getCategories(this.state.model[0]);
+                    this.getCategories(this.currentCategory);
                     return;
                 }
             }
@@ -56,6 +58,8 @@ export default class FiltersLeftBar extends Component {
             if (categories.lastChild){
                 this.setState({isLastChildID : true});
             }
+
+            this.currentCategory = categories;
 
             return true;
         }
@@ -147,7 +151,30 @@ const Container = styled.div`
     grid-row-start: 2;
     z-index: 20;
     
-    padding-left: 60px;
+    padding-left: 10px;
+    
+    /*> .p-panelmenu .p-component{
+        width: 280px;
+    }*/
+    
+    .p-panelmenu .p-panelmenu-header > a:focus{
+        box-shadow: none !important;
+    }
+    
+    .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:focus{
+        outline: 0 none;
+        outline-offset: 0;
+        box-shadow: none !important;
+    }
+    
+    /*li.p-menuitem{
+        display: inline-block !important;
+        width: 280px !important;
+    }*/
+    
+    /*div.p-panelmenu-content{
+        width: 280px !important;
+    }*/
     
     > .p-menubar{
         border: none;
@@ -155,5 +182,19 @@ const Container = styled.div`
         > ul .p-menuitem{
             display: block;
         }
+    }
+    
+    > .p-panelmenu .p-panelmenu-header.p-highlight > a {
+        border: none !important;;
+        background-color: transparent !important;
+    }
+    
+    > .p-panelmenu .p-panelmenu-header.p-highlight > a:hover{
+        border: none !important;
+        background-color: transparent !important;
+    }
+    
+    > .p-panelmenu .p-panelmenu-header.p-highlight > a{
+        color: black !important;
     }
 `;

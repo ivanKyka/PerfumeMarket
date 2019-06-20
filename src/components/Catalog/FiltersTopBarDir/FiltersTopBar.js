@@ -55,8 +55,8 @@ export default class FiltersTopBar extends Component {
                 </li>
                 <li>
                     <Label>PRICE</Label>
-                    <Input type={'number'} min={0} ref={this.state.lowerPriceRef} value={this.state.lowerPrice} onChange={this.onLowerPriceChange} width={`70px`} placeholder={"10"}/>
-                    <Input type={'number'} min={0} ref={this.state.higherPriceRef} value={this.state.higherPrice} onChange={this.onHigherPriceChange} width={`70px`} placeholder={"1000"}/>
+                    <Input ref={this.state.lowerPriceRef} value={this.state.lowerPrice} onChange={this.onLowerPriceChange} width={`70px`} placeholder={"10"}/>
+                    <Input ref={this.state.higherPriceRef} value={this.state.higherPrice} onChange={this.onHigherPriceChange} width={`70px`} placeholder={"1000"}/>
                 </li>
                 <li>
                     <ApplyButton onClick={() => {
@@ -83,7 +83,6 @@ const Container = styled.ul`
     grid-row-end: 2;
     grid-column-start: 1;
     grid-column-end: 3;
-    margin-left: 60px;
     padding: 0;
     
     list-style: none;
@@ -113,7 +112,7 @@ const Input = styled.input`
     }
     
     ::placeholder{
-        color: #d4d7d2;
+        color: #9da09b;
     }
 `;
 
