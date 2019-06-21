@@ -161,6 +161,14 @@ const Container = styled.div`
         box-shadow: none !important;
     }
     
+    .p-panelmenu .p-panelmenu-header > a{
+        font-size: 13px !important;
+    }
+    
+    .p-menuitem-text{
+        font-size: 13px !important;
+    }
+    
     .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:focus{
         outline: 0 none;
         outline-offset: 0;

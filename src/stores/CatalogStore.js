@@ -21,8 +21,19 @@ class CatalogStore {
         _id : null
     };
 
+    @observable
+    limit = 30;
+
     refetch = null;
     refetchCategory = null;
+
+    @action
+    increaseLimit = () => {
+        console.log("limit increased");
+        this.limit += 30;
+
+        this.refetch();
+    };
 
     @action
     togglePrice = (priceState) => {

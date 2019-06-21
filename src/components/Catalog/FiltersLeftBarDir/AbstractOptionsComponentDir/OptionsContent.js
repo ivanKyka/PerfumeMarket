@@ -118,10 +118,12 @@ const Container = styled.ul`
     
     > .scrollarea .scrollbar-container.vertical .scrollbar{
         background-color: #da6d64;
+        border-radius: 10px;
     }
     
     > .scrollarea .scrollbar-container.vertical{
         background-color: rgba(246,113,102,0.37);
+        border-radius: 10px;
     }
 `;
 

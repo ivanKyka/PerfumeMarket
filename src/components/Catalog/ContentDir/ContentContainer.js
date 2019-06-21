@@ -21,13 +21,6 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   margin: 25px 2%;
-
-  /*@media (min-width: 1200px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
-  @media (min-width: 900px) and (max-width: 1200px) {
-    grid-template-columns: 1fr 1fr 1fr ;
-  }*/
   
   grid-column-gap: 5px;
   grid-row-gap: 20px;
@@ -36,6 +29,8 @@ const Container = styled.div`
   
   grid-column-start: 2;
   grid-row-start: 2;
+  grid-column-end: 3;
+  grid-row-end: 3;
 `;
 
 

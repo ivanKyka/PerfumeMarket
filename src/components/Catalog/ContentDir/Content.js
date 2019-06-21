@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Query} from "react-apollo";
 import gql from "graphql-tag";
 import ContentBlock from './ContentBlock'
 import {inject, observer} from "mobx-react";
 import CatalogStore from '../../../stores/CatalogStore'
 import {toJS} from "mobx";
+import ShowMoreButton from "../ToolsDir/ShowMoreButton";
 
 @inject('store')
 @observer
@@ -35,15 +36,18 @@ export default class Content extends React.Component {
         let sortOption = CatalogStore.sortOption;
         let sortOptionJS = toJS(sortOption);
         let filtersJS = toJS(filters);
+        let limit = CatalogStore.limit;
+        let limitJS = toJS(limit);
         console.log(filtersJS);
         console.log(sortOptionJS);
 
         this.optimizeFilterObject(filtersJS);
 
         return (
-            <Query
-                query={gql`query Products_by_filters($filters: JSON!, $sortOptions: String!){
-                        products(sort:$sortOptions, where : $filters){
+            <Fragment>
+                <Query
+                    query={gql`query Products_by_filters($filters: JSON!, $sortOption: String!, $limit: Int!){
+                        products(limit: $limit, sort: $sortOption, where: $filters){
                             category{
                                 _id
                             }
@@ -68,38 +72,39 @@ export default class Content extends React.Component {
                           createdAt
                       }
                 }`}
-                fetchPolicy={'no-cache'}
-                variables={{filters : filtersJS, sortOptions : sortOptionJS}}
-            >
-                {({loading, error, data, refetch}) => {
-                    CatalogStore.refetch = refetch;
+                    fetchPolicy={'no-cache'}
+                    variables={{filters : filtersJS, sortOption : sortOptionJS, limit: limitJS}}
+                >
+                    {({loading, error, data, refetch}) => {
+                        CatalogStore.refetch = refetch;
 
-                    if (loading) return <p></p>;
-                    if (error) return <p>Error :(</p>;
+                        if (loading) return <p></p>;
+                        if (error) return <p>Error :(</p>;
 
-                    console.log(data);
+                        console.log(data);
 
-                    return (
-                        data.products.map((content, index) =>
-                            <ContentBlock
-                                key={index}
-                                options={
-                                    {
-                                        image: `${this.urlStore.MAIN_URL}${content.photos[0].url}`,
-                                        rating: content.rating,
-                                        reviews: content.comments.length,
-                                        name: content.name_ru,
-                                        id: content._id,
-                                        vendor: content.vendor,
-                                        price: content.price
+                        return (
+                            data.products.map((content, index) =>
+                                <ContentBlock
+                                    key={index}
+                                    options={
+                                        {
+                                            image: `${this.urlStore.MAIN_URL}${content.photos[0].url}`,
+                                            rating: content.rating,
+                                            reviews: content.comments.length,
+                                            name: content.name_ru,
+                                            id: content._id,
+                                            vendor: content.vendor,
+                                            price: content.price
+                                        }
                                     }
-                                }
 
-                            />)
-
-                    )
-                }}
-            </Query>);
+                                />)
+                        )
+                    }}
+                </Query>
+            </Fragment>
+            );
     }
 }
 
