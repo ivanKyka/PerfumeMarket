@@ -28,7 +28,7 @@ export default class FiltersLeftBar extends Component {
         categoryTree().then(categories => {
             console.log(categories);
             for(let i = 0;i < categories.length;i++){
-                if (this.checkIsIn(categories[i], this.props.CategoryID)){
+                if (this.checkIsIn(categories[i], this.props.param)){
                     let temp = [];
                     temp.push(categories[i]);
                     this.setState({model : temp});
@@ -87,7 +87,7 @@ export default class FiltersLeftBar extends Component {
                                 name_ru
                                 properties{
                                     property_name
-                                    id
+                                    _id
                                     property_val
                                 }
                             }
@@ -105,7 +105,7 @@ export default class FiltersLeftBar extends Component {
                                 ac[cv.property_name] = ac[cv.property_name] || [];
                                 ac[cv.property_name].push({
                                     property_val : cv.property_val,
-                                    id: cv.id
+                                    id: cv._id
                                 });
                                 return ac;
                             }, []);
@@ -149,13 +149,10 @@ const Container = styled.div`
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 2;
+    grid-row-end: 5;
     z-index: 20;
     
     padding-left: 10px;
-    
-    /*> .p-panelmenu .p-component{
-        width: 280px;
-    }*/
     
     .p-panelmenu .p-panelmenu-header > a:focus{
         box-shadow: none !important;
@@ -174,15 +171,6 @@ const Container = styled.div`
         outline-offset: 0;
         box-shadow: none !important;
     }
-    
-    /*li.p-menuitem{
-        display: inline-block !important;
-        width: 280px !important;
-    }*/
-    
-    /*div.p-panelmenu-content{
-        width: 280px !important;
-    }*/
     
     > .p-menubar{
         border: none;

@@ -1,11 +1,14 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
-import HideImgClosed from "../../../resources/image/OptionsComponent/HideImgClosed.png"
+import HideImgClosed from "../../../resources/image/Categories/SpreadImgClosed.png"
+import HideImgOpened from "../../../resources/image/Categories/SpreadImgOpened.png"
 import ArrowCheckImg from "../../../resources/image/OptionsComponent/ArrowCheck.png"
 import CatalogStore from "../../../stores/CatalogStore";
 import DateImg from '../../../resources/image/TopBar/calendar-regular.svg'
 import PriceImg from '../../../resources/image/TopBar/dollar-sign-solid.svg'
 import RatingImg from '../../../resources/image/TopBar/star-solid.svg'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faClock, faDollarSign, faStar} from "@fortawesome/free-solid-svg-icons";
 
 export default class SortSelection extends Component {
     constructor(props) {
@@ -44,28 +47,34 @@ export default class SortSelection extends Component {
                     onClick={() => {
                         this.setState({isOpen: !this.state.isOpen})
                     }}
-                    src={HideImgClosed}
+                    src={this.state.isOpen ? HideImgOpened : HideImgClosed}
                 />
                 <SortOptionsContainer isOpen={this.state.isOpen}>
                     <SortOption onClick={() => {
                         this.sortOptionClicked(0);
                     }}>
-                        <SortLogo scr={PriceImg}/>
-                        Price
+                        <FontAwesomeIcon icon={faDollarSign}/>
+                        <SortOptionTitle>
+                            Price
+                        </SortOptionTitle>
                         <SortOptionState src={ArrowCheckImg} isSelected={this.state.clickedSorts[0]}/>
                     </SortOption>
                     <SortOption onClick={() => {
                         this.sortOptionClicked(1);
                     }}>
-                        <SortLogo scr={RatingImg}/>
-                        Rating
+                        <FontAwesomeIcon icon={faStar}/>
+                        <SortOptionTitle>
+                            Rating
+                        </SortOptionTitle>
                         <SortOptionState src={ArrowCheckImg} isSelected={this.state.clickedSorts[1]}/>
                     </SortOption>
                     <SortOption onClick={() => {
                         this.sortOptionClicked(2);
                     }}>
-                        <SortLogo scr={DateImg}/>
-                        Newest
+                        <FontAwesomeIcon icon={faClock}/>
+                        <SortOptionTitle>
+                            Newest
+                        </SortOptionTitle>
                         <SortOptionState src={ArrowCheckImg} isSelected={this.state.clickedSorts[2]}/>
                     </SortOption>
                 </SortOptionsContainer>
@@ -100,6 +109,8 @@ const SortOptionsContainer = styled.ul`
     > :last-child{
         border: none;
     }
+    
+    
 `;
 
 const SortOption = styled.li`
@@ -107,6 +118,12 @@ const SortOption = styled.li`
     margin: 2px;
     border-bottom: 1px solid #DADADA;
     cursor: pointer;
+    
+    > svg{
+        float: left;
+        width: 13px !important;
+        height: 13px !important;
+    }
 `;
 
 const SortOptionState = styled.img`
@@ -117,7 +134,7 @@ const SortOptionState = styled.img`
     ${props => props.isSelected ? 'transform: rotateX(180deg);' : ""}
 `;
 
-const SortLogo = styled.img`
-    width: 13px;
-    height: 13px;
+const SortOptionTitle = styled.span`
+    font-size: 13px;
+    margin-left: 5px;
 `;

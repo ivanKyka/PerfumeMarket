@@ -11,7 +11,7 @@ export default class FiltersTopBar extends Component {
             keyWordsRef: React.createRef(),
             lowerPriceRef: React.createRef(),
             higherPriceRef: React.createRef(),
-            keyWords: "",
+            keyWords: props.searchMode ? this.props.searchRequest : "",
             lowerPrice: "",
             higherPrice: ""
         };
@@ -64,7 +64,7 @@ export default class FiltersTopBar extends Component {
                     <ApplyButton onClick={() => {
                         console.log(this.state.keyWords);
                         CatalogStore.setFiltersFromTopBar({
-                            _q : this.state.keyWords === "" ? null : this.state.keyWords,
+                            name_ru_contains : this.state.keyWords === "" ? null : this.state.keyWords,
                             price_lte : this.state.higherPrice === "" ? null : this.state.higherPrice,
                             price_gte: this.state.lowerPrice === "" ? null : this.state.lowerPrice
                         })

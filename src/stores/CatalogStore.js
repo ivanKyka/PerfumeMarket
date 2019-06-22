@@ -1,16 +1,16 @@
-import {observable, action, toJS} from 'mobx'
+import {observable, action} from 'mobx'
 
 
 class CatalogStore {
     @observable
     filters = {
-        properties: {_id: []},
+        properties: {_id_in: []},
         category: {
             _id: []
         },
         price_lte: null,
         price_gte: null,
-        _q: null
+        name_ru_contains: null
     };
 
     @observable
@@ -24,8 +24,19 @@ class CatalogStore {
     @observable
     limit = 30;
 
+    moreThanCurrent = false;
+
     refetch = null;
     refetchCategory = null;
+
+    @action
+    setSearchRequest = (searchRequest) => {
+        let filtersCopy = {...this.filters};
+        filtersCopy.name_ru_contains = searchRequest;
+
+        this.filters = filtersCopy;
+        this.refetch();
+    };
 
     @action
     increaseLimit = () => {
@@ -95,18 +106,18 @@ class CatalogStore {
     };
 
     @action
-    setFiltersFromLeftBar = (filter, isErasing) => {
+    setFiltersFromLeftBar = (filter) => {
         let filtersCopy = {...this.filters};
 
-        if (isErasing) {
-            filtersCopy.properties._id = filtersCopy.properties._id.filter(el => el !== filter);
+        if (filtersCopy.properties._id_in.includes(filter)){
+            filtersCopy.properties._id_in = filtersCopy.properties._id_in.filter(el => el !== filter);
             this.filters = filtersCopy;
             this.refetch();
             return;
         }
 
         this.refetch();
-        filtersCopy.properties._id.push(filter);
+        filtersCopy.properties._id_in.push(filter);
         this.filters = filtersCopy;
     };
 
@@ -138,7 +149,7 @@ class CatalogStore {
 
         filtersCopy.price_lte = null;
         filtersCopy.price_gte = null;
-        filtersCopy._q = null;
+        filtersCopy.name_ru_contains = null;
 
         this.filters = {...this.filters, ...filtersCopy};
 

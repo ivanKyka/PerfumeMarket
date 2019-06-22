@@ -49,6 +49,6 @@ const Container = styled.div`
 `;
 
 const Button = styled.img`
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
 `;

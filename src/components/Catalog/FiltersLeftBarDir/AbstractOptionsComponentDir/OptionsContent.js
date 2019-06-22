@@ -6,8 +6,11 @@ import RadioButtonDefaultImg from '../../../../resources/image/OptionsComponent/
 import SelectionButtonClickedImg from '../../../../resources/image/OptionsComponent/SelectionButtonClicked.png'
 import SelectionButtonDefaultImg from '../../../../resources/image/OptionsComponent/SelectionButtonDefault.png'
 import CatalogStore from "../../../../stores/CatalogStore";
+import {toJS} from "mobx";
+import {observer} from "mobx-react";
 
 
+@observer
 export default class OptionsContent extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +19,6 @@ export default class OptionsContent extends Component {
             contentType: props.contentType,
             content: props.content || [],
             clickedRadioID : 0,
-            selections : props.content ? props.content.map(() => false) : [],
     };
 
         this.renderRadios = this.renderRadios.bind(this);
@@ -29,16 +31,12 @@ export default class OptionsContent extends Component {
         this.setState({clickedRadioID: index});
     }
 
-    selectionClicked(e, index, id) {
-        this.state.selections[index] = !this.state.selections[index];
-        CatalogStore.setFiltersFromLeftBar(id, !this.state.selections[index]);
-
-        this.setState({clickedRadioID: 0})
+    selectionClicked(e, id) {
+        CatalogStore.setFiltersFromLeftBar(id);
     }
 
 
     renderRadios() {
-
         return (
                 <Container>
                     {this.state.content.map((el, i) => {
@@ -66,6 +64,10 @@ export default class OptionsContent extends Component {
     }
 
     renderSelections() {
+        const filters = CatalogStore.filters;
+        const filtersJS = toJS(filters);
+        const propertiesIDs = filtersJS.properties._id_in;
+
         return (
                 <Container isOpened={this.props.isOpened}>
                     <ScrollArea
@@ -78,9 +80,9 @@ export default class OptionsContent extends Component {
                         return (
                             <Option key={i}>
                                 <OptionButton
-                                    src={this.state.selections[i] ? SelectionButtonClickedImg : SelectionButtonDefaultImg}
+                                    src={propertiesIDs.includes(el.id) ? SelectionButtonClickedImg : SelectionButtonDefaultImg}
                                     onClick={(e) => {
-                                        this.selectionClicked(e, i, el.id);
+                                        this.selectionClicked(e, el.id);
                                     }}
                                 />
                                 <OptionDescription>

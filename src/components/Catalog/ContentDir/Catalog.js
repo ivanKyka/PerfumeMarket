@@ -2,17 +2,34 @@ import React, {Fragment} from 'react';
 import Footer from "../../public/Footer";
 import Header from "../../public/Header";
 import FilterComponentContainer from "../FilterComponentContainer";
+import HeadCatalog from "../../public/HeadCatalog";
+import styled from 'styled-components'
 
 
 export default class Catalog extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            searchMode: props.match.params.id.charAt(0) === '&',
+        }
+    }
 
     render() {
         return(
-        <Fragment>
+        <Container>
             <Header/>
-            <FilterComponentContainer CategoryID={this.props.match.params.id}/>
+            <HeadCatalog/>
+            <FilterComponentContainer searchMode={this.state.searchMode} param={this.state.searchMode ? this.props.match.params.id.substring(1) : this.props.match.params.id}/>
             <Footer/>
-        </Fragment>
+        </Container>
         )
     }
 }
+
+const Container = styled.div`
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+
+`;

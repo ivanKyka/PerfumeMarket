@@ -53,6 +53,7 @@ const Container = styled.div`
   background: #fff;
   height: 52px;
   padding: 0 50px;
+  z-index: 1000;
   .p-menubar.p-component{
     border: none;
   }

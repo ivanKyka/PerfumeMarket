@@ -22,7 +22,11 @@ function transformTree(obj){
     else return {
         id: obj.key,
         label: obj.label,
-        lastChild: true
+        lastChild: true,
+        url: `/catalog/${obj.key}`,
+        command: (event) => {
+            console.log(event.item);
+        }
     }
 }
 function transformTreeAddUrl(obj){

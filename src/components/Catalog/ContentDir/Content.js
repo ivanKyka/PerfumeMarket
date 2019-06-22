@@ -5,7 +5,6 @@ import ContentBlock from './ContentBlock'
 import {inject, observer} from "mobx-react";
 import CatalogStore from '../../../stores/CatalogStore'
 import {toJS} from "mobx";
-import ShowMoreButton from "../ToolsDir/ShowMoreButton";
 
 @inject('store')
 @observer
@@ -17,18 +16,18 @@ export default class Content extends React.Component {
 
     }
 
-    optimizeFilterObject = (filterObject) => {
+    normalizeFilterObject = (filterObject) => {
         if (filterObject.category._id.length === 0){
             filterObject.category._id = {};
         }
-        if (filterObject.properties._id.length === 0)
-            filterObject.properties._id = {};
+        if (filterObject.properties._id_in.length === 0)
+            filterObject.properties._id_in = {};
         if (filterObject.price_gte === null)
             filterObject.price_gte = {};
         if (filterObject.price_lte === null)
             filterObject.price_lte = {};
-        if (filterObject._q === "")
-            filterObject._q = {};
+        if (filterObject.name_ru_contains === "")
+            filterObject.name_ru_contains = {};
     };
 
     render() {
@@ -41,7 +40,7 @@ export default class Content extends React.Component {
         console.log(filtersJS);
         console.log(sortOptionJS);
 
-        this.optimizeFilterObject(filtersJS);
+        this.normalizeFilterObject(filtersJS);
 
         return (
             <Fragment>
@@ -82,6 +81,8 @@ export default class Content extends React.Component {
                         if (error) return <p>Error :(</p>;
 
                         console.log(data);
+
+                        CatalogStore.moreThanCurrent = data.products.length >= limit;
 
                         return (
                             data.products.map((content, index) =>
