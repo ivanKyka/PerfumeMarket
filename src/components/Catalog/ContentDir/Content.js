@@ -54,7 +54,7 @@ export default class Content extends React.Component {
                             properties{
                                 property_name
                                 property_val
-                                id
+                                _id
                                
                           }
                           photos{

@@ -36,7 +36,7 @@ export default class PurchaseBlock extends React.Component {
     }
 
     render() {
-    return(
+        return(
         <Container>
             <Categories ProductID={this.props.ProductID}/>
             <Query query={

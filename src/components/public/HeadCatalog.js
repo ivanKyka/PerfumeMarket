@@ -23,7 +23,7 @@ export default class HeadCatalog extends React.Component{
     }
 
     componentDidMount() {
-        categoryTree().then(a => {
+        categoryTree(true).then(a => {
             this.setState({
                 items: a
             })
@@ -33,7 +33,9 @@ export default class HeadCatalog extends React.Component{
     render() {
         return(
             <Container>
-                <Menubar model={this.state.items}/>
+                <Menubar
+                    model={this.state.items}
+                />
                 <Search>
                     <SearchInput type="text" placeholder="Поиск"/>
                     <SearchButton type="submit">

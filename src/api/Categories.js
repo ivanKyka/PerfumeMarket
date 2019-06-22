@@ -1,10 +1,13 @@
 import {UrlStore} from "../stores/UrlStore";
 
-export async function categoryTree() {
+export async function categoryTree(isAddUrl=false) {
     let response = await fetch(`${UrlStore.MAIN_URL}/categories/tree/without`);
     if (response.status === 200) {
         let data = await response.json();
-        return data.map(el => transformTree(el));
+        if (isAddUrl)
+            return data.map(el => transformTreeAddUrl(el));
+        else
+            return data.map(el => transformTree(el));
     }
     else return []
 }
@@ -20,5 +23,20 @@ function transformTree(obj){
         id: obj.key,
         label: obj.label,
         lastChild: true
+    }
+}
+function transformTreeAddUrl(obj){
+    if (obj.children !== undefined)
+    return{
+        label: obj.label,
+        id: obj.key,
+        items: obj.children.map(a => transformTreeAddUrl(a)),
+        url: `/catalog/${obj.key}`
+    };
+    else return {
+        id: obj.key,
+        label: obj.label,
+        lastChild: true,
+        url: `/catalog/${obj.key}`
     }
 }

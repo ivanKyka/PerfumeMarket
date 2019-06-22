@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react'
 import styled from 'styled-components'
 import OptionsContainer from "./AbstractOptionsComponentDir/OptionsContainer";
-import {PanelMenu} from "primereact/PanelMenu";
+import {PanelMenu} from "primereact/components/panelmenu/PanelMenu";
 import {Query} from "react-apollo";
 import gql from "graphql-tag";
 import {categoryTree} from "../../../api/Categories";

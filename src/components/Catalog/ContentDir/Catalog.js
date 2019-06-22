@@ -7,7 +7,7 @@ import FilterComponentContainer from "../FilterComponentContainer";
 export default class Catalog extends React.Component {
 
     render() {
-    return(
+        return(
         <Fragment>
             <Header/>
             <FilterComponentContainer CategoryID={this.props.match.params.id}/>
