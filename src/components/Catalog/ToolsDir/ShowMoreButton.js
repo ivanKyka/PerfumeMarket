@@ -25,7 +25,8 @@ const Container = styled.div`
     display: inline-block;
     padding: 10px;
     cursor: pointer;
-    justify-self: center;
+    margin-left: 50%;
+    transform: translateX(-50%);
 `;
 
 const ButtonImg = styled.img`
@@ -34,7 +35,7 @@ const ButtonImg = styled.img`
 `;
 
 const ButtonTitle = styled.span`
-    font-size: 15px;
+    font-size: 18px;
     font-weight: bold;
     padding: 5px;
 `;

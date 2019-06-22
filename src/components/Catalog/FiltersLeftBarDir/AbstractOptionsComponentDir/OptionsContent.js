@@ -138,7 +138,6 @@ const Option = styled.li`
 const OptionButton = styled.img`
     width: 20px;
     height: 20px;
-    cursor: pointer;
 `;
 
 const OptionDescription = styled.span`

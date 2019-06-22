@@ -8,20 +8,15 @@ export default class ToolsBar extends Component {
         return(
             <Container>
                 <ShowMoreButton/>
-                <ScrollToTopButton/>
+                <ScrollToTopButton IntervalInMs={10} Step={20}/>
             </Container>
             )
     }
 }
 
 const Container = styled.div`
-    display: grid;
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 3;
     grid-row-end: 4;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr;    
-    
-    align-items: center;
 `;

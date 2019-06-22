@@ -3,6 +3,9 @@ import styled from 'styled-components'
 import HideImgClosed from "../../../resources/image/OptionsComponent/HideImgClosed.png"
 import ArrowCheckImg from "../../../resources/image/OptionsComponent/ArrowCheck.png"
 import CatalogStore from "../../../stores/CatalogStore";
+import DateImg from '../../../resources/image/TopBar/calendar-regular.svg'
+import PriceImg from '../../../resources/image/TopBar/dollar-sign-solid.svg'
+import RatingImg from '../../../resources/image/TopBar/star-solid.svg'
 
 export default class SortSelection extends Component {
     constructor(props) {
@@ -47,18 +50,21 @@ export default class SortSelection extends Component {
                     <SortOption onClick={() => {
                         this.sortOptionClicked(0);
                     }}>
+                        <SortLogo scr={PriceImg}/>
                         Price
                         <SortOptionState src={ArrowCheckImg} isSelected={this.state.clickedSorts[0]}/>
                     </SortOption>
                     <SortOption onClick={() => {
                         this.sortOptionClicked(1);
                     }}>
+                        <SortLogo scr={RatingImg}/>
                         Rating
                         <SortOptionState src={ArrowCheckImg} isSelected={this.state.clickedSorts[1]}/>
                     </SortOption>
                     <SortOption onClick={() => {
                         this.sortOptionClicked(2);
                     }}>
+                        <SortLogo scr={DateImg}/>
                         Newest
                         <SortOptionState src={ArrowCheckImg} isSelected={this.state.clickedSorts[2]}/>
                     </SortOption>
@@ -109,4 +115,9 @@ const SortOptionState = styled.img`
     margin-left: 40px;
     float: right;
     ${props => props.isSelected ? 'transform: rotateX(180deg);' : ""}
+`;
+
+const SortLogo = styled.img`
+    width: 13px;
+    height: 13px;
 `;

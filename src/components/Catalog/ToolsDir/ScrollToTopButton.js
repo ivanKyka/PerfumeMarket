@@ -9,7 +9,7 @@ export default class ScrollToTopButton extends Component{
         this.state = {
             intervalID: null,
             intervalInMs: props.IntervalInMs ? props.IntervalInMs : 2,
-            step: props.Step ? props.step : 10
+            step: props.Step ? props.Step : 10
         };
 
         this.scrollStep = this.scrollStep.bind(this);
@@ -43,8 +43,9 @@ export default class ScrollToTopButton extends Component{
 
 const Container = styled.div`
     display: inline-block;
-    padding: 10px;
     float: right;
+    cursor: pointer;
+    padding: 10px;
 `;
 
 const Button = styled.img`

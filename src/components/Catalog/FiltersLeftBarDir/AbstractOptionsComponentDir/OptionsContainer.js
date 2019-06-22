@@ -59,6 +59,7 @@ const OptionsHideButton = styled.img`
     float: right;
     width: 18px;
     height: 15px;
+    cursor: pointer;
 `;
 
 const OptionsLink = styled.a`
