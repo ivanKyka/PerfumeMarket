@@ -26,7 +26,6 @@ export default class FiltersLeftBar extends Component {
 
     componentDidMount() {
         categoryTree().then(categories => {
-            console.log(categories);
             for(let i = 0;i < categories.length;i++){
                 if (this.checkIsIn(categories[i], this.props.param)){
                     let temp = [];
@@ -75,7 +74,6 @@ export default class FiltersLeftBar extends Component {
         let category = CatalogStore.category;
         let categoryJS = toJS(category);
 
-        console.log("Category filter", categoryJS);
         return (
             <Container>
                 <PanelMenu model={this.state.model}/>
@@ -128,6 +126,7 @@ export default class FiltersLeftBar extends Component {
                                                     optionsTitle={el.title}
                                                     contentType={"selection"}
                                                     content={el.content}
+                                                    key={i}
                                                 />)
                                         })
                                     }

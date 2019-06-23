@@ -15,20 +15,17 @@ export default class FiltersDisplayBar extends Component {
         const filtersJS = toJS(filters);
         const propertiesIDs = filtersJS.properties._id_in;
 
-        console.log("Rendered display filters bar");
-
         return (
             <Container>
                 <Query
                     query={gql`query{
-                        properties(limit: 1000){
+                        properties(limit: -1){
                             _id
                             property_val
                         }
                     }`}
                 >
                     {({loading, error, data}) => {
-                        console.log(data);
 
                         if (data.properties)
                             return (

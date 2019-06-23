@@ -37,8 +37,6 @@ export default class Content extends React.Component {
         let filtersJS = toJS(filters);
         let limit = CatalogStore.limit;
         let limitJS = toJS(limit);
-        console.log(filtersJS);
-        console.log(sortOptionJS);
 
         this.normalizeFilterObject(filtersJS);
 
@@ -79,8 +77,6 @@ export default class Content extends React.Component {
 
                         if (loading) return <p></p>;
                         if (error) return <p>Error :(</p>;
-
-                        console.log(data);
 
                         CatalogStore.moreThanCurrent = data.products.length >= limit;
 
