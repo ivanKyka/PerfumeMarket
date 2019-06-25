@@ -3,7 +3,6 @@ import Header from "../public/Header";
 import HeadCatalog from "../public/HeadCatalog";
 import MainHeadSlider from "./MainHeadSlider";
 import Footer from "../public/Footer";
-import PageCounter from "./PageCounter";
 
 export default class MainPage extends Component{
 
@@ -13,7 +12,6 @@ export default class MainPage extends Component{
                 <Header/>
                 <HeadCatalog/>
                 <MainHeadSlider/>
-                <PageCounter/>
                 <Footer />
             </div>
         )

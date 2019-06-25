@@ -19,7 +19,14 @@ export default class ContentContainer extends React.Component {
 const Container = styled.div`
   padding: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr ${props => props.searchMode ? '1fr' : ''};
+  
+  @media(max-width: 1100px) {
+      grid-template-columns: 1fr 1fr ${props => props.searchMode ? '1fr' : ''};
+  }
+  @media(min-width: 1101px) {
+    grid-template-columns: 1fr 1fr 1fr ${props => props.searchMode ? '1fr' : ''};
+  }
+  
   margin: 25px 2%;
   
   grid-column-gap: 5px;

@@ -4,9 +4,6 @@ import HideImgClosed from "../../../resources/image/Categories/SpreadImgClosed.p
 import HideImgOpened from "../../../resources/image/Categories/SpreadImgOpened.png"
 import ArrowCheckImg from "../../../resources/image/OptionsComponent/ArrowCheck.png"
 import CatalogStore from "../../../stores/CatalogStore";
-import DateImg from '../../../resources/image/TopBar/calendar-regular.svg'
-import PriceImg from '../../../resources/image/TopBar/dollar-sign-solid.svg'
-import RatingImg from '../../../resources/image/TopBar/star-solid.svg'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock, faDollarSign, faStar} from "@fortawesome/free-solid-svg-icons";
 
@@ -43,19 +40,23 @@ export default class SortSelection extends Component {
     render() {
         return (
             <Container>
-                <SortOpenButton
+                <OpenFiltersButton
                     onClick={() => {
                         this.setState({isOpen: !this.state.isOpen})
-                    }}
-                    src={this.state.isOpen ? HideImgOpened : HideImgClosed}
-                />
+                    }}>
+                    <span>СОРТИРОВАТЬ</span>
+                    <SortOpenButton
+
+                        src={this.state.isOpen ? HideImgOpened : HideImgClosed}
+                    />
+                </OpenFiltersButton>
                 <SortOptionsContainer isOpen={this.state.isOpen}>
                     <SortOption onClick={() => {
                         this.sortOptionClicked(0);
                     }}>
                         <FontAwesomeIcon icon={faDollarSign}/>
                         <SortOptionTitle>
-                            Price
+                            Цена
                         </SortOptionTitle>
                         <SortOptionState src={ArrowCheckImg} isSelected={this.state.clickedSorts[0]}/>
                     </SortOption>
@@ -64,7 +65,7 @@ export default class SortSelection extends Component {
                     }}>
                         <FontAwesomeIcon icon={faStar}/>
                         <SortOptionTitle>
-                            Rating
+                            Популярность
                         </SortOptionTitle>
                         <SortOptionState src={ArrowCheckImg} isSelected={this.state.clickedSorts[1]}/>
                     </SortOption>
@@ -73,7 +74,7 @@ export default class SortSelection extends Component {
                     }}>
                         <FontAwesomeIcon icon={faClock}/>
                         <SortOptionTitle>
-                            Newest
+                            Дата
                         </SortOptionTitle>
                         <SortOptionState src={ArrowCheckImg} isSelected={this.state.clickedSorts[2]}/>
                     </SortOption>
@@ -103,8 +104,9 @@ const SortOptionsContainer = styled.ul`
     list-style: none;
     padding: 5px;
     background-color: white;
-    left: 10px;
+    left: calc((100vw - 950px) / 5);
     margin-top: 5px;
+    z-index: 101;
     
     > :last-child{
         border: none;
@@ -127,7 +129,7 @@ const SortOption = styled.li`
 `;
 
 const SortOptionState = styled.img`
-    width: 30px;
+    width: 20px;
     height: 20px;
     margin-left: 40px;
     float: right;
@@ -137,4 +139,14 @@ const SortOptionState = styled.img`
 const SortOptionTitle = styled.span`
     font-size: 13px;
     margin-left: 5px;
+`;
+
+const OpenFiltersButton = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 25px;  
+    
+    span {
+      font-size: 12px;
+      cursor: pointer;
+    }
 `;

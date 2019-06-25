@@ -49,6 +49,10 @@ const Button = styled.button`
   &:hover {
     background: #0d0e11;
   }
+  
+  &:focus{
+    outline: none;
+  }
 `;
 
 const Name = styled.div`

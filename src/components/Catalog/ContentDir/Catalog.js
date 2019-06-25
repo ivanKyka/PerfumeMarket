@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import Footer from "../../public/Footer";
 import Header from "../../public/Header";
 import FilterComponentContainer from "../FilterComponentContainer";
-import HeadCatalog from "../../public/HeadCatalog";
 import styled from 'styled-components'
 
 
@@ -19,7 +18,6 @@ export default class Catalog extends React.Component {
         return(
         <Container>
             <Header/>
-            <HeadCatalog/>
             <FilterComponentContainer searchMode={this.state.searchMode} param={this.state.searchMode ? this.props.match.params.id.substring(1) : this.props.match.params.id}/>
             <Footer/>
         </Container>

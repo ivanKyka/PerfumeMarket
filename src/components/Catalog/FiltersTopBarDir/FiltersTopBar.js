@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
-import styled from 'styled-components'
+import styled, {ThemeProvider} from 'styled-components';
 import CatalogStore from "../../../stores/CatalogStore";
 import SortSelection from "./SortSelection";
+import {theme} from '../../../stores/StyleStore';
 
 export default class FiltersTopBar extends Component {
     constructor(props){
@@ -46,55 +47,64 @@ export default class FiltersTopBar extends Component {
 
     render() {
         return (
+            <ThemeProvider theme={theme}>
             <Container>
-                <li>
-                    <Label>SORT BY</Label>
-                    <SortSelection/>
-                </li>
-                <li>
-                    <Label>KEYWORDS</Label>
-                    <Input ref={this.state.keyWordsRef} value={this.state.keyWords} onChange={this.onKeyWordsChange} width={`150px`} placeholder={"Туалетная вода"}/>
-                </li>
-                <li>
-                    <Label>PRICE</Label>
-                    <Input ref={this.state.lowerPriceRef} value={this.state.lowerPrice} onChange={this.onLowerPriceChange} width={`70px`} placeholder={"10"}/>
-                    <Input ref={this.state.higherPriceRef} value={this.state.higherPrice} onChange={this.onHigherPriceChange} width={`70px`} placeholder={"1000"}/>
-                </li>
-                <li>
-                    <ApplyButton onClick={() => {
-                        console.log(this.state.keyWords);
-                        CatalogStore.setFiltersFromTopBar({
-                            name_ru_contains : this.state.keyWords === "" ? null : this.state.keyWords,
-                            price_lte : this.state.higherPrice === "" ? null : this.state.higherPrice,
-                            price_gte: this.state.lowerPrice === "" ? null : this.state.lowerPrice
-                        })
-                    }}>
-                        Apply Changes
-                    </ApplyButton>
-                    <ResetButton onClick={this.resetChanges}>
-                        Reset Changes
-                    </ResetButton>
-                </li>
+                <Menu>
+                    <div>
+                        <SortSelection/>
+                    </div>
+                    <div>
+                        <Label>НАЗВАНИЕ</Label>
+                        <Input ref={this.state.keyWordsRef} value={this.state.keyWords} onChange={this.onKeyWordsChange} width={`150px`} placeholder={"Поиск"}/>
+                    </div>
+                    <div>
+                        <Label>ЦЕНА</Label>
+                        <Input ref={this.state.lowerPriceRef} value={this.state.lowerPrice} onChange={this.onLowerPriceChange} width={`70px`} placeholder={"ОТ"}/>
+                        <Input ref={this.state.higherPriceRef} value={this.state.higherPrice} onChange={this.onHigherPriceChange} width={`70px`} placeholder={"ДО"}/>
+                    </div>
+                    <div>
+                        <ApplyButton onClick={() => {
+                            console.log(this.state.keyWords);
+                            CatalogStore.setFiltersFromTopBar({
+                                name_ru_contains : this.state.keyWords === "" ? null : this.state.keyWords,
+                                price_lte : this.state.higherPrice === "" ? null : this.state.higherPrice,
+                                price_gte: this.state.lowerPrice === "" ? null : this.state.lowerPrice
+                            })
+                        }}>
+                            ПОИСК
+                        </ApplyButton>
+                        <ResetButton onClick={this.resetChanges}>
+                            ОЧИСТИТЬ ВСЕ
+                        </ResetButton>
+                    </div>
+                </Menu>
             </Container>
+        </ThemeProvider>
         );
     }
 }
 
-const Container = styled.ul`
+const Container = styled.div`
     grid-row-start: 1;
     grid-row-end: 2;
     grid-column-start: 1;
     grid-column-end: 3;
-    padding: 0;
+    width: 100%;
+`;
+
+const Menu = styled.div`
+    display: grid;
+    grid-template-columns: 150px 300px 250px 250px;
+    justify-content: space-around;
+    padding: 10px;
     z-index: 100;
+    width: 100%;
     
-    list-style: none;
-    
-    > *{
-        display: inline-block;
+    &>div{
+        display: block;
         padding: 0 20px;
         margin: 0;
-    }
+    }    
 `;
 
 const Label = styled.span`
@@ -104,47 +114,52 @@ const Label = styled.span`
 const Input = styled.input`
     width: ${props => props.width};
     margin-left: 15px;
-    background-color: #F0F2F7;
-    border-radius: 10px;
-    border: 1px solid #d8dadf;
-    padding: 5px;
+    background-color: #fff;
+    border: 1px solid ${props => props.theme.bgDarkCol};
+    padding: 5px 10px;
     font-size: 12px;
+    color: black;
     
-    :focus{
+    &:focus{
         outline: none;
+        border: 1px solid ${props => props.theme.primary_light};
     }
     
-    ::placeholder{
-        color: #9da09b;
-    }
+    
 `;
 
 const Button = styled.button`
     font-size: 13px;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
     margin-left: 15px;
     
-    :focus{
+    &:focus{
         outline: none;
     }
 `;
 
 const ApplyButton = styled(Button)`
-    background-color: #F0F2F7;
-    border: 1px solid #d8dadf;
+    background-color: #fff;
+    border: 1px solid ${props => props.theme.bgDarkCol};
+    color:  ${props => props.theme.bgDarkCol};
     
-    :hover{
-        background-color: #e7e9ee;
+    &:hover{
+        color: white;
+        border: 1px solid ${props => props.theme.primary_light};
+        background-color: ${props => props.theme.primary_light};
     }
 `;
 
 const ResetButton = styled(Button)`
-    background-color: rgba(254,151,147,0.61);
-    border: 1px solid #f08a86;
+    background-color: white;
+    color: ${props => props.theme.bgDarkCol};
+    border: 1px solid ${props => props.theme.bgDarkCol};
     
-    :hover{
-        background-color: rgba(254,151,147,0.74);
+    &:hover{
+        color: white;        
+        background-color: ${props => props.theme.primary_light};
+        border: 1px solid ${props => props.theme.primary_light};
     }
 `;
