@@ -8,9 +8,11 @@ export default class ContentContainer extends React.Component {
     render() {
 
         return(
-            <Container searchMode={this.props.searchMode}>
-                <Content/>
-            </Container>
+            <React.Fragment>
+                <Container searchMode={this.props.searchMode}>
+                    <Content/>
+                </Container>
+            </React.Fragment>
         )
     }
 
@@ -39,6 +41,5 @@ const Container = styled.div`
   grid-column-end: 3;
   grid-row-end: 4;
 `;
-
 
 
