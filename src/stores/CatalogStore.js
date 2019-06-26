@@ -4,7 +4,7 @@ import {observable, action} from 'mobx'
 class CatalogStore {
     @observable
     filters = {
-        properties: {_id_in: []},
+        properties: {_id: []},
         category: {
             _id: []
         },
@@ -109,15 +109,15 @@ class CatalogStore {
     setFiltersFromLeftBar = (filter) => {
         let filtersCopy = {...this.filters};
 
-        if (filtersCopy.properties._id_in.includes(filter)){
-            filtersCopy.properties._id_in = filtersCopy.properties._id_in.filter(el => el !== filter);
+        if (filtersCopy.properties._id.includes(filter)){
+            filtersCopy.properties._id = filtersCopy.properties._id.filter(el => el !== filter);
             this.filters = filtersCopy;
             this.refetch();
             return;
         }
 
         this.refetch();
-        filtersCopy.properties._id_in.push(filter);
+        filtersCopy.properties._id.push(filter);
         this.filters = filtersCopy;
     };
 

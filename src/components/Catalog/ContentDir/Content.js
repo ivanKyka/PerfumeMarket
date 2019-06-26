@@ -20,8 +20,8 @@ export default class Content extends React.Component {
         if (filterObject.category._id.length === 0){
             filterObject.category._id = {};
         }
-        if (filterObject.properties._id_in.length === 0)
-            filterObject.properties._id_in = {};
+        if (filterObject.properties._id.length === 0)
+            filterObject.properties._id = {};
         if (filterObject.price_gte === null)
             filterObject.price_gte = {};
         if (filterObject.price_lte === null)

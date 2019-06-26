@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react';
-import Footer from "../../public/Footer";
-import Header from "../../public/Header";
-import FilterComponentContainer from "../FilterComponentContainer";
-import HeadCatalog from "../../public/HeadCatalog";
+import Footer from "../public/Footer";
+import Header from "../public/Header";
+import FilterComponentContainer from "./FilterComponentContainer";
+import HeadCatalog from "../public/HeadCatalog";
 import styled from 'styled-components'
 
 

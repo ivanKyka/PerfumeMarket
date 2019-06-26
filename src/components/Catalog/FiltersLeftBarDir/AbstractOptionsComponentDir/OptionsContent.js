@@ -66,7 +66,7 @@ export default class OptionsContent extends Component {
     renderSelections() {
         const filters = CatalogStore.filters;
         const filtersJS = toJS(filters);
-        const propertiesIDs = filtersJS.properties._id_in;
+        const propertiesIDs = filtersJS.properties._id;
 
         return (
                 <Container isOpened={this.props.isOpened}>

@@ -6,7 +6,7 @@ import {createHttpLink} from "apollo-link-http";
 import {InMemoryCache} from "apollo-cache-inmemory";
 import MainPage from "./MainPage/MainPage";
 import Cart from "./Cart/Cart";
-import Catalog from "./Catalog/ContentDir/Catalog";
+import Catalog from "./Catalog/Catalog";
 import Checkout from "./Checkout/Checkout";
 import Product from "./Product/Product";
 import Profile from "./Profile/Profile";
