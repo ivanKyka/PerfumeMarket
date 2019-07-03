@@ -139,12 +139,12 @@ const Button = styled.button`
 `;
 
 const ApplyButton = styled(Button)`
-    background-color: #fff;
-    border: 1px solid ${props => props.theme.bgDarkCol};
-    color:  ${props => props.theme.bgDarkCol};
+    border: 1px solid ${props => props.theme.primary};
+    color:  white;
     display: block;
+    background-color: ${props => props.theme.primary};
+    
     &:hover{
-        color: white;
         border: 1px solid ${props => props.theme.primary_light};
         background-color: ${props => props.theme.primary_light};
     }
