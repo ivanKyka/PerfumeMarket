@@ -1,14 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import Categories from "./Categories";
 import gql from "graphql-tag";
 import {Query} from "react-apollo";
 import StarRatings from "react-star-ratings";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus, faMinus, faCartArrowDown} from "@fortawesome/free-solid-svg-icons";
-import {faCreditCard} from "@fortawesome/free-regular-svg-icons";
-import {faFacebook, faTwitterSquare, faTelegram, faVk} from "@fortawesome/free-brands-svg-icons";
 import {theme} from "../../stores/StyleStore";
+import CartImage from '../../resources/image/ProductIcons/Group 2.svg'
+import CardImage from '../../resources/image/ProductIcons/Vector.svg'
+import LikeIcon from '../../resources/image/ProductIcons/Combined shape 14591.svg'
+import FacebookIcon from '../../resources/image/ProductIcons/Facebook.svg'
+import TwitterIcon from '../../resources/image/ProductIcons/Vector(1).svg'
+import FiltersBlock from './FiltersBlock';
 
 export default class PurchaseBlock extends React.Component {
 
@@ -38,25 +41,8 @@ export default class PurchaseBlock extends React.Component {
     render() {
         return(
         <Container>
-            <Categories ProductID={this.props.ProductID}/>
-            <Query query={
-                gql`query MyProductCategory($id: ID!){
-                          product(id: $id){
-                            name_ru
-                          }
-                        }`
-            }
-                   variables={{"id":this.props.ProductID}}>
-                {({loading, error, data}) => {
-                    if (loading) return <p></p>;
-                    if (error) {
-                        return <p>Error :(</p>;
-                    }
-                    return(
-                        <Price>{data.product.name_ru}</Price>
-                    );
-                }}
-            </Query>
+            {''/*<Categories ProductID={this.props.ProductID}/>*/}
+            <FiltersBlock ProductID={this.props.ProductID}/>
             <Query query={
                 gql`query MyProductCategory($id: ID!){
                           product(id: $id){
@@ -113,18 +99,38 @@ export default class PurchaseBlock extends React.Component {
                 </CountBlock>
                 <AddToCartButton type="button" theme={theme}>
                     <span>В корзину</span>
-                    <FontAwesomeIcon icon={faCartArrowDown} size={'2x'}/>
+                    <object data={CartImage} type="image/svg+xml"/>
                 </AddToCartButton>
             </AddToCartBlock>
             <BuyButton  theme={theme}>
                 <span>КУПИТЬ</span>
-                <FontAwesomeIcon icon={faCreditCard} size={'3x'}/>
+                <object data={CardImage} type="image/svg+xml"/>
             </BuyButton>
+            <Query query={
+                gql`query MyProductCategory($id: ID!){
+                          product(id: $id){
+                            avaliable
+                          }
+                        }`
+            }
+                   variables={{"id":this.props.ProductID}}>
+                {({loading, error, data}) => {
+                    if (loading) return <p></p>;
+                    if (error) {
+                        return <p>Error :(</p>;
+                    }
+                    return(
+                        <IsAvaliable>
+                            <li><b>{data.product.avaliable?'В наличии':'Нет в наличии'}</b></li>
+                        </IsAvaliable>
+                    );
+                }}
+            </Query>
+            <span>Поделиться</span>
             <SocialLinks theme={theme}>
-                <FontAwesomeIcon icon={faFacebook} size={'3x'}/>
-                <FontAwesomeIcon icon={faTwitterSquare} size={'3x'}/>
-                <FontAwesomeIcon icon={faTelegram} size={'3x'}/>
-                <FontAwesomeIcon icon={faVk} size={'3x'}/>
+                <img src={LikeIcon}/>
+                <img src={FacebookIcon}/>
+                <img src={TwitterIcon}/>
             </SocialLinks>
         </Container>
     )
@@ -134,12 +140,12 @@ export default class PurchaseBlock extends React.Component {
 const Container = styled.div`
     display: grid;
     width: calc(100% - 60px);
-    grid-template-rows: 60px minmax(min-content, min-content) 40px 35px 60px 100px 55px;
-    padding: 30px;
+    grid-template-rows: minmax(min-content, min-content) 80px 50px 60px 100px 30px 16px 55px;
+    padding: 0 30px;
 `;
 
 const Price = styled.span`
-    font-size: 15pt;
+    font-size: 25px;
     font-weight: bold;
     justify-self: left;
     align-self: center;
@@ -193,6 +199,7 @@ const AddToCartButton = styled.div`
     grid-template-columns: 1fr 50px;
     cursor: pointer;
     justify-items: center;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     &:hover{
       background: ${props => props.theme.primary_light};
     }
@@ -203,8 +210,11 @@ const AddToCartButton = styled.div`
       align-self: center;
     }
     svg {
+      display: block;
       color: #fff;
       align-self: center;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+      margin-top: 3px;
     }
 `;
 
@@ -226,31 +236,45 @@ const BuyButton = styled.div`
       background: ${props => props.theme.primary_light};
     }
     span{
-      font-size: 3vw;
+      font-size: 30px;
       font-weight: bold;
       text-align: center;
       align-self: center;
+      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     }
     svg {
       color: #fff;
       align-self: center;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     }
 `;
 
 const SocialLinks = styled.div`
     width: calc(100% - 40px);
     display: grid;
-    padding: 0 20px;
-    grid-template-columns: repeat(4, 1fr);
+    padding: 0;
+    grid-template-columns: repeat(3, 40px);
     align-items: center;
-    justify-items: center;
+    justify-items: left;
     grid-auto-rows: auto;
-    
-    svg{
+    grid-gap: 20px;
+
+    img{
       cursor: pointer;
-      
+      padding: 7px 7px;
+      height: 40px;
+      width: 40px;
+      border: 1px solid ${props => props.theme.bgCol};
+      color: black;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3), inset 0px 0px 2px rgba(255, 255, 255, 0.75);
+      border-radius: 5px;
       &:hover{
-         color: ${props => props.theme.primary_light};
+         //background: ${props => props.theme.primary_light};
       }
     }
+`;
+
+const IsAvaliable = styled.ul`
+    padding-left: 15px;
+    margin-top: 0;
 `;

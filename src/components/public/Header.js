@@ -67,7 +67,7 @@ export default class Header extends React.Component{
                             </Link>
                         </Logo>
                         <Menu>
-                            <li>Домой</li>
+                            <li>Главная</li>
                             <li>Каталог</li>
                             <li>О нас</li>
                             <li>Контакты</li>

@@ -47,18 +47,18 @@ export default class PhotoGalerry extends React.Component {
                 const images = data.product.photos.map(a => a.url);
                 return (
                     <Container>
-                        <Catalog>
-                            {images.map((elem, index) => {
-                                return <Image src={this.urlStore.MAIN_URL + elem}
-                                              alt=""
-                                              id={index}
-                                              key={index}
-                                              active={index == this.state.currentIndex}
-                                              onClick={this.clickHandler}
-                                              theme={theme}/>;
-                            })}
+                        {/*<Catalog>*/}
+                        {/*    {images.map((elem, index) => {*/}
+                        {/*        return <Image src={this.urlStore.MAIN_URL + elem}*/}
+                        {/*                      alt=""*/}
+                        {/*                      id={index}*/}
+                        {/*                      key={index}*/}
+                        {/*                      active={index == this.state.currentIndex}*/}
+                        {/*                      onClick={this.clickHandler}*/}
+                        {/*                      theme={theme}/>;*/}
+                        {/*    })}*/}
 
-                        </Catalog>
+                        {/*</Catalog>*/}
                         <ImageContainer>
                             <ReactImageMagnify
                                 {...{
@@ -85,7 +85,7 @@ export default class PhotoGalerry extends React.Component {
 const Container = styled.div`
   padding: 10px 0;
   display: grid;
-  grid-template-columns: 80px 1fr ;
+  grid-template-columns: 1fr ;
   grid-auto-rows: minmax(min-content, max-content);
   max-width: 35vw;
   grid-gap: 0;

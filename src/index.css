@@ -6,7 +6,19 @@ body {
 
 @font-face {
     font-family: 'Gotham Pro';
+    src: url("./fonts/GothamPro/GothamPro.ttf");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'Gotham Pro Light';
     src: url("./fonts/GothamPro/GothamPro-Light.ttf");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'Gotham Pro Bold';
+    src: url("./fonts/GothamPro/GothamPro-Bold.ttf");
     font-style: normal;
     font-weight: normal;
 }
