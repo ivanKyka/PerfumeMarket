@@ -5,7 +5,7 @@ import {computed} from "mobx";
 import {action} from "mobx";
 import {ClearCart, ModifyCart, GetCart} from '../api/Cart';
 
-export default class Cart {
+export  class Cart {
 
     @observable.deep
     items = new Map();

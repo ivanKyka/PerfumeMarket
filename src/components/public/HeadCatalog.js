@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, {ThemeProvider} from 'styled-components';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
 import {categoryTree} from "../../api/Categories";
@@ -7,6 +7,7 @@ import {Menubar} from "primereact/menubar";
 import './HeadCatalogStyles.css';
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css'
+import {theme} from "../../stores/StyleStore";
 
 export default class HeadCatalog extends React.Component{
 
@@ -30,8 +31,26 @@ export default class HeadCatalog extends React.Component{
         })
     }
 
+    //Я знаю що це неправильно, але я не збираюся переписувати бібліотеку, чи писати свою реалізацію
+    //P.S. Це було б тупіше за це
+    componentDidUpdate() {
+        Array.from(document.querySelectorAll('.p-menubar-root-list>.p-menuitem')).forEach(elem => {
+            elem.addEventListener('mouseenter',
+                (e) => {
+                e.target.classList.add('p-menuitem-active');
+            })
+        })
+        Array.from(document.querySelectorAll('.p-menuitem')).forEach(elem => {
+            elem.addEventListener('mouseleave',
+                (e) => {
+                e.target.classList.remove('p-menuitem-active');
+            })
+        })
+    }
+
     render() {
         return(
+            <ThemeProvider theme={theme}>
             <Container>
                 <Menubar
                     model={this.state.items}
@@ -43,6 +62,7 @@ export default class HeadCatalog extends React.Component{
                     </SearchButton>
                 </Search>
             </Container>
+            </ThemeProvider>
         )
     }
 }
@@ -60,6 +80,10 @@ const Container = styled.div`
   
   .p-menubar-root-list>.p-menuitem>.p-menuitem-link{
     height: 52px;
+  }
+  
+  .p-menuitem-text {
+    font-family: "Gotham Pro" !important;
   }
   
 `;

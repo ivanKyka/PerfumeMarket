@@ -53,24 +53,16 @@ const BlockHover = keyframes`
     height: 380px; 
   }
   100%  { 
-    height: 580px; 
+    height: 520px; 
   }
 `;
 
-const ShowText = keyframes`
-  0% { 
-    height: 0;
-  }
-  100%  { 
-    height: 150px; 
-  }
-`;
 
 const Block = styled.div`
   padding-top: 5px;
   width: 250px;
-  height: 380px;
   z-index: 5;
+  height: min-content;
   background: #fff;
   overflow: hidden;
   display: grid;
@@ -81,7 +73,7 @@ const Block = styled.div`
   justify-items: center;  
   &:hover {
     width: 260px;
-    grid-template-rows: 250px 30px 130px 50px 30px 70px;
+    grid-template-rows: 250px 30px min-content 50px 30px 70px;
     z-index: 6;
     box-shadow: 0 0  10px  ${props => props.theme.primary} ;
     animation: ${BlockHover} .2s ease-out forwards;

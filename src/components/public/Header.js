@@ -73,7 +73,7 @@ export default class Header extends React.Component{
                             <li>Контакты</li>
                             <li>Доставка</li>
                         </Menu>
-                        <Cart>
+                        <Cart to={'/cart'}>
                             <FontAwesomeIcon icon={faShoppingCart}/>
                             <span>Корзина</span>
                             <Counter>0</Counter>
@@ -168,9 +168,10 @@ const Counter = styled.div`
   text-align: center;
   height: 18px;
   margin-top: -2px;
+  text-decoration: none;
 `;
 
-const Cart = styled.div`
+const Cart = styled(Link)`
   display: grid;
   align-content: center;
   grid-template-columns: 20px 1fr 15px;
@@ -178,13 +179,22 @@ const Cart = styled.div`
   justify-self: right;
   padding: 10px;
   height: 100%;
+  color: white;
   span {
     font-size: 14px;
     padding: 0 10px;
   }
   
+  a:visited {
+    color: white;
+  }
+  
   &:hover {
+    color: white;
     background: ${props => props.theme.bgDarkCol};
-    text-decoration: underline;
    }
+   
+  &:hover span {
+      text-decoration: underline;
+  }
 `;

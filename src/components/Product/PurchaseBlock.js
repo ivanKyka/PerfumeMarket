@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import gql from "graphql-tag";
 import {Query} from "react-apollo";
 import StarRatings from "react-star-ratings";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus, faMinus, faCartArrowDown} from "@fortawesome/free-solid-svg-icons";
 import {theme} from "../../stores/StyleStore";
 import CartImage from '../../resources/image/ProductIcons/Group 2.svg'
 import CardImage from '../../resources/image/ProductIcons/Vector.svg'
@@ -12,24 +10,10 @@ import LikeIcon from '../../resources/image/ProductIcons/Combined shape 14591.sv
 import FacebookIcon from '../../resources/image/ProductIcons/Facebook.svg'
 import TwitterIcon from '../../resources/image/ProductIcons/Vector(1).svg'
 import FiltersBlock from './FiltersBlock';
+import Counter from "../public/Counter";
 
 export default class PurchaseBlock extends React.Component {
 
-    increaseCountOfProducts = (() => {
-        this.setState(oldState => {
-            return {
-                countOfProducts: ++oldState.countOfProducts
-            }
-        })
-    }).bind(this);
-    decreaseCountOfProducts = (() => {
-        this.setState(oldState => {
-            if (oldState.countOfProducts > 1)
-            return {
-                countOfProducts: --oldState.countOfProducts
-            }
-        })
-    }).bind(this);
 
     constructor(props) {
         super(props);
@@ -37,6 +21,12 @@ export default class PurchaseBlock extends React.Component {
             countOfProducts: 1
         }
     }
+
+    setCountOfProducts = ((value) => {
+        this.setState({
+            countOfProducts: value
+        });
+    }).bind(this);
 
     render() {
         return(
@@ -88,15 +78,9 @@ export default class PurchaseBlock extends React.Component {
                 }}
             </Query>
             <AddToCartBlock>
-                <CountBlock>
-                    <CountButton onClick={this.increaseCountOfProducts}>
-                        <FontAwesomeIcon icon={faPlus}/>
-                    </CountButton>
-                    <Count type="text" disabled={true} value={this.state.countOfProducts}/>
-                    <CountButton onClick={this.decreaseCountOfProducts}>
-                        <FontAwesomeIcon icon={faMinus}/>
-                    </CountButton>
-                </CountBlock>
+                <Counter
+                    setVal={this.setCountOfProducts}
+                />
                 <AddToCartButton type="button" theme={theme}>
                     <span>В корзину</span>
                     <object data={CartImage} type="image/svg+xml"/>
@@ -155,34 +139,6 @@ const AddToCartBlock = styled.div`
     min-width: 300px;
     display: grid;
     grid-template-columns: 100px 1fr 170px;
-`;
-
-const CountBlock = styled.div`
-    max-height: 50px;
-    padding: 10px 0;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-column: 1/2;
-`;
-
-const CountButton = styled.button`
-    border: 1px solid #ccc;
-    border-radius: 1px;
-    background: #ffffff;
-    
-    svg{
-      color: black;
-      cursor: pointer;
-    }
-`;
-
-const Count = styled.input`
-    width: 50px;
-    background: #EEEEEE;
-    color: black;
-    border: 1px solid #ccc;
-    text-align: center;
-    font-size: 13pt;
 `;
 
 const AddToCartButton = styled.div`

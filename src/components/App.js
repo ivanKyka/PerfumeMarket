@@ -16,7 +16,7 @@ import Register from './Auth/Register';
 import AboutUs from './About/AboutUs';
 import Cabinet from "./Cabinet/Cabinet";
 import {UserStore} from '../stores/userStore';
-
+import {Cart as CartStore} from '../stores/Cart';
 
 const httpLink = createHttpLink({
     uri: UrlStore.MAIN_GRAPHQL_URI
@@ -36,9 +36,12 @@ const client = new ApolloClient({
     cache: new InMemoryCache()
 });
 
+const cart = new CartStore();
+
 const store = {
     userStore: new UserStore(),
-    urlStore: UrlStore
+    urlStore: UrlStore,
+    cart: cart
 };
 
 class App extends Component {
@@ -49,8 +52,7 @@ class App extends Component {
                     <BrowserRouter>
                         <Switch>
                             <Route exact path={'/'} component={MainPage}/>
-                            <Route path={'/cart'} component={Cart}/>
-                            <Route path={'/catalog/:id'} component={Catalog}/>
+                            <Route path={'/cart'} component={Cart}/><Route path={'/catalog/:id'} component={Catalog}/>
                             <Route path={'/checkout'} component={Checkout}/>
                             <Route path={'/product/:id'} component={Product}/>
                             <Route path={'/profile'} component={Profile}/>

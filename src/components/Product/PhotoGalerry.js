@@ -32,7 +32,6 @@ export default class PhotoGalerry extends React.Component {
         return (<Query query={gql`query ProductPhotos($id: ID!){
   product(id: $id){
         photos{
-        
           url
         }
       }
