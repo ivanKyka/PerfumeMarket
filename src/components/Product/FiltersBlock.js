@@ -27,7 +27,7 @@ render() {
                     return (
                         <List>
                             {data.product.properties.map(elem =>
-                                <FilterBlock>
+                                <FilterBlock key={elem.property_name}>
                                     <span>{elem.property_val}</span>
                                     <img src={Times} alt=""/>
                                 </FilterBlock>

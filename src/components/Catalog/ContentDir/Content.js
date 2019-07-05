@@ -81,8 +81,9 @@ export default class Content extends React.Component {
                         CatalogStore.moreThanCurrent = data.products.length >= limit;
 
                         return (
-                            data.products.map((content, index) =>
-                                <ContentBlock
+                            data.products.map((content, index) => {
+                                if (typeof content.photos[0] !== 'undefined')
+                                return <ContentBlock
                                     key={index}
                                     options={
                                         {
@@ -96,7 +97,8 @@ export default class Content extends React.Component {
                                         }
                                     }
 
-                                />)
+                                />
+                            else return ''})
                         )
                     }}
                 </Query>
