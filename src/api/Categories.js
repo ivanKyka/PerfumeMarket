@@ -1,7 +1,7 @@
 import {UrlStore} from "../stores/UrlStore";
 
 export async function categoryTree(isAddUrl=false) {
-    let response = await fetch(`${UrlStore.OLALALA_MAIN_URL}/categories/tree/without`);
+    let response = await fetch(`${UrlStore.MAIN_URL}/categories/tree/without`);
     if (response.status === 200) {
         let data = await response.json();
         if (isAddUrl)

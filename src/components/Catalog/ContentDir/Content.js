@@ -97,7 +97,7 @@ export default class Content extends React.Component {
                                     key={index}
                                     options={
                                         {
-                                            image: `${content.photos[0] ? this.urlStore.OLALALA_MAIN_URL + content.photos[0].url : ""}`,
+                                            image: `${content.photos[0] ? this.urlStore.MAIN_URL + content.photos[0].url : ""}`,
                                             rating: content.rating,
                                             reviews: content.comments.length,
                                             name: content.name_ru,

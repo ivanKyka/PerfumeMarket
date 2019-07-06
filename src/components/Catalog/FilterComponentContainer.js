@@ -6,8 +6,6 @@ import FiltersTopBar from "./FiltersTopBarDir/FiltersTopBar";
 import CatalogStore from "../../stores/CatalogStore";
 import ToolsBar from "./ToolsDir/ToolsBar";
 import FiltersDisplayBar from "./FiltersDisplayBarDir/FiltersDisplayBar";
-import gql from "graphql-tag";
-import {Query} from "react-apollo";
 import {UrlStore} from "../../stores/UrlStore";
 
 export default class FilterComponentContainer extends Component {
@@ -17,7 +15,7 @@ export default class FilterComponentContainer extends Component {
 
         let string = window.location.href;
         if ((new URL(string)).search !== ""){
-            fetch(UrlStore.OLALALA_MAIN_GRAPHQL_URI, {
+            fetch(UrlStore.MAIN_GRAPHQL_URI, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: '{ properties(limit: -1){ _id property_val } }' }),

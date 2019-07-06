@@ -13,6 +13,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {theme} from "../../stores/StyleStore";
 import {Register as Reg} from "../../api/Authenticate";
 
+
 export default class Register  extends React.Component{
 
     sendRegInfo = (e => {
@@ -25,7 +26,7 @@ export default class Register  extends React.Component{
                 this.nameRef.current.value,
                 this.surnameRef.current.value
             ).then(a => {
-                console.log(a);
+                if (a) window.location.href='http://192.168.1.16:8080/'
             })
         }
     });
@@ -85,7 +86,7 @@ render() {
                                             <InputBlock>
                                                 <FontAwesomeIcon icon={faUser} size={'1x'}/>
                                                 <Input
-                                                    pattern="[А-Яа-яЁё`ЇїЄєІі]{2,}"
+                                                    pattern="[А-Яа-яЁё`ЇїЄєІіA-Za-z\-]{2,}"
                                                     type="text"
                                                     placeholder="Введите ваше имя"
                                                     required
@@ -98,7 +99,7 @@ render() {
                                         <InputBlock>
                                             <FontAwesomeIcon icon={faUser} size={'1x'}/>
                                             <Input
-                                                pattern="[А-Яа-яЁё`ЇїЄєІі]{2,}"
+                                                pattern="[А-Яа-яЁё`ЇїЄєІіA-Za-z\-]{2,}"
                                                 type="text"
                                                 placeholder="Введите вашу фамилию"
                                                 required

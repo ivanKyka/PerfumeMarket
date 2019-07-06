@@ -140,18 +140,6 @@ class CatalogStore {
         this.refetch();
     };
 
-    /*@action
-    clearFiltersFromLeftBar = () => {
-        this.filters = {
-            properties: {_id: []},
-            category: {
-                _id: null
-            }
-        };
-
-        this.refetch();
-    };*/
-
     @action
     clearFiltersFormTopBar = () => {
         let filtersCopy = {...this.filters};

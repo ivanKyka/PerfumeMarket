@@ -32,7 +32,6 @@ export default class PhotoGalerry extends React.Component {
         return (<Query query={gql`query ProductPhotos($id: ID!){
   product(id: $id){
         photos{
-        
           url
         }
       }
@@ -44,40 +43,44 @@ export default class PhotoGalerry extends React.Component {
                     return <p>Error :(</p>;
                 }
 
-                const images = data.product.photos.map(a => a.url);
-                return (
-                    <Container>
-                        <Catalog>
-                            {images.map((elem, index) => {
-                                return <Image src={this.urlStore.MAIN_URL + elem}
-                                              alt=""
-                                              id={index}
-                                              key={index}
-                                              active={index == this.state.currentIndex}
-                                              onClick={this.clickHandler}
-                                              theme={theme}/>;
-                            })}
+                try {
+                    const images = data.product.photos.map(a => a.url);
+                    return (
+                        <Container>
+                            {/*<Catalog>*/}
+                            {/*    {images.map((elem, index) => {*/}
+                            {/*        return <Image src={this.urlStore.MAIN_URL + elem}*/}
+                            {/*                      alt=""*/}
+                            {/*                      id={index}*/}
+                            {/*                      key={index}*/}
+                            {/*                      active={index == this.state.currentIndex}*/}
+                            {/*                      onClick={this.clickHandler}*/}
+                            {/*                      theme={theme}/>;*/}
+                            {/*    })}*/}
 
-                        </Catalog>
-                        <ImageContainer>
-                            <ReactImageMagnify
-                                {...{
-                                    smallImage: {
-                                        isFluidWidth: true,
-                                        src: this.state.currentImage?this.state.currentImage:this.urlStore.MAIN_URL + images[0]
-                                    },
-                                    largeImage: {
-                                        src: this.state.currentImage?this.state.currentImage:this.urlStore.MAIN_URL + images[0],
-                                        width: 800,
-                                        height: 800
-                                    },
-                                    lensStyle: {backgroundColor: 'rgba(0,0,0,.6)'},
-                                    enlargedImageContainerStyle: {zIndex: 10000}
-                                }}
-                        />
-                        </ImageContainer>
-                    </Container>
-                )
+                            {/*</Catalog>*/}
+                            <ImageContainer>
+                                <ReactImageMagnify
+                                    {...{
+                                        smallImage: {
+                                            isFluidWidth: true,
+                                            src: this.state.currentImage?this.state.currentImage:this.urlStore.MAIN_URL + images[0]
+                                        },
+                                        largeImage: {
+                                            src: this.state.currentImage?this.state.currentImage:this.urlStore.MAIN_URL + images[0],
+                                            width: 800,
+                                            height: 800
+                                        },
+                                        lensStyle: {backgroundColor: 'rgba(0,0,0,.6)'},
+                                        enlargedImageContainerStyle: {zIndex: 10000}
+                                    }}
+                                />
+                            </ImageContainer>
+                        </Container>
+                    )
+                } catch (e) {
+                    return <b>Photo not found</b>
+                }
             }}
         </Query>)
     }
@@ -85,7 +88,7 @@ export default class PhotoGalerry extends React.Component {
 const Container = styled.div`
   padding: 10px 0;
   display: grid;
-  grid-template-columns: 80px 1fr ;
+  grid-template-columns: 1fr ;
   grid-auto-rows: minmax(min-content, max-content);
   max-width: 35vw;
   grid-gap: 0;

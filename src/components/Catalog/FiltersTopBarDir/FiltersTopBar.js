@@ -62,9 +62,8 @@ export default class FiltersTopBar extends Component {
                         <Input ref={this.state.lowerPriceRef} value={this.state.lowerPrice} onChange={this.onLowerPriceChange} width={`70px`} placeholder={"ОТ"}/>
                         <Input ref={this.state.higherPriceRef} value={this.state.higherPrice} onChange={this.onHigherPriceChange} width={`70px`} placeholder={"ДО"}/>
                     </div>
-                    <div>
+                    <ButtonsBlock>
                         <ApplyButton onClick={() => {
-                            console.log(this.state.keyWords);
                             CatalogStore.setFiltersFromTopBar({
                                 name_ru_contains : this.state.keyWords === "" ? null : this.state.keyWords,
                                 price_lte : this.state.higherPrice === "" ? null : this.state.higherPrice,
@@ -76,7 +75,7 @@ export default class FiltersTopBar extends Component {
                         <ResetButton onClick={this.resetChanges}>
                             ОЧИСТИТЬ ВСЕ
                         </ResetButton>
-                    </div>
+                    </ButtonsBlock>
                 </Menu>
             </Container>
         </ThemeProvider>
@@ -101,7 +100,6 @@ const Menu = styled.div`
     width: 100%;
     
     &>div{
-        display: block;
         padding: 0 20px;
         margin: 0;
     }    
@@ -141,18 +139,19 @@ const Button = styled.button`
 `;
 
 const ApplyButton = styled(Button)`
-    background-color: #fff;
-    border: 1px solid ${props => props.theme.bgDarkCol};
-    color:  ${props => props.theme.bgDarkCol};
+    border: 1px solid ${props => props.theme.primary};
+    color:  white;
+    display: block;
+    background-color: ${props => props.theme.primary};
     
     &:hover{
-        color: white;
         border: 1px solid ${props => props.theme.primary_light};
         background-color: ${props => props.theme.primary_light};
     }
 `;
 
 const ResetButton = styled(Button)`
+    display: block;
     background-color: white;
     color: ${props => props.theme.bgDarkCol};
     border: 1px solid ${props => props.theme.bgDarkCol};
@@ -162,4 +161,9 @@ const ResetButton = styled(Button)`
         background-color: ${props => props.theme.primary_light};
         border: 1px solid ${props => props.theme.primary_light};
     }
+`;
+
+const ButtonsBlock = styled.div`
+    display: grid;
+    grid-template-columns: 100px 150px;
 `;
