@@ -3,13 +3,17 @@ import styled from 'styled-components'
 import ShowMoreButton from "./ShowMoreButton";
 import ScrollToTopButton from "./ScrollToTopButton";
 import CatalogStore from "../../../stores/CatalogStore";
+import {toJS} from "mobx";
+import {observer} from "mobx-react";
 
+@observer
 export default class ToolsBar extends Component {
     render(){
+        let isMoreDataThanLimit = CatalogStore.isMoreDataThanLimit;
         return(
             <Container searchMode={this.props.searchMode}>
-                {CatalogStore.moreThanCurrent ? <ShowMoreButton/> : ""}
-                <ScrollToTopButton IntervalInMs={10} Step={20}/>
+                {toJS(isMoreDataThanLimit) ? <ShowMoreButton/> : ""}
+                <ScrollToTopButton IntervalInMs={16} Step={40}/>
             </Container>
             )
     }

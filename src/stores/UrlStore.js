@@ -8,5 +8,8 @@ export const UrlStore = {
     // TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Y2NmZmFlYTc5ZTkyOTNhNDgxNDhiN2EiLCJpYXQiOjE1NTcxMzQxMTMsImV4cCI6MTU1OTcyNjExM30.qGun-cd_7OEuJDEi0v38ZsuNyDzOgrQis4rHVfUyZ6s';
     MAIN_URL : 'http://profumo.com.ua',
     MAIN_GRAPHQL_URI: 'http://profumo.com.ua/graphql',
-    CATEGORIES_URL : 'http://profumo.com.ua/categories/tree/without'
+    CATEGORIES_URL : 'http://profumo.com.ua/categories/tree/without',
+    OLALALA_MAIN_URL : 'http://olalala.com.ua',
+    OLALALA_MAIN_GRAPHQL_URI: 'http://olalala.com.ua/graphql',
+    OLALALA_CATEGORIES_URL : 'http://olalala.com.ua/categories/tree/without'
 };

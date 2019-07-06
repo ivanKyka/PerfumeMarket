@@ -19,7 +19,7 @@ import {UserStore} from '../stores/userStore';
 
 
 const httpLink = createHttpLink({
-    uri: UrlStore.MAIN_GRAPHQL_URI
+    uri: UrlStore.OLALALA_MAIN_GRAPHQL_URI
 });
 
 // const authLink = setContext((_, {headers}) => {

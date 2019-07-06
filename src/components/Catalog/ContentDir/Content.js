@@ -10,11 +10,8 @@ import {toJS} from "mobx";
 @observer
 export default class Content extends React.Component {
 
+    lastStartFromValue = 0;
     urlStore = this.props.store.urlStore;
-
-    componentDidMount() {
-
-    }
 
     normalizeFilterObject = (filterObject) => {
         if (filterObject.category._id.length === 0){
@@ -37,14 +34,20 @@ export default class Content extends React.Component {
         let filtersJS = toJS(filters);
         let limit = CatalogStore.limit;
         let limitJS = toJS(limit);
+        let startFrom = CatalogStore.startFrom;
+        let startFromJS = toJS(startFrom);
+
+        console.log(filtersJS);
 
         this.normalizeFilterObject(filtersJS);
+
+        //while(typeof filters.category._id === "Object");
 
         return (
             <Fragment>
                 <Query
-                    query={gql`query Products_by_filters($filters: JSON!, $sortOption: String!, $limit: Int!){
-                        products(limit: $limit, sort: $sortOption, where: $filters){
+                    query={gql`query Products_by_filters($filters: JSON!, $sortOption: String!, $limit: Int!, $startFrom: Int!){
+                        products(start: $startFrom, limit: $limit, sort: $sortOption, where: $filters){
                             category{
                                 _id
                             }
@@ -69,8 +72,8 @@ export default class Content extends React.Component {
                           createdAt
                       }
                 }`}
-                    fetchPolicy={'no-cache'}
-                    variables={{filters : filtersJS, sortOption : sortOptionJS, limit: limitJS}}
+                    fetchPolicy={'cache'}
+                    variables={{filters : filtersJS, sortOption : sortOptionJS, limit: limitJS, startFrom: startFromJS}}
                 >
                     {({loading, error, data, refetch}) => {
                         CatalogStore.refetch = refetch;
@@ -78,15 +81,23 @@ export default class Content extends React.Component {
                         if (loading) return <p></p>;
                         if (error) return <p>Error :(</p>;
 
-                        CatalogStore.moreThanCurrent = data.products.length >= limit;
+                        if (CatalogStore.startFrom !== this.lastStartFromValue){
+                            CatalogStore.products = CatalogStore.products.concat(data.products);
+                            this.lastStartFromValue = CatalogStore.startFrom;
+                        } else{
+                            CatalogStore.products = data.products;
+                            CatalogStore.startFrom = 0;
+                        }
+
+                        CatalogStore.checkIsMoreDataThan();
 
                         return (
-                            data.products.map((content, index) =>
+                            CatalogStore.products.map((content, index) =>
                                 <ContentBlock
                                     key={index}
                                     options={
                                         {
-                                            image: `${this.urlStore.MAIN_URL}${content.photos[0].url}`,
+                                            image: `${content.photos[0] ? this.urlStore.OLALALA_MAIN_URL + content.photos[0].url : ""}`,
                                             rating: content.rating,
                                             reviews: content.comments.length,
                                             name: content.name_ru,

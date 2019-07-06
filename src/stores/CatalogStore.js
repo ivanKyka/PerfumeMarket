@@ -2,6 +2,8 @@ import {observable, action} from 'mobx'
 
 
 class CatalogStore {
+    products = [];
+
     @observable
     filters = {
         properties: {_id: []},
@@ -22,12 +24,20 @@ class CatalogStore {
     };
 
     @observable
-    limit = 30;
+    startFrom = 0;
 
-    moreThanCurrent = false;
+    limit = 6;
+
+    @observable
+    isMoreDataThanLimit = true;
 
     refetch = null;
     refetchCategory = null;
+
+    @action
+    checkIsMoreDataThan = () => {
+        this.isMoreDataThanLimit = (this.startFrom + this.limit) === this.products.length;
+    };
 
     @action
     setSearchRequest = (searchRequest) => {
@@ -40,8 +50,7 @@ class CatalogStore {
 
     @action
     increaseLimit = () => {
-        console.log("limit increased");
-        this.limit += 30;
+        this.startFrom += 6;
 
         this.refetch();
     };
@@ -160,6 +169,23 @@ class CatalogStore {
     setID = (id) => {
         this.filters.category._id = id;
         this.refetch();
+    };
+
+    getParametresFromURL = (string) => {
+        let url = new URL(string);
+        let parametresString = url.search.substring(1);
+
+        let values = [];
+
+        let vars = parametresString.split('&');
+
+        for (let i = 0;i < vars.length;i++) {
+            let pair = vars[i].split('=');
+            values.push(decodeURIComponent(pair[1]));
+        }
+
+        console.log(values);
+        return values;
     }
 }
 

@@ -12,7 +12,7 @@ import {theme} from "../../../stores/StyleStore";
 export default class ContentBlock extends React.Component{
 
     render() {
-       return(
+        return(
            <ThemeProvider theme={theme}>
                <Block>
                    <Image src={this.props.options.image}/>

@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import Footer from "../public/Footer";
 import Header from "../public/Header";
 import FilterComponentContainer from "./FilterComponentContainer";
