@@ -50,7 +50,7 @@ class CatalogStore {
 
     @action
     increaseLimit = () => {
-        this.startFrom += 6;
+        this.startFrom += this.limit;
 
         this.refetch();
     };

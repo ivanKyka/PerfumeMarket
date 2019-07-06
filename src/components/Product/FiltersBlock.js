@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import {Query} from "react-apollo";
 import gql from "graphql-tag";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import Times from '../../resources/image/ProductIcons/times.svg'
 
 export default class FiltersBlock extends React.Component {
@@ -26,8 +24,8 @@ render() {
                     }
                     return (
                         <List>
-                            {data.product.properties.map(elem =>
-                                <FilterBlock key={elem.property_name}>
+                            {data.product.properties.map((elem, index) =>
+                                <FilterBlock key={elem.property_name + index}>
                                     <span>{elem.property_val}</span>
                                     <img src={Times} alt=""/>
                                 </FilterBlock>

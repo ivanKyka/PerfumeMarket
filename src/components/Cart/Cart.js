@@ -4,7 +4,10 @@ import ProductCard from "./ProductCard";
 import Header from "../public/Header";
 import Footer from "../public/Footer";
 import HeadCatalog from "../public/HeadCatalog";
+import {inject, observer} from "mobx-react";
 
+@inject("store")
+@observer
 export default class Cart extends React.Component {
 
     render() {
@@ -14,8 +17,11 @@ export default class Cart extends React.Component {
                 <HeadCatalog/>
                 <Container>
                     <List>
-                        <ProductCard ProductID={'5cefe7f8c7b5b13f78051f8d'} Count={1}/>
-                        <ProductCard ProductID={'5ced9bacc7b5b13f7805157f'} Count={2}/>
+                        {
+                            this.props.store.cart.getAll().map(el => {
+                                return <ProductCard ProductID={el.elem.id} Count={el.count}/>
+                            })
+                        }
                     </List>
                 </Container>
                 <Footer/>

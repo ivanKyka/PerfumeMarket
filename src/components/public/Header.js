@@ -10,8 +10,10 @@ import SignIn from "../Auth/SignIn";
 import {me} from "../../api/Users";
 import User from "../../entities/User";
 import {inject} from "mobx-react";
+import {observer} from "mobx-react";
 
 @inject('store')
+@observer
 export default class Header extends React.Component{
 
     updateAuthData = (() => {
@@ -71,12 +73,14 @@ export default class Header extends React.Component{
                             <li>Каталог</li>
                             <li>О нас</li>
                             <li>Контакты</li>
-                            <li>Доставка</li>
+                            <li
+                                onClick={this.props.store.cart.clearCart}
+                            >Доставка</li>
                         </Menu>
                         <Cart to={'/cart'}>
                             <FontAwesomeIcon icon={faShoppingCart}/>
                             <span>Корзина</span>
-                            <Counter>0</Counter>
+                            <Counter>{this.props.store.cart.sizeOfCart}</Counter>
                         </Cart>
                         <SignInButton
                             openLogin={this.openLogin}

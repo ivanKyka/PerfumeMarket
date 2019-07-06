@@ -19,7 +19,7 @@ import {UserStore} from '../stores/userStore';
 import {Cart as CartStore} from '../stores/Cart';
 
 const httpLink = createHttpLink({
-    uri: UrlStore.OLALALA_MAIN_GRAPHQL_URI
+    uri: UrlStore.MAIN_GRAPHQL_URI
 });
 
 // const authLink = setContext((_, {headers}) => {
@@ -45,6 +45,14 @@ const store = {
 };
 
 class App extends Component {
+
+
+    componentWillMount() {
+        cart.clearCart();
+        cart.getCartFromServer();
+        cart.loadCart();
+    }
+
     render() {
         return (
             <Provider store={store}>

@@ -34,8 +34,6 @@ export default class Content extends React.Component {
         let filtersJS = toJS(filters);
         let limit = CatalogStore.limit;
         let limitJS = toJS(limit);
-        let startFrom = CatalogStore.startFrom;
-        let startFromJS = toJS(startFrom);
 
         console.log(filtersJS);
 
@@ -72,8 +70,8 @@ export default class Content extends React.Component {
                           createdAt
                       }
                 }`}
-                    fetchPolicy={'cache'}
-                    variables={{filters : filtersJS, sortOption : sortOptionJS, limit: limitJS, startFrom: startFromJS}}
+                    fetchPolicy={'no-cache'}
+                    variables={{filters : filtersJS, sortOption : sortOptionJS, limit: limitJS, startFrom: toJS(CatalogStore.startFrom)}}
                 >
                     {({loading, error, data, refetch}) => {
                         CatalogStore.refetch = refetch;
@@ -81,18 +79,21 @@ export default class Content extends React.Component {
                         if (loading) return <p></p>;
                         if (error) return <p>Error :(</p>;
 
+                        console.log(CatalogStore.startFrom);
+
                         if (CatalogStore.startFrom !== this.lastStartFromValue){
                             CatalogStore.products = CatalogStore.products.concat(data.products);
                             this.lastStartFromValue = CatalogStore.startFrom;
                         } else{
                             CatalogStore.products = data.products;
                             CatalogStore.startFrom = 0;
+                            this.lastStartFromValue = 0;
                         }
 
                         CatalogStore.checkIsMoreDataThan();
 
                         return (
-                            CatalogStore.products.map((content, index) =>
+                                CatalogStore.products.map((content, index) =>
                                 <ContentBlock
                                     key={index}
                                     options={
@@ -106,7 +107,6 @@ export default class Content extends React.Component {
                                             price: content.price
                                         }
                                     }
-
                                 />)
                         )
                     }}

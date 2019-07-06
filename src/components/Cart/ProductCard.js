@@ -8,6 +8,19 @@ import Counter from "../public/Counter";
 @inject('store')
 export default class ProductCard extends React.Component {
 
+    setCountHandler = (val => {
+        this.setState({
+            countOfProducts: val
+        })
+    }).bind(this);
+
+    constructor(props){
+        super(props);
+        this.state = {
+            countOfProducts: props.Count
+        }
+    }
+
 render() {
     return  (
         <Container>
@@ -50,8 +63,8 @@ render() {
                             <React.Fragment>
                                 <Name>{data.product.name_ru}</Name>
                                 <Vendor>{data.product.vendor}</Vendor>
-                                <Price>{data.product.price}</Price>
-                                <Counter/>
+                                <Price>{data.product.price}грн * {this.state.countOfProducts}</Price>
+                                <Counter setVal={this.setCountHandler} defaultValue={this.props.Count}/>
                             </React.Fragment>
                         )
                     }}

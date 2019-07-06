@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 export default class Counter extends React.Component {
 
+
     increaseCountOfProducts = (() => {
         this.setState(oldState => {
             this.props.setVal(1+oldState.countOfProducts);
@@ -30,7 +31,7 @@ export default class Counter extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            countOfProducts: 1
+            countOfProducts: props.defaultValue || 1
         }
     }
 
