@@ -7,32 +7,42 @@ import {ClearCart, ModifyCart, GetCart} from '../api/Cart';
 
 export  class Cart {
 
+
     @observable.deep
     items = new Map();
 
     totalPrice = 0;
+
     @action
     getElemFromCart = (id => {
         return(this.items.get(id));
     }).bind(this);
+
     getAll = (() => {
         return Array.from(this.items.values());
     }).bind(this);
+
     saveCart = (() => {
         window.localStorage.setItem('cart',JSON.stringify(Array.from(this.items.values())));
     }).bind(this);
+
     @action
     addToCart = ((elem,count) => {
+        if (this.items.has(elem.id)){
+            this.items.set(elem.id,{elem: elem, count: count + this.items.get(elem.id).count});
+        } else
         this.items.set(elem.id,{elem: elem, count: count});
         this.saveCart();
         ModifyCart(this.getAll());
     }).bind(this);
+
     @action
     removeFromCart = ((id) => {
         this.items.delete(id);
         this.saveCart();
         ModifyCart(this.getAll());
     }).bind(this);
+
     @action
     clearCart = (() => {
         this.items.clear();
@@ -40,6 +50,7 @@ export  class Cart {
         this.totalPrice = 0;
         ClearCart();
     }).bind(this);
+
     loadCart = (() => {
         this.items = new Map();
         try{
@@ -70,6 +81,7 @@ export  class Cart {
 
         }
     }).bind(this);
+    
     @action
     getCartFromServer = (() => {
         GetCart().then(data => {
@@ -79,8 +91,11 @@ export  class Cart {
     });
 
     @computed get getTotal() {
-        return  this.getAll().reduce((acc, cur) => {
-            return acc + cur.elem.price * cur.count - 0;
+        let data = this.getAll().map(el => {return {elem: {id: el.elem.id, price: el.elem.price}, count: el.count}});
+        console.log(data);
+        return  data.reduce((acc, cur) => {
+            console.log(cur);
+            return acc + cur.elem.price * cur.count;
         }, 0);
     }
 
@@ -91,6 +106,11 @@ export  class Cart {
         this.items.set(id, elem);
         this.saveCart();
     };
+
+    @computed
+    get sizeOfCart() {
+        return this.items.size;
+    }
 }
 
 //To understand recursion, see the top of this file

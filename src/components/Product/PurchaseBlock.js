@@ -11,15 +11,26 @@ import FacebookIcon from '../../resources/image/ProductIcons/Facebook.svg'
 import TwitterIcon from '../../resources/image/ProductIcons/Vector(1).svg'
 import FiltersBlock from './FiltersBlock';
 import Counter from "../public/Counter";
+import {inject} from "mobx-react";
 
+@inject('store')
 export default class PurchaseBlock extends React.Component {
 
+
+    addToCart = (() => {
+        this.props.store.cart.addToCart({
+            id: this.props.ProductID,
+            price: this.price
+        }, this.state.countOfProducts-0);
+    })
 
     constructor(props) {
         super(props);
         this.state = {
-            countOfProducts: 1
-        }
+            countOfProducts: 1,
+            price: 0
+        };
+        this.price = 0;
     }
 
     setCountOfProducts = ((value) => {
@@ -46,6 +57,8 @@ export default class PurchaseBlock extends React.Component {
                     if (error) {
                         return <p>Error :(</p>;
                     }
+                        this.price = data.product.price;
+
                         return(
                             <Price>Цена: {data.product.price * this.state.countOfProducts}</Price>
                         );
@@ -81,7 +94,10 @@ export default class PurchaseBlock extends React.Component {
                 <Counter
                     setVal={this.setCountOfProducts}
                 />
-                <AddToCartButton type="button" theme={theme}>
+                <AddToCartButton
+                    type="button"
+                    theme={theme}
+                    onClick={this.addToCart}>
                     <span>В корзину</span>
                     <object data={CartImage} type="image/svg+xml"/>
                 </AddToCartButton>

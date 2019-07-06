@@ -45,6 +45,14 @@ const store = {
 };
 
 class App extends Component {
+
+
+    componentWillMount() {
+        cart.clearCart();
+        cart.getCartFromServer();
+        cart.loadCart();
+    }
+
     render() {
         return (
             <Provider store={store}>
