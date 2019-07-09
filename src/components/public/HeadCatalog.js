@@ -8,6 +8,7 @@ import './HeadCatalogStyles.css';
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css'
 import {theme} from "../../stores/StyleStore";
+import {Redirect} from "react-router";
 
 export default class HeadCatalog extends React.Component{
 
@@ -16,12 +17,13 @@ export default class HeadCatalog extends React.Component{
         console.log('click');
     }).bind(this);
 
-    constructor(props){
-        super(props);
-        this.state = {
-            items: []
-        }
-    }
+    searchHandler = (e => {
+        e.preventDefault();
+        if (this.searchExpr !== '')
+        this.setState({
+            isSearch: true
+        })
+    }).bind(this);
 
     componentDidMount() {
         categoryTree(true).then(a => {
@@ -47,16 +49,36 @@ export default class HeadCatalog extends React.Component{
             })
         })
     }
+    setExpression = (e => {
+        e.preventDefault();
+        this.searchExpr = e.target.value;
+    }).bind(this);
+
+    constructor(props){
+        super(props);
+        this.state = {
+            items: [],
+            isSearch: false
+        };
+        this.searchExpr = '';
+    }
 
     render() {
+        if (this.state.isSearch)
+            return <Redirect to={'/catalog/&' + this.searchExpr}/>;
         return(
             <ThemeProvider theme={theme}>
             <Container>
                 <Menubar
                     model={this.state.items}
                 />
-                <Search>
-                    <SearchInput type="text" placeholder="Поиск"/>
+                <Search onSubmit={this.searchHandler}>
+                    <SearchInput
+                        type="text"
+                        placeholder="Поиск"
+                        ref={this.inputRef}
+                        onChange={this.setExpression}
+                    />
                     <SearchButton type="submit">
                         <FontAwesomeIcon icon={faSearch} size={'2x'} onClick={this.clickHandler}/>
                     </SearchButton>
@@ -88,7 +110,7 @@ const Container = styled.div`
   
 `;
 
-const Search = styled.div`
+const Search = styled.form`
   position: relative;
   width: 200px;
   margin: 5px 0 0 auto;
