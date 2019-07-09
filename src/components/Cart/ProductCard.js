@@ -38,7 +38,7 @@ render() {
                         return <p>Error :(</p>;
                     }
 
-                    const images = data.product.photos.map(a => a.url);
+                    const images = data.product.photos.map(a => a.url).reverse();
                     return (
                         <Image src={this.props.store.urlStore.MAIN_URL + images[0]}/>
                     )

@@ -33,7 +33,7 @@ const Container = styled.div`
   
   grid-column-gap: 5px;
   grid-row-gap: 20px;
-  grid-auto-rows: 380px;
+  grid-auto-rows: 400px;
   justify-items: center;
   
   grid-column-start: ${props => props.searchMode ? '1' : '2'};

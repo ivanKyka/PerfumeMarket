@@ -38,15 +38,15 @@ export default class Counter extends React.Component {
 render() {
     return(
         <CountBlock>
-            <CountButton onClick={this.increaseCountOfProducts}>
-                <FontAwesomeIcon icon={faPlus}/>
+            <CountButton onClick={this.decreaseCountOfProducts}>
+                <FontAwesomeIcon icon={faMinus}/>
             </CountButton>
             <Count type="text"
                    disabled={true}
                    value={this.state.countOfProducts}
             />
-            <CountButton onClick={this.decreaseCountOfProducts}>
-                <FontAwesomeIcon icon={faMinus}/>
+            <CountButton onClick={this.increaseCountOfProducts}>
+                <FontAwesomeIcon icon={faPlus}/>
             </CountButton>
         </CountBlock>
     )

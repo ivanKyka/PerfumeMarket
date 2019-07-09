@@ -68,73 +68,79 @@ export default class Description extends React.Component {
                             </Table>
                         )
                     }}
-                        </Query>
-                        <SpecialOffer>
-                        <SpecialOfferLogo>
+                </Query>
+                <SpecialOffer>
+                    <SpecialOfferLogo>
                         <span>
                         <i>SPECIAL</i>
                         <i>&nbsp;&nbsp;OFFER</i>
                         </span>
-                        </SpecialOfferLogo>
-                        <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam beatae expedita nostrum quas unde
-                        </p>
-                        </SpecialOffer>
-                        </Container>
-                        )
-                        }
-                        }
+                    </SpecialOfferLogo>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam beatae expedita nostrum quas
+                        unde
+                    </p>
+                </SpecialOffer>
+            </Container>
+        )
+    }
+}
 
-                        const Table = styled.table`
-                        padding: 10px;
-                        border: 1px solid #cccccc;
-                        width: 100%;
-                        thead{
-                        display: block;
-                        font-size: 15px;
-                        border-bottom: 1px solid #cccccc;
-                        font-weight: bold;
-                        padding: 10px 0;
-                        width: 100%;
-                        }
-                        tbody {
-                        display: block;
-                        margin-top: 10px;
-                        font-size: 12px;
-                        }
-                        `;
+const Table = styled.table`
+    padding: 10px;
+    border: 1px solid #cccccc;
+    width: 100%;
+    thead{
+        display: block;
+        font-size: 15px;
+        border-bottom: 1px solid #cccccc;
+        font-weight: bold;
+        padding: 10px 0;
+        width: 100%;
+    }
+    tbody {
+        display: block;
+        margin-top: 10px;
+        font-size: 12px;
+        
+        td {
+          padding-right: 10px;
+        }
+    }
+    
+    `;
 
-                        const SpecialOffer = styled.div`
-                        display: grid;
-                        grid-template-columns: 57px 1fr;
-                        margin-top: 10px;
+const SpecialOffer = styled.div`
+    display: grid;
+    grid-template-columns: 57px 1fr;
+    margin-top: 10px;
 
-                        p {
-                        align-self: center;
-                        margin: 0 0 0 10px;
-                        padding: 0;
-                        font-size: 12px;
-                        text-align: justify;
-                        }
-                        `;
+    p {
+    align-self: center;
+    margin: 0 0 0 10px;
+    padding: 0;
+    font-size: 12px;
+    text-align: justify;
+    }
+    `;
 
-                        const SpecialOfferLogo = styled.div`
-                        display: grid;
-                        height: 57px;
-                        border-radius: 50px;
-                        border: 1px solid #222222;
-                        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3), inset 0px 0px 2px rgba(255, 255, 255, 0.75);
-                        justify-items: center;
-                        align-content: center;
-                        i {
-                        display: block;
-                        font-size: 9px;
-                        font-weight: bold;
-                        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
-                        }
-                        `;
+const SpecialOfferLogo = styled.div`
+    display: grid;
+    height: 57px;
+    border-radius: 50px;
+    border: 1px solid #222222;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3), inset 0px 0px 2px rgba(255, 255, 255, 0.75);
+    justify-items: center;
+    align-content: center;
+    i {
+    display: block;
+    font-size: 9px;
+    font-weight: bold;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    `;
 
-                        const Container = styled.div`
-                        padding: 0 20px;
-
-                        `;
+const Container = styled.div`
+    padding: 0 20px;
+    
+    `;
