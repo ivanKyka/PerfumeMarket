@@ -76,7 +76,7 @@ export default class FiltersLeftBar extends Component {
 
         return (
             <Container>
-                <PanelMenu model={this.state.model}/>
+                {/*<PanelMenu model={this.state.model}/>*/}
                 {this.state.isLastChildID && categoryJS._id ?
                     <Query
                         query={gql`

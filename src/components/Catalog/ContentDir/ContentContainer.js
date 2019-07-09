@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
-import Content from "./Content";
+import ContentQuery from "./ContentQuery";
+import ContentQueryTemp from "./ContentQuery";
 
 
 export default class ContentContainer extends React.Component {
@@ -10,7 +11,7 @@ export default class ContentContainer extends React.Component {
         return(
             <React.Fragment>
                 <Container searchMode={this.props.searchMode}>
-                    <Content/>
+                    <ContentQueryTemp/>
                 </Container>
             </React.Fragment>
         )

@@ -36,6 +36,10 @@ export default class FiltersTopBar extends Component {
     }
 
     resetChanges(){
+        if (this.state.keyWords === "" && this.state.lowerPrice === "" && this.state.higherPrice === ""){
+            return;
+        }
+
         this.setState({
             keyWords: "",
             lowerPrice: "",

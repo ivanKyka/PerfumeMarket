@@ -2,8 +2,6 @@ import {observable, action} from 'mobx'
 
 
 class CatalogStore {
-    products = [];
-
     @observable
     filters = {
         properties: {_id: []},
@@ -23,20 +21,19 @@ class CatalogStore {
         _id : null
     };
 
-    @observable
-    startFrom = 0;
-
     limit = 6;
 
     @observable
-    isMoreDataThanLimit = true;
+    isMoreDataThanLimit = false;
+    productsCount = 0;
 
     refetch = null;
     refetchCategory = null;
+    fetchMore = null;
 
     @action
-    checkIsMoreDataThan = () => {
-        this.isMoreDataThanLimit = (this.startFrom + this.limit) === this.products.length;
+    checkIsMoreDataThan = (currentValue) => {
+        this.isMoreDataThanLimit = this.productsCount > currentValue;
     };
 
     @action
@@ -52,7 +49,7 @@ class CatalogStore {
     increaseLimit = () => {
         this.startFrom += this.limit;
 
-        this.refetch();
+        this.fetchMore();
     };
 
     @action
