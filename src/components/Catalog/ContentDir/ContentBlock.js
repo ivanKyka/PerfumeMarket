@@ -50,10 +50,10 @@ export default class ContentBlock extends React.Component{
 
 const BlockHover = keyframes`
   0% { 
-    height: 380px; 
+    height: 400px; 
   }
   100%  { 
-    height: 520px; 
+    height: 550px; 
   }
 `;
 
@@ -62,7 +62,6 @@ const Block = styled.div`
   padding-top: 5px;
   width: 250px;
   z-index: 5;
-  height: min-content;
   background: #fff;
   overflow: hidden;
   display: grid;
@@ -77,20 +76,22 @@ const Block = styled.div`
     z-index: 6;
     box-shadow: 0 0  10px  ${props => props.theme.primary} ;
     animation: ${BlockHover} .2s ease-out forwards;
-    
-    > img{
-        transform: scale(1);
-    }
+   
   }
 `;
 
 const Image = styled.img`
   justify-self: center;
   align-self: center;
-  max-width: 250px;
-  transform: scale(0.9);
+  max-width: 220px;
   //margin: 30px 10%;
-  height: 250px;
+  height: 220px;
+  z-index: 5;
+  
+  :hover{
+    max-width: 250px;
+    height: 250px;
+  }
 `;
 
 
@@ -109,6 +110,7 @@ const Describe = styled.div`
   width: 250px; 
   text-align: center;
   justify-self: center;
+  font-size: 11pt;
   span {
     color: #777;
     font-size: 9pt;

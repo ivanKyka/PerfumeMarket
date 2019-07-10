@@ -44,21 +44,21 @@ export default class PhotoGalerry extends React.Component {
                 }
 
                 try {
-                    const images = data.product.photos.map(a => a.url);
+                    const images = data.product.photos.map(a => a.url).reverse();
                     return (
-                        <Container>
-                            {/*<Catalog>*/}
-                            {/*    {images.map((elem, index) => {*/}
-                            {/*        return <Image src={this.urlStore.MAIN_URL + elem}*/}
-                            {/*                      alt=""*/}
-                            {/*                      id={index}*/}
-                            {/*                      key={index}*/}
-                            {/*                      active={index == this.state.currentIndex}*/}
-                            {/*                      onClick={this.clickHandler}*/}
-                            {/*                      theme={theme}/>;*/}
-                            {/*    })}*/}
+                        <Container showGalerry={images.length > 1}>
+                            {images.length>1?
+                                <Catalog>{images.map((elem, index) => {
+                                    return <Image src={this.urlStore.MAIN_URL + elem}
+                                                  alt=""
+                                                  id={index}
+                                                  key={index}
+                                                  active={index == this.state.currentIndex}
+                                                  onClick={this.clickHandler}
+                                                  theme={theme}/>;
+                                })}
 
-                            {/*</Catalog>*/}
+                                </Catalog>:''}
                             <ImageContainer>
                                 <ReactImageMagnify
                                     {...{
@@ -88,7 +88,7 @@ export default class PhotoGalerry extends React.Component {
 const Container = styled.div`
   padding: 10px 0;
   display: grid;
-  grid-template-columns: 1fr ;
+  grid-template-columns: ${props => props.showGalerry?'70px 1fr':'1fr'};
   grid-auto-rows: minmax(min-content, max-content);
   max-width: 35vw;
   grid-gap: 0;
@@ -103,9 +103,9 @@ const ImageContainer = styled.div`
 const Catalog = styled.div`
     display: grid;
     justify-items: center;
-    align-items: start;
+    align-items: center;
     grid-template-columns: 1fr;
-    grid-auto-rows: minmax(400px, min-content);
+    grid-auto-rows: minmax(80px, min-content);
 `;
 
 const Image = styled.img`
@@ -113,6 +113,5 @@ const Image = styled.img`
     max-height: 75px;
     padding: 4px;
     border: ${props => props.active ? ('2px ' + props.theme.primary + ' solid') : '2px white solid'};
-    margin: 3px;
     cursor: pointer;
 `;

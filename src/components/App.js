@@ -60,7 +60,8 @@ class App extends Component {
                     <BrowserRouter>
                         <Switch>
                             <Route exact path={'/'} component={MainPage}/>
-                            <Route path={'/cart'} component={Cart}/><Route path={'/catalog/:id'} component={Catalog}/>
+                            <Route path={'/cart'} component={Cart}/>
+                            <Route path={'/catalog/:id'} component={Catalog}/>
                             <Route path={'/checkout'} component={Checkout}/>
                             <Route path={'/product/:id'} component={Product}/>
                             <Route path={'/profile'} component={Profile}/>

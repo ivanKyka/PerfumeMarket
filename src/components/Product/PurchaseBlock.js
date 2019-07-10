@@ -60,7 +60,7 @@ export default class PurchaseBlock extends React.Component {
                         this.price = data.product.price;
 
                         return(
-                            <Price>Цена: {data.product.price * this.state.countOfProducts}</Price>
+                            <Price>Цена: {data.product.price * this.state.countOfProducts} грн.</Price>
                         );
                 }}
             </Query>
