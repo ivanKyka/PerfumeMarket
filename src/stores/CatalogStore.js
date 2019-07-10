@@ -159,8 +159,6 @@ class CatalogStore {
             filtersCopy.desc_contains = null;
         }
 
-        console.log(filtersCopy, this.searchMode);
-
         this.filters = {...this.filters, ...filtersCopy};
 
         this.refetch();
