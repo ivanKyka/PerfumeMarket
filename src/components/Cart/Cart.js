@@ -19,7 +19,11 @@ export default class Cart extends React.Component {
                     <List>
                         {
                             this.props.store.cart.getAll().map(el => {
-                                return <ProductCard ProductID={el.elem.id} Count={el.count}/>
+                                return <ProductCard
+                                    ProductID={el.product.id}
+                                    Count={el.count}
+                                    key={el.product.id}
+                                />
                             })
                         }
                     </List>

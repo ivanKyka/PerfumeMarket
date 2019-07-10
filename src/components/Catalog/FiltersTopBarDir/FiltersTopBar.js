@@ -54,9 +54,7 @@ export default class FiltersTopBar extends Component {
             <ThemeProvider theme={theme}>
             <Container>
                 <Menu>
-                    <div>
-                        <SortSelection/>
-                    </div>
+                    <SortSelection/>
                     <div>
                         <Label>НАЗВАНИЕ</Label>
                         <Input ref={this.state.keyWordsRef} value={this.state.keyWords} onChange={this.onKeyWordsChange} width={`150px`} placeholder={"Поиск"}/>
@@ -92,16 +90,14 @@ const Container = styled.div`
     grid-row-end: 2;
     grid-column-start: 1;
     grid-column-end: 3;
-    width: 100%;
 `;
 
 const Menu = styled.div`
     display: grid;
-    grid-template-columns: 150px 300px 250px 250px;
+    grid-template-columns: 150px 300px 250px 300px;
     justify-content: space-around;
     padding: 10px;
     z-index: 100;
-    width: 100%;
     
     &>div{
         padding: 0 20px;

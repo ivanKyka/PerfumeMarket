@@ -72,7 +72,11 @@ export default class PhotoGalerry extends React.Component {
                                             height: 800
                                         },
                                         lensStyle: {backgroundColor: 'rgba(0,0,0,.6)'},
-                                        enlargedImageContainerStyle: {zIndex: 10000}
+                                        enlargedImageContainerStyle:
+                                            {
+                                                zIndex: 10000,
+                                                background: '#fff'
+                                            }
                                     }}
                                 />
                             </ImageContainer>

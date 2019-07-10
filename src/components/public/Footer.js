@@ -22,11 +22,10 @@ export default class Footer extends React.Component{
 
                     <Foot2>
                         <Menu>
-                            <ListPoint><Link to={'/'}>HOME</Link></ListPoint>
-                            <ListPoint><Link to={'/catalog'}>SHOP</Link></ListPoint>
-                            <ListPoint><a href="">TEAM</a></ListPoint>
-                            <ListPoint><Link to={'/aboutUs'}>ABOUT US</Link></ListPoint>
-                            <ListPoint><a href="">CONTACTS</a></ListPoint>
+                            <ListPoint><Link to={'/'}>ГЛАВНАЯ</Link></ListPoint>
+                            <ListPoint><a href="">КОНТАКТЫ</a></ListPoint>
+                            <ListPoint><Link to={'/aboutUs'}>О НАС</Link></ListPoint>
+                            <ListPoint><a href="">ДОСТАВКА</a></ListPoint>
                         </Menu>
 
                     </Foot2>
@@ -56,8 +55,8 @@ export default class Footer extends React.Component{
                         <span>She gave my mother such a turn, that I have always been convinced I am indebted to Miss <br/>Betsey for having been born on a Friday.</span>
                     </Foot4>
                     <Foot5>
-                        <a href="" >PRIVACY POLICY</a>
-                        <a href="" >TERMS AND CONDITIONS</a>
+                        <a href="" >ПРИВАТНОСТЬ</a>
+                        <a href="" >ЛИЦЕНЗИОННОЕ СОГЛАШЕНИЕ</a>
                     </Foot5>
 
 

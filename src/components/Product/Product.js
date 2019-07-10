@@ -56,7 +56,13 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 5fr 4fr 5fr;
   min-height: calc(100vh - 412px);
-  padding: 10px 150px;
+  
+  @media(min-width: 1366px){
+      padding: 10px 150px;
+  }
+  @media(max-width: 1365px) {
+    padding: 10px;
+  }
 `;
 
 const ProductName = styled.p`

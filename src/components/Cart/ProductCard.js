@@ -8,10 +8,12 @@ import Counter from "../public/Counter";
 @inject('store')
 export default class ProductCard extends React.Component {
 
+
     setCountHandler = (val => {
         this.setState({
             countOfProducts: val
-        })
+        });
+        this.props.store.cart.setCount(this.props.ProductID, val);
     }).bind(this);
 
     constructor(props){

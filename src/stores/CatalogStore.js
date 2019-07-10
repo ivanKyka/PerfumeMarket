@@ -21,7 +21,7 @@ class CatalogStore {
         _id : null
     };
 
-    limit = 6;
+    limit = 18;
 
     @observable
     isMoreDataThanLimit = false;
