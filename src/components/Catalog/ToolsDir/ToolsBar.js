@@ -20,7 +20,7 @@ export default class ToolsBar extends Component {
 }
 
 const Container = styled.div`
-    grid-column-start: ${props => props.searchMode ? '1' : "2"};
+    grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 4;
     grid-row-end: 5;

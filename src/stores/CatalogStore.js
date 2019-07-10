@@ -8,10 +8,13 @@ class CatalogStore {
         category: {
             _id: []
         },
-        price_lte: null,
         price_gte: null,
-        name_ru_contains: null
+        price_lte: null,
+        name_ru_contains: null,
+        desc_contains: null
     };
+
+    searchRequestForSearchMode = null;
 
     @observable
     sortOption = 'price:asc';
@@ -22,6 +25,7 @@ class CatalogStore {
     };
 
     limit = 18;
+    searchMode = false;
 
     @observable
     isMoreDataThanLimit = false;
@@ -32,6 +36,11 @@ class CatalogStore {
     fetchMore = null;
 
     @action
+    setRequestForSearchMode = (request) => {
+        this.searchRequestForSearchMode = request;
+    };
+
+    @action
     checkIsMoreDataThan = (currentValue) => {
         this.isMoreDataThanLimit = this.productsCount > currentValue;
     };
@@ -40,6 +49,9 @@ class CatalogStore {
     setSearchRequest = (searchRequest) => {
         let filtersCopy = {...this.filters};
         filtersCopy.name_ru_contains = searchRequest;
+        filtersCopy.desc_contains = searchRequest;
+        this.searchRequestForSearchMode = searchRequest;
+        this.searchMode = true;
 
         this.filters = filtersCopy;
         this.refetch();
@@ -47,8 +59,6 @@ class CatalogStore {
 
     @action
     increaseLimit = () => {
-        this.startFrom += this.limit;
-
         this.fetchMore();
     };
 
@@ -115,7 +125,7 @@ class CatalogStore {
     setFiltersFromLeftBar = (filter) => {
         let filtersCopy = {...this.filters};
 
-        if (filtersCopy.properties._id.includes(filter)){
+        if (filtersCopy.properties._id.includes(filter)) {
             filtersCopy.properties._id = filtersCopy.properties._id.filter(el => el !== filter);
             this.filters = filtersCopy;
             this.refetch();
@@ -131,7 +141,7 @@ class CatalogStore {
     setFiltersFromTopBar = (filters) => {
         let filtersCopy = {...this.filters};
 
-        filtersCopy = {...filtersCopy, ...filters};
+        filtersCopy = {...filtersCopy, ...filters, desc_contains: filters.name_ru_contains};
         this.filters = filtersCopy;
 
         this.refetch();
@@ -143,7 +153,11 @@ class CatalogStore {
 
         filtersCopy.price_lte = null;
         filtersCopy.price_gte = null;
-        filtersCopy.name_ru_contains = null;
+
+        if (!this.searchMode) {
+            filtersCopy.name_ru_contains = null;
+            filtersCopy.desc_contains = null;
+        }
 
         this.filters = {...this.filters, ...filtersCopy};
 
@@ -164,7 +178,7 @@ class CatalogStore {
 
         let vars = parametresString.split('&');
 
-        for (let i = 0;i < vars.length;i++) {
+        for (let i = 0; i < vars.length; i++) {
             let pair = vars[i].split('=');
             values.push(decodeURIComponent(pair[1]));
         }

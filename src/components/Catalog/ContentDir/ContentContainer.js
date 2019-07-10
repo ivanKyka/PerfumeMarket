@@ -24,11 +24,10 @@ const Container = styled.div`
   display: grid;
   
   @media(max-width: 1100px) {
-      grid-template-columns: 1fr 1fr ${props => props.searchMode ? '1fr' : ''};
+      grid-template-columns: 1fr 1fr;
   }
   @media(min-width: 1101px) {
-    grid-template-columns: 1fr 1fr 1fr ${props => props.searchMode ? '1fr' : ''};
-  }
+    grid-template-columns: 1fr 1fr 1fr;
   
   margin: 25px 2%;
   
@@ -37,7 +36,7 @@ const Container = styled.div`
   grid-auto-rows: 400px;
   justify-items: center;
   
-  grid-column-start: ${props => props.searchMode ? '1' : '2'};
+  grid-column-start: 2;
   grid-row-start: 3;
   grid-column-end: 3;
   grid-row-end: 4;

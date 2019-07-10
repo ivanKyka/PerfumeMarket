@@ -1,17 +1,16 @@
 import React, {Fragment} from 'react';
 import {Query} from "react-apollo";
-import gql from "graphql-tag";
 import ContentBlock from './ContentBlock'
 import {inject, observer} from "mobx-react";
 import CatalogStore from '../../../stores/CatalogStore'
 import {toJS} from "mobx";
 import {UrlStore} from "../../../stores/UrlStore";
+import {PRODUCTS_BY_FILTERS_PAGINATED} from "../../../stores/Queries";
 
 @inject('store')
 @observer
 export default class ContentQuery extends React.Component {
 
-    lastStartFromValue = 0;
     urlStore = this.props.store.urlStore;
 
     normalizeFilterObject = (filterObject) => {
@@ -36,9 +35,11 @@ export default class ContentQuery extends React.Component {
                 query: `
                     query Products_by_filters($filters: JSON!){
                         products(start: 0, limit: -1, where: $filters){
-                                        category{
+                                        properties{
+                                            property_name
+                                            property_val
                                             _id
-                                        }
+                                        }               
                         }
                     }
             `,
@@ -63,32 +64,7 @@ export default class ContentQuery extends React.Component {
         return (
             <Fragment>
                 <Query
-                    query={gql`query Products_by_filters($filters: JSON!, $sortOption: String!, $limit: Int!, $startFrom: Int!){
-                        products(start: $startFrom, limit: $limit, sort: $sortOption, where: $filters){
-                            category{
-                                _id
-                            }
-                            properties{
-                                property_name
-                                property_val
-                                _id
-                               
-                          }
-                          photos{
-                            url
-                          }
-                          rating
-                          vendor
-                          comments{
-                            rate
-                          }
-                          name_ru
-                          _id
-                          desc
-                          price
-                          createdAt
-                      }
-                }`}
+                    query={PRODUCTS_BY_FILTERS_PAGINATED}
                     fetchPolicy={'cache'}
                     variables={{
                         filters: filtersJS,

@@ -5,7 +5,7 @@ import SortSelection from "./SortSelection";
 import {theme} from '../../../stores/StyleStore';
 
 export default class FiltersTopBar extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -23,28 +23,39 @@ export default class FiltersTopBar extends Component {
         this.resetChanges = this.resetChanges.bind(this);
     }
 
-    onKeyWordsChange(){
+    onKeyWordsChange() {
         this.setState({keyWords: this.state.keyWordsRef.current.value});
     }
 
-    onLowerPriceChange(){
+    onLowerPriceChange() {
         this.setState({lowerPrice: this.state.lowerPriceRef.current.value});
     }
 
-    onHigherPriceChange(){
+    onHigherPriceChange() {
         this.setState({higherPrice: this.state.higherPriceRef.current.value});
     }
 
-    resetChanges(){
-        if (this.state.keyWords === "" && this.state.lowerPrice === "" && this.state.higherPrice === ""){
-            return;
-        }
+    resetChanges() {
+        if (this.props.searchMode){
+            if (this.state.lowerPrice === "" && this.state.higherPrice === "") {
+                return;
+            }
 
-        this.setState({
-            keyWords: "",
-            lowerPrice: "",
-            higherPrice: ""
-        });
+            this.setState({
+                lowerPrice: "",
+                higherPrice: ""
+            });
+        } else{
+            if (this.state.keyWords === "" && this.state.lowerPrice === "" && this.state.higherPrice === "") {
+                return;
+            }
+
+            this.setState({
+                keyWords: "",
+                lowerPrice: "",
+                higherPrice: ""
+            });
+        }
 
         CatalogStore.clearFiltersFormTopBar();
     }
@@ -52,35 +63,44 @@ export default class FiltersTopBar extends Component {
     render() {
         return (
             <ThemeProvider theme={theme}>
-            <Container>
-                <Menu>
-                    <SortSelection/>
-                    <div>
-                        <Label>НАЗВАНИЕ</Label>
-                        <Input ref={this.state.keyWordsRef} value={this.state.keyWords} onChange={this.onKeyWordsChange} width={`150px`} placeholder={"Поиск"}/>
-                    </div>
-                    <div>
-                        <Label>ЦЕНА</Label>
-                        <Input ref={this.state.lowerPriceRef} value={this.state.lowerPrice} onChange={this.onLowerPriceChange} width={`70px`} placeholder={"ОТ"}/>
-                        <Input ref={this.state.higherPriceRef} value={this.state.higherPrice} onChange={this.onHigherPriceChange} width={`70px`} placeholder={"ДО"}/>
-                    </div>
-                    <ButtonsBlock>
-                        <ApplyButton onClick={() => {
-                            CatalogStore.setFiltersFromTopBar({
-                                name_ru_contains : this.state.keyWords === "" ? null : this.state.keyWords,
-                                price_lte : this.state.higherPrice === "" ? null : this.state.higherPrice,
-                                price_gte: this.state.lowerPrice === "" ? null : this.state.lowerPrice
-                            })
-                        }}>
-                            ПОИСК
-                        </ApplyButton>
-                        <ResetButton onClick={this.resetChanges}>
-                            ОЧИСТИТЬ ВСЕ
-                        </ResetButton>
-                    </ButtonsBlock>
-                </Menu>
-            </Container>
-        </ThemeProvider>
+                <Container>
+                    <Menu>
+                        <div>
+                            <SortSelection/>
+                        </div>
+                        {this.props.searchMode ?
+                            ""
+                            :
+                            <div>
+                                <Label>НАЗВАНИЕ</Label>
+                                <Input ref={this.state.keyWordsRef} value={this.state.keyWords}
+                                       onChange={this.onKeyWordsChange} width={`150px`} placeholder={"Поиск"}/>
+                            </div>
+                        }
+                        <div>
+                            <Label>ЦЕНА</Label>
+                            <Input ref={this.state.lowerPriceRef} value={this.state.lowerPrice}
+                                   onChange={this.onLowerPriceChange} width={`70px`} placeholder={"ОТ"}/>
+                            <Input ref={this.state.higherPriceRef} value={this.state.higherPrice}
+                                   onChange={this.onHigherPriceChange} width={`70px`} placeholder={"ДО"}/>
+                        </div>
+                        <ButtonsBlock>
+                            <ApplyButton onClick={() => {
+                                CatalogStore.setFiltersFromTopBar({
+                                    name_ru_contains: this.state.keyWords === "" ? null : this.state.keyWords,
+                                    price_lte: this.state.higherPrice === "" ? null : this.state.higherPrice,
+                                    price_gte: this.state.lowerPrice === "" ? null : this.state.lowerPrice
+                                })
+                            }}>
+                                ПОИСК
+                            </ApplyButton>
+                            <ResetButton onClick={this.resetChanges}>
+                                ОЧИСТИТЬ ВСЕ
+                            </ResetButton>
+                        </ButtonsBlock>
+                    </Menu>
+                </Container>
+            </ThemeProvider>
         );
     }
 }

@@ -14,7 +14,7 @@ export default class ShowMoreButton extends Component {
             >
                 <ButtonImg src={ShowMoreImg}/>
                 <ButtonTitle>
-                    Show more
+                    Показать ещё
                 </ButtonTitle>
             </Container>
         )
