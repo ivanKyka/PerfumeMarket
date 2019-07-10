@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import Query from "react-apollo/Query";
 import CatalogStore from "../../../stores/CatalogStore";
 import {toJS} from "mobx";
-import gql from "graphql-tag";
 import {observer} from "mobx-react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimesCircle} from '@fortawesome/free-regular-svg-icons'
+import {ALL_PROPERTIES} from "../../../stores/Queries";
 
 @observer
 export default class FiltersDisplayBar extends Component {
@@ -18,12 +18,7 @@ export default class FiltersDisplayBar extends Component {
         return (
             <Container>
                 <Query
-                    query={gql`query{
-                        properties(limit: -1){
-                            _id
-                            property_val
-                        }
-                    }`}
+                    query={ALL_PROPERTIES}
                 >
                     {({loading, error, data}) => {
 

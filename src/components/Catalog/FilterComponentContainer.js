@@ -14,11 +14,11 @@ export default class FilterComponentContainer extends Component {
         this.props.searchMode ? CatalogStore.setSearchRequest(this.props.param) : CatalogStore.setCategory(this.props.param);
 
         let string = window.location.href;
-        if ((new URL(string)).search !== ""){
+        if ((new URL(string)).search !== "") {
             fetch(UrlStore.MAIN_GRAPHQL_URI, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query: '{ properties(limit: -1){ _id property_val } }' }),
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({query: '{ properties(limit: -1){ _id property_val } }'}),
             })
                 .then(res => res.json())
                 .then(data => {
@@ -36,16 +36,8 @@ export default class FilterComponentContainer extends Component {
     render() {
         return (
             <Container>
-                {this.props.searchMode ?
-                    ""
-                    :
-                    (
-                        <Fragment>
-                            <FiltersLeftBar param={this.props.param}/>
-                            <FiltersDisplayBar/>
-                        </Fragment>
-                    )
-                }
+                <FiltersDisplayBar/>
+                <FiltersLeftBar param={this.props.param} searchMode={this.props.searchMode}/>
                 <FiltersTopBar searchMode={this.props.searchMode} searchRequest={this.props.param}/>
                 <ContentContainer searchMode={this.props.searchMode}/>
                 <ToolsBar searchMode={this.props.searchMode}/>

@@ -1,12 +1,12 @@
 import React, {Component, Fragment} from 'react'
 import styled from 'styled-components'
 import OptionsContainer from "./AbstractOptionsComponentDir/OptionsContainer";
-import {PanelMenu} from "primereact/components/panelmenu/PanelMenu";
 import {Query} from "react-apollo";
-import gql from "graphql-tag";
 import {categoryTree} from "../../../api/Categories";
 import CatalogStore from "../../../stores/CatalogStore";
 import {toJS} from "mobx";
+import EmptyOptionsBlock from "./AbstractOptionsComponentDir/EmptyOptionsBlock";
+import {CATEGORIES_BY_SINGLE_ID, PRODUCTS_BY_REQUEST} from "../../../stores/Queries";
 
 export default class FiltersLeftBar extends Component {
     constructor(props) {
@@ -17,20 +17,21 @@ export default class FiltersLeftBar extends Component {
         this.state = {
             categories: [],
             model: [],
-            isLastChildID : false
+            isLastChildID: false
         };
 
         this.checkIsIn = this.checkIsIn.bind(this);
         this.getCategories = this.getCategories.bind(this);
+        this.renderSkeletonOptions = this.renderSkeletonOptions.bind(this);
     }
 
     componentDidMount() {
         categoryTree().then(categories => {
-            for(let i = 0;i < categories.length;i++){
-                if (this.checkIsIn(categories[i], this.props.param)){
+            for (let i = 0; i < categories.length; i++) {
+                if (this.checkIsIn(categories[i], this.props.param)) {
                     let temp = [];
                     temp.push(categories[i]);
-                    this.setState({model : temp});
+                    this.setState({model: temp});
                     this.getCategories(this.currentCategory);
                     return;
                 }
@@ -38,13 +39,16 @@ export default class FiltersLeftBar extends Component {
         });
     }
 
-    getCategories(topLevelCategory){
-        if (topLevelCategory.lastChild){
+    getCategories(topLevelCategory) {
+        if (!topLevelCategory)
+            return;
+
+        if (topLevelCategory.lastChild) {
             CatalogStore.addCategoriesToFilters(topLevelCategory.id);
             return;
         }
 
-        if (topLevelCategory.items){
+        if (topLevelCategory.items) {
             topLevelCategory.items.forEach(el => {
                 this.getCategories(el);
             });
@@ -53,9 +57,9 @@ export default class FiltersLeftBar extends Component {
     }
 
     checkIsIn(categories, id) {
-        if (categories.id === id){
-            if (categories.lastChild){
-                this.setState({isLastChildID : true});
+        if (categories.id === id) {
+            if (categories.lastChild) {
+                this.setState({isLastChildID: true});
             }
 
             this.currentCategory = categories;
@@ -63,12 +67,27 @@ export default class FiltersLeftBar extends Component {
             return true;
         }
 
-        if (categories.items){
+        if (categories.items) {
             return categories.items.map(el => this.checkIsIn(el, id));
         } else {
             return false;
         }
     };
+
+    renderSkeletonOptions() {
+        return (
+            <Fragment>
+                <EmptyOptionsBlock/>
+                <EmptyOptionsBlock/>
+                <EmptyOptionsBlock/>
+                <EmptyOptionsBlock/>
+                <EmptyOptionsBlock/>
+                <EmptyOptionsBlock/>
+                <EmptyOptionsBlock/>
+                <EmptyOptionsBlock/>
+            </Fragment>
+        )
+    }
 
     render() {
         let category = CatalogStore.category;
@@ -76,69 +95,119 @@ export default class FiltersLeftBar extends Component {
 
         return (
             <Container>
-                {/*<PanelMenu model={this.state.model}/>*/}
-                {this.state.isLastChildID && categoryJS._id ?
-                    <Query
-                        query={gql`
-                        query GET_CATEGORIES($id: ID!){
-                            category(id: $id){
-                                name_ru
-                                properties{
-                                    property_name
-                                    _id
-                                    property_val
-                                }
-                            }
-                        }
-                    `}
-                        variables={{"id": categoryJS._id}}
-                    >
-                        {({loading, error, data, refetch}) => {
-                            CatalogStore.refetchCategory = refetch;
+                {this.props.searchMode ?
+                    (() => {
+                        return (
+                            <Query
+                                query={PRODUCTS_BY_REQUEST}
+                                variables={{
+                                    request: CatalogStore.searchRequestForSearchMode
+                                }}
+                                fetchPolicy={'cache'}
+                            >
+                                {({loading, error, data, refetch}) => {
+                                    CatalogStore.refetchCategory = refetch;
+                                    if (loading) return this.renderSkeletonOptions();
+                                    if (error) return this.renderSkeletonOptions();
 
-                            if (loading) return "Loading...";
-                            if (error) return `Error! ${error.message}`;
+                                    let properties = data.products.reduce((ac, cv) => {
+                                        cv.properties.forEach(property => {
+                                            ac[property.property_name] = ac[property.property_name] || [];
 
-                            let properties = data.category.properties.reduce((ac, cv) => {
-                                ac[cv.property_name] = ac[cv.property_name] || [];
-                                ac[cv.property_name].push({
-                                    property_val : cv.property_val,
-                                    id: cv._id
-                                });
-                                return ac;
-                            }, []);
+                                            if (ac[property.property_name].filter(val => val.id === property._id).length > 0) {
 
-                            let propertiesIndexed = [];
+                                            } else {
+                                                ac[property.property_name].push({
+                                                    property_val: property.property_val,
+                                                    id: property._id
+                                                });
+                                            }
+                                        });
+                                        return ac;
+                                    }, {});
 
-                            for(let property in properties){
-                                propertiesIndexed.push({
-                                    title: property,
-                                    content: properties[property],
-                                })
-                            }
 
-                            return (
-                                <Fragment>
-                                    {
-                                        propertiesIndexed.map((el, i, arr) => {
-                                            return(
-                                                <OptionsContainer
-                                                    optionsTitle={el.title}
-                                                    contentType={"selection"}
-                                                    content={el.content}
-                                                    key={i}
-                                                />)
+                                    let propertiesIndexed = [];
+
+                                    for (let property in properties) {
+                                        propertiesIndexed.push({
+                                            title: property,
+                                            content: properties[property],
                                         })
                                     }
-                                </Fragment>
 
-                            );
-                        }}
-                    </Query>
+                                    return (
+                                        <Fragment>
+                                            {
+                                                propertiesIndexed.map((el, i, arr) => {
+                                                    return (
+                                                        <OptionsContainer
+                                                            optionsTitle={el.title}
+                                                            contentType={"selection"}
+                                                            content={el.content}
+                                                            key={i}
+                                                        />)
+                                                })
+                                            }
+                                        </Fragment>
+
+                                    );
+                                }}
+                            </Query>
+                        )
+                    })()
                     :
-                    ""
-                }
+                    (() => this.state.isLastChildID && categoryJS._id ?
+                            <Query
+                                query={CATEGORIES_BY_SINGLE_ID}
+                                variables={{"id": categoryJS._id}}
+                            >
+                                {({loading, error, data, refetch}) => {
+                                    CatalogStore.refetchCategory = refetch;
 
+                                    if (loading) return this.renderSkeletonOptions();
+                                    if (error) return `Error! ${error.message}`;
+
+                                    let properties = data.category.properties.reduce((ac, cv) => {
+                                        ac[cv.property_name] = ac[cv.property_name] || [];
+                                        ac[cv.property_name].push({
+                                            property_val: cv.property_val,
+                                            id: cv._id
+                                        });
+                                        return ac;
+                                    }, []);
+
+                                    let propertiesIndexed = [];
+
+                                    for (let property in properties) {
+                                        propertiesIndexed.push({
+                                            title: property,
+                                            content: properties[property],
+                                        })
+                                    }
+
+                                    return (
+                                        <Fragment>
+                                            {
+                                                propertiesIndexed.map((el, i, arr) => {
+                                                    return (
+                                                        <OptionsContainer
+                                                            optionsTitle={el.title}
+                                                            contentType={"selection"}
+                                                            content={el.content}
+                                                            key={i}
+                                                        />)
+                                                })
+                                            }
+                                        </Fragment>
+
+                                    );
+                                }}
+                            </Query>
+                            :
+                            ""
+                    )()
+                }
             </Container>
         );
     }
