@@ -13,6 +13,7 @@ export default class ContentQuery extends React.Component {
 
     urlStore = this.props.store.urlStore;
 
+
     normalizeFilterObject = (filterObject) => {
         if (filterObject.category._id.length === 0) {
             filterObject.category._id = {};

@@ -11,11 +11,7 @@ import {theme} from "../../stores/StyleStore";
 import {Redirect} from "react-router";
 
 export default class HeadCatalog extends React.Component{
-
-    clickHandler = (e => {
-        e.preventDefault();
-        console.log('click');
-    }).bind(this);
+    
 
     searchHandler = (e => {
         e.preventDefault();
@@ -80,7 +76,7 @@ export default class HeadCatalog extends React.Component{
                         onChange={this.setExpression}
                     />
                     <SearchButton type="submit">
-                        <FontAwesomeIcon icon={faSearch} size={'2x'} onClick={this.clickHandler}/>
+                        <FontAwesomeIcon icon={faSearch} size={'2x'} onClick={this.searchHandler}/>
                     </SearchButton>
                 </Search>
             </Container>

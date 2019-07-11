@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from "styled-components";
-import ContentQuery from "./ContentQuery";
 import ContentQueryTemp from "./ContentQuery";
+import {inject} from "mobx-react";
 
-
+@inject('store')
 export default class ContentContainer extends React.Component {
 
     render() {
@@ -28,6 +28,7 @@ const Container = styled.div`
   }
   @media(min-width: 1101px) {
     grid-template-columns: 1fr 1fr 1fr;
+  }
   
   margin: 25px 2%;
   

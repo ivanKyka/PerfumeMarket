@@ -17,10 +17,13 @@ export default class SignIn extends React.Component {
         login: '',
         password: ''
     };
+
     loginComplete = (() => {
+        this.props.store.cart.getCartFromServer();
         this.props.closeLogin();
         this.props.updateAuthData();
     }).bind(this);
+
     submitHandler = (e => {
         e.preventDefault();
         Login(
@@ -29,6 +32,7 @@ export default class SignIn extends React.Component {
         ).then(data => {
             if (data && true) {
                 setCookie('jwt',data.jwt,{expires: 864000});
+                this.props.store.cart.loadCart();
                 this.props.store.userStore.setUser(new User(data.user));
                 this.setState({
                     messageVisible: false
@@ -39,7 +43,6 @@ export default class SignIn extends React.Component {
                 messageVisible: true
             })
         });
-
     }).bind(this);
 
     constructor(props){
@@ -97,7 +100,6 @@ export default class SignIn extends React.Component {
                                 <Input type={this.state.isPassVisible ? 'text' : 'password'}
                                        placeholder={'Пароль'}
 
-                                       pattern={".{8,}"}
                                        onChange={
                                            event => {
                                                event.preventDefault();

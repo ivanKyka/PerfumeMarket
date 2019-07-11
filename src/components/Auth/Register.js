@@ -74,7 +74,6 @@ render() {
         return (
             <ThemeProvider theme={theme}>
             <React.Fragment>
-                <Header/>
                 <MainFromLogin>
                     <Box>
                         <Form onSubmit={this.sendRegInfo}>
@@ -212,7 +211,6 @@ render() {
                         </Link>
                     </Box>
                 </MainFromLogin>
-                <Footer/>
 
             </React.Fragment>
             </ThemeProvider>

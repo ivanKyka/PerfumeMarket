@@ -56,6 +56,7 @@ export default class Header extends React.Component{
 
     componentWillMount() {
         this.updateAuthData();
+        this.props.store.cart.getCartFromServer();
     }
 
     render() {

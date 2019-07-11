@@ -4,12 +4,17 @@ import {ThemeProvider} from 'styled-components';
 import styled from "styled-components";
 import StarRatings from 'react-star-ratings'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faGift, faCartPlus} from '@fortawesome/free-solid-svg-icons';
-import {faHotjar} from "@fortawesome/free-brands-svg-icons";
+import {faHeart, faGift, faCartPlus} from '@fortawesome/free-solid-svg-icons';
 import {theme} from "../../../stores/StyleStore";
+import {inject} from "mobx-react";
 
-
+@inject('store')
 export default class ContentBlock extends React.Component{
+
+    addToCart = e => {
+        e.preventDefault();
+        this.props.store.cart.addToCart(this.props.options, 1);
+    };
 
     render() {
         return(
@@ -39,8 +44,12 @@ export default class ContentBlock extends React.Component{
                    <Price>{this.props.options.price} грн.</Price>
                    <Bottom>
                        <FontAwesomeIcon icon={faGift} size={'2x'}/>
-                       <FontAwesomeIcon icon={faCartPlus} size={'2x'}/>
-                       <FontAwesomeIcon icon={faHotjar} size={'2x'}/>
+                       <FontAwesomeIcon
+                           icon={faCartPlus}
+                           size={'2x'}
+                           onClick={this.addToCart}
+                       />
+                       <FontAwesomeIcon icon={faHeart} size={'2x'}/>
                    </Bottom>
                </Block>
            </ThemeProvider>
@@ -51,14 +60,17 @@ export default class ContentBlock extends React.Component{
 const BlockHover = keyframes`
   0% { 
     height: 400px; 
+    width: 250px;
   }
   100%  { 
-    height: 550px; 
+    height: 520px; 
+    width: 280px;
   }
 `;
 
 
 const Block = styled.div`
+  height: 400px;
   padding-top: 5px;
   width: 250px;
   z-index: 5;
@@ -69,7 +81,8 @@ const Block = styled.div`
   grid-template-rows: 250px 30px 120px;
   border-radius: 5px;
   justify-self: center;
-  justify-items: center;  
+  justify-items: center;
+    
   &:hover {
     width: 260px;
     grid-template-rows: 250px 30px min-content 50px 30px 70px;
@@ -84,7 +97,6 @@ const Image = styled.img`
   justify-self: center;
   align-self: center;
   max-width: 220px;
-  //margin: 30px 10%;
   height: 220px;
   z-index: 5;
   
@@ -96,7 +108,7 @@ const Image = styled.img`
 
 
 const Link = styled.a`
-    font-size: 12pt;
+    font-size: 10pt;
     text-decoration: none;
     cursor: pointer;
     color: ${props => props.theme.primary};
@@ -171,5 +183,9 @@ const Bottom = styled.div`
   
   svg{
     cursor: pointer;
+    
+    &:active {
+      color: black;
+    }
   }
 `;

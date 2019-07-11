@@ -3,7 +3,7 @@
 import {observable} from "mobx";
 import {computed} from "mobx";
 import {action} from "mobx";
-import {ClearCart, ModifyCart, GetCart} from '../api/Cart';
+import {ModifyCart, GetCart} from '../api/Cart';
 
 export  class Cart {
 
@@ -41,27 +41,34 @@ export  class Cart {
     @action
     removeFromCart = ((id) => {
         this.items = this.items.filter(el => {
-            if (el.id !== id) return el;
-        })
+            if (el.product.id !== id) return el;
+        });
+        this.saveCart();
+        ModifyCart(this.items);
     }).bind(this);
     @action
     addToCart = ((elem,count) => {
         if (this.isCartHasElem(elem.id)){
+            count = count + this.getElemFromCart(elem.id).count;
             this.removeFromCart(elem.id);
-        } else
+        }
         this.items.push({
             product: elem,
             count: count
         });
+        this.saveCart();
+        ModifyCart(this.items);
     }).bind(this);
+
     @action
     clearCart = (() => {
         this.items.length = 0;
         this.totalPrice = 0;
+        this.saveCart();
+        ModifyCart(this.items);
     }).bind(this);
 
     loadCart = (() => {
-        this.items = new Map();
         try{
             JSON.parse(window.localStorage.getItem('cart')).forEach(a => this.items.push(a));
         }catch (e) {
@@ -94,12 +101,14 @@ export  class Cart {
     @action
     getCartFromServer = (() => {
         GetCart().then(data => {
-            window.localStorage.setItem('cart',JSON.stringify(data));
-            this.saveCart();
+            this.items.length = 0;
+            this.totalPrice = 0;
+            data.body.forEach(elem => {this.items.push(elem)});
+            window.localStorage.setItem('cart',JSON.stringify(data.body));
         })
     });
 
-    @computed get getTotal() {
+    @computed get Total() {
         return this.items.reduce((acc, el) => {
            return acc + el.product.price * el.count;
         },0)
@@ -115,8 +124,9 @@ export  class Cart {
         this.items = this.items.map(el => {
             if (el.product.id === id) el.count = count;
             return el;
-        })
-
+        });
+        this.saveCart();
+        ModifyCart(this.items);
     };
 }
 

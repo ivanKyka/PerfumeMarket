@@ -6,7 +6,7 @@ import {getCookie} from "../controllers/Cookies";
  */
 export async function ModifyCart(cartBody) {
 
-    let response = await fetch(`${UrlStore.MAIN_URL}/carts/me`,
+    let response = await fetch(`${UrlStore.MAIN_URL}/cart/me`,
         {
             method: 'POST',
             headers: {
@@ -26,7 +26,7 @@ export async function ModifyCart(cartBody) {
  */
 export async function GetCart() {
 
-    let response = await fetch(`${UrlStore.MAIN_URL}/carts/me`,
+    let response = await fetch(`${UrlStore.MAIN_URL}/cart/me`,
         {
             headers: {
                 "authorization": `Bearer ${getCookie('jwt')}`
@@ -44,7 +44,7 @@ export async function GetCart() {
  */
 export async function ClearCart() {
 
-    let response = await fetch(`${UrlStore.MAIN_URL}/carts/me`,
+    let response = await fetch(`${UrlStore.MAIN_URL}/cart/me`,
         {
             method: 'DELETE',
             headers: {

@@ -48,7 +48,7 @@ class App extends Component {
 
 
     componentWillMount() {
-
+        cart.loadCart();
     }
 
     render() {
