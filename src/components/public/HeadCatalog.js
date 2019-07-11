@@ -11,7 +11,16 @@ import {theme} from "../../stores/StyleStore";
 import {Redirect} from "react-router";
 
 export default class HeadCatalog extends React.Component{
-    
+
+
+    constructor(props){
+        super(props);
+        this.state = {
+            items: [],
+            isSearch: false
+        };
+        this.searchExpr = '';
+    }
 
     searchHandler = (e => {
         e.preventDefault();
@@ -45,19 +54,17 @@ export default class HeadCatalog extends React.Component{
             })
         })
     }
+    componentWillUpdate() {
+        if (this.state.isSearch) {
+            location.reload();
+        }
+    }
+
     setExpression = (e => {
         e.preventDefault();
         this.searchExpr = e.target.value;
     }).bind(this);
 
-    constructor(props){
-        super(props);
-        this.state = {
-            items: [],
-            isSearch: false
-        };
-        this.searchExpr = '';
-    }
 
     render() {
         if (this.state.isSearch)
