@@ -73,9 +73,7 @@ export default class Header extends React.Component{
                             <li>Главная</li>
                             <li>О нас</li>
                             <li>Контакты</li>
-                            <li
-                                onClick={this.props.store.cart.clearCart}
-                            >Доставка</li>
+                            <li>Доставка</li>
                         </Menu>
                         <Cart to={'/cart'}>
                             <FontAwesomeIcon icon={faShoppingCart}/>
