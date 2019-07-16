@@ -19,7 +19,7 @@ export default class SignIn extends React.Component {
     };
 
     loginComplete = (() => {
-        this.props.store.cart.getCartFromServer();
+        this.props.store.cart.mergeCart();
         this.props.closeLogin();
         this.props.updateAuthData();
     }).bind(this);
@@ -32,7 +32,6 @@ export default class SignIn extends React.Component {
         ).then(data => {
             if (data && true) {
                 setCookie('jwt',data.jwt,{expires: 864000});
-                this.props.store.cart.loadCart();
                 this.props.store.userStore.setUser(new User(data.user));
                 this.setState({
                     messageVisible: false

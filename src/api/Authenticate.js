@@ -52,7 +52,7 @@ async function Register(username, email, password, name, surname) {
 }
 
  function Logout() {
-    setCookie('jwt','',{expires: 0});
+    setCookie('jwt','',{expires: -1});
     console.log(getCookie('jwt'));
 }
 

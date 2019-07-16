@@ -106,8 +106,8 @@ const Form = styled.form`
         color: #000;
    }
    .flatpickr-input.active{
-        border: ${props => props.theme.primary_light} 2px solid;
-        height: 28px;
+        border: ${props => props.theme.primary_light} 1px solid;
+        box-shadow: ${props => props.theme.primary_light} 0 0 2px 2px;
    }
 `;
 
@@ -121,9 +121,10 @@ const Input = styled.input`
     padding-left: 10px;
     font-size: 12pt;
     color: #000;
+    
     &:focus{
-      border: ${props => props.theme.primary_light} 2px solid;
-      height: 28px;
+      border: 1px solid ${props => props.theme.primary_light};
+      box-shadow: ${props => props.theme.primary_light} 0 0 2px 2px;
     }
 `;
 

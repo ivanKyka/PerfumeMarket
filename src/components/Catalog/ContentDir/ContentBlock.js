@@ -96,13 +96,13 @@ const Block = styled.div`
 const Image = styled.img`
   justify-self: center;
   align-self: center;
+  max-height: 220px;
   max-width: 220px;
-  height: 220px;
   z-index: 5;
-  
+  object-fit: cover;
   :hover{
+    max-height: 250px;
     max-width: 250px;
-    height: 250px;
   }
 `;
 

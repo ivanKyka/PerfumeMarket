@@ -38,6 +38,7 @@ export  class Cart {
             if (e.product.id === id) return e;
         },this)
     }).bind(this);
+    
     @action
     removeFromCart = ((id) => {
         this.items = this.items.filter(el => {
@@ -46,6 +47,7 @@ export  class Cart {
         this.saveCart();
         ModifyCart(this.items);
     }).bind(this);
+    
     @action
     addToCart = ((elem,count) => {
         if (this.isCartHasElem(elem.id)){
@@ -99,12 +101,19 @@ export  class Cart {
     }).bind(this);
     
     @action
-    getCartFromServer = (() => {
+    getCartFromServer = ((initialValue = []) => {
         GetCart().then(data => {
-            this.items.length = 0;
-            this.totalPrice = 0;
-            data.body.forEach(elem => {this.items.push(elem)});
-            window.localStorage.setItem('cart',JSON.stringify(data.body));
+            if (data) {
+                this.items.length = 0;
+                this.totalPrice = 0;
+                this.items = initialValue;
+                data.body.forEach(elem => {
+                    if (!this.isCartHasElem(elem.product.id))
+                    this.items.push(elem);
+                });
+                window.localStorage.setItem('cart',JSON.stringify(data.body));
+                ModifyCart(this.items);
+            }
         })
     });
 
@@ -128,6 +137,14 @@ export  class Cart {
         this.saveCart();
         ModifyCart(this.items);
     };
+
+    @action
+    mergeCart = (() => {
+        console.log(this.getAll());
+        this.getCartFromServer(this.getAll());
+        console.log(this.getAll());
+    }).bind(this);
 }
+
 
 //To understand recursion, see the top of this file

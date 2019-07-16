@@ -1,13 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import Footer from "../public/Footer"
-import Header from "../public/Header";
 
 export default class Preference extends React.Component{
     render() {
         return(
             <div>
-                <Header/>
                 <Main>
                     <Title>
                         <h2> Personal account </h2>
@@ -36,7 +33,6 @@ export default class Preference extends React.Component{
 
                     </Page>
                 </Main>
-                <Footer/>
             </div>
         )
     }

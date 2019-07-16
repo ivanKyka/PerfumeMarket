@@ -33,7 +33,6 @@ export default class Cabinet extends React.Component {
 
     componentDidMount() {
         me().then(data => {
-            console.log(!data);
             if(!data){
                 this.setState({
                     authorized: false
@@ -124,7 +123,7 @@ const Li = styled.li`
         display: inline-block;
         margin-right: 20px;
         cursor: pointer;
-        font-size: 1.2em;
+        font-size: 1em;
         color: ${props => props.active ? props.theme.primary : '#000'};
     &:last-child {
         float: right;
