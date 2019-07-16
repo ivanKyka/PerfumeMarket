@@ -11,7 +11,8 @@ class CatalogStore {
         price_gte: null,
         price_lte: null,
         name_ru_contains: null,
-        desc_contains: null
+        desc_contains: null,
+        name_rozetka_contains: null
     };
 
     searchRequestForSearchMode = null;
@@ -50,6 +51,7 @@ class CatalogStore {
         let filtersCopy = {...this.filters};
         filtersCopy.name_ru_contains = searchRequest;
         filtersCopy.desc_contains = searchRequest;
+        filtersCopy.name_rozetka_contains = searchRequest;
         this.searchRequestForSearchMode = searchRequest;
         this.searchMode = true;
 
@@ -141,7 +143,7 @@ class CatalogStore {
     setFiltersFromTopBar = (filters) => {
         let filtersCopy = {...this.filters};
 
-        filtersCopy = {...filtersCopy, ...filters, desc_contains: filters.name_ru_contains};
+        filtersCopy = {...filtersCopy, ...filters, desc_contains: filters.name_ru_contains, name_rozetka_contains: filters.name_ru_contains};
         this.filters = filtersCopy;
 
         this.refetch();
@@ -157,6 +159,7 @@ class CatalogStore {
         if (!this.searchMode) {
             filtersCopy.name_ru_contains = null;
             filtersCopy.desc_contains = null;
+            filtersCopy.name_rozetka_contains = null;
         }
 
         this.filters = {...this.filters, ...filtersCopy};
