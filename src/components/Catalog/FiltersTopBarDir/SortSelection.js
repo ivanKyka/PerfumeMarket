@@ -46,7 +46,6 @@ export default class SortSelection extends Component {
                     }}>
                     <span>СОРТИРОВАТЬ</span>
                     <SortOpenButton
-
                         src={this.state.isOpen ? HideImgOpened : HideImgClosed}
                     />
                 </OpenFiltersButton>
@@ -85,10 +84,10 @@ export default class SortSelection extends Component {
 }
 
 const Container = styled.div`
-    display: inline-block;
+    display: grid;
     z-index: 100;
-    height: 26px;
-    padding: 0 20px;
+    height: 30px;
+    padding: 0 !important;
 `;
 
 const SortOpenButton = styled.img`
@@ -104,10 +103,10 @@ const SortOptionsContainer = styled.ul`
     list-style: none;
     padding: 5px;
     background-color: white;
-    left: calc((100vw - 950px) / 5);
+    left: calc((100vw - 1020px) / 7);
     margin-top: 5px;
     z-index: 101;
-    
+    top: 162px;
     > :last-child{
         border: none;
     }
@@ -143,8 +142,11 @@ const SortOptionTitle = styled.span`
 
 const OpenFiltersButton = styled.div`
     display: grid;
-    grid-template-columns: 1fr 25px;  
-    
+    grid-template-columns: min-content 25px;  
+    align-items: center;
+    padding: 0;
+    align-self: center;
+    grid-gap: 10px;
     span {
       font-size: 12px;
       cursor: pointer;

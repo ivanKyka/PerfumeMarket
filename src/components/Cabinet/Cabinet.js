@@ -7,10 +7,13 @@ import {theme} from "../../stores/StyleStore";
 import Address from "./Address";
 import Preference from "./Preference";
 import Purchase from "./Purchase";
-import {deleteCookie} from "../../controllers/Cookies";
+import {deleteCookie, getCookie} from "../../controllers/Cookies";
 import {me} from "../../api/Users";
 import {Redirect} from "react-router";
+import {inject} from "mobx-react";
+import {Logout} from "../../api/Authenticate";
 
+@inject('store')
 export default class Cabinet extends React.Component {
 
     setPage = ((e,page) => {
@@ -81,8 +84,11 @@ render() {
                 <Li
                     onClick={e => {
                         e.preventDefault();
-                        deleteCookie('jwt')
-                        location.reload();
+                        Logout();
+                        this.props.store.cart.clearCart();
+                        this.setState({
+                            authorized: false
+                        })
                     }}
                 >Выход</Li>
             </Head>

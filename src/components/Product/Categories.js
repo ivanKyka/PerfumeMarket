@@ -46,20 +46,20 @@ render() {
                                         {data.product.category.parent.name_ru}
                                     </Link>
                                     <FontAwesomeIcon icon={faChevronRight}/>
-                                    <Link to={`/catalog/${data.product.category.parent._id}`}>
+                                    <Link to={`/catalog/${data.product.category._id}`}>
                                         {data.product.category.name_ru}
                                     </Link>
                                 </div>
                             );
                         else return(
                             <div>
-                                <Link to={`/catalog/${data.product.category.parent._id}`}>
+                                <Link to={`/catalog/${data.product.category.parent.parent._id}`}>
                                     {data.product.category.parent.parent.name_ru}</Link>
-                                <FontAwesomeIcon icon={faChevronRight}/>
+                                <FontAwesomeIcon icon={faChevronRight} size={'sm'}/>
                                 <Link to={`/catalog/${data.product.category.parent._id}`}>
                                     {data.product.category.parent.name_ru}</Link>
                                 <FontAwesomeIcon icon={faChevronRight}/>
-                                <Link to={`/catalog/${data.product.category.parent._id}`}>
+                                <Link to={`/catalog/${data.product.category._id}`}>
                                     {data.product.category.name_ru}</Link>
                             </div>
                         )
@@ -79,8 +79,9 @@ const Container = styled.div`
   display: grid;
   grid-auto-rows: auto;
   align-items: center;
+  
   svg {
-    height: 10px;
+    height: 12px;
     color: #777777;
   }  
   

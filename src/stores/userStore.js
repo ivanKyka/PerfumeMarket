@@ -8,4 +8,8 @@ export class UserStore {
     getUser =  (() => {
         return(this.user);
     }).bind(this);
+
+    isLogged = (() => {
+        return (typeof this.user._id !== 'undefined');
+    }).bind(this);
 }

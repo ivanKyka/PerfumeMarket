@@ -9,9 +9,9 @@ import CardImage from '../../resources/image/ProductIcons/Vector.svg'
 import LikeIcon from '../../resources/image/ProductIcons/Combined shape 14591.svg'
 import FacebookIcon from '../../resources/image/ProductIcons/Facebook.svg'
 import TwitterIcon from '../../resources/image/ProductIcons/Vector(1).svg'
-import FiltersBlock from './FiltersBlock';
 import Counter from "../public/Counter";
 import {inject} from "mobx-react";
+import Categories from "./Categories";
 
 @inject('store')
 export default class PurchaseBlock extends React.Component {
@@ -42,8 +42,8 @@ export default class PurchaseBlock extends React.Component {
     render() {
         return(
         <Container>
-            {''/*<Categories ProductID={this.props.ProductID}/>*/}
-            <FiltersBlock ProductID={this.props.ProductID}/>
+            <Categories ProductID={this.props.ProductID}/>
+            {/*<FiltersBlock ProductID={this.props.ProductID}/>*/}
             <Query query={
                 gql`query MyProductCategory($id: ID!){
                           product(id: $id){

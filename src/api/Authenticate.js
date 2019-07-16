@@ -1,5 +1,5 @@
 import {UrlStore} from "../stores/UrlStore";
-import {setCookie} from "../controllers/Cookies";
+import {deleteCookie, getCookie, setCookie} from "../controllers/Cookies";
 
 /**
  * @return {undefined}
@@ -51,7 +51,13 @@ async function Register(username, email, password, name, surname) {
 
 }
 
+ function Logout() {
+    setCookie('jwt','',{expires: 0});
+    console.log(getCookie('jwt'));
+}
+
 export {
     Login,
-    Register
+    Register,
+    Logout
 }

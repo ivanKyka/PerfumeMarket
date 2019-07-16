@@ -12,10 +12,15 @@ import {Redirect} from "react-router";
 
 export default class HeadCatalog extends React.Component{
 
-    clickHandler = (e => {
-        e.preventDefault();
-        console.log('click');
-    }).bind(this);
+
+    constructor(props){
+        super(props);
+        this.state = {
+            items: [],
+            isSearch: false
+        };
+        this.searchExpr = '';
+    }
 
     searchHandler = (e => {
         e.preventDefault();
@@ -49,19 +54,17 @@ export default class HeadCatalog extends React.Component{
             })
         })
     }
+    componentWillUpdate() {
+        if (this.state.isSearch) {
+            location.reload();
+        }
+    }
+
     setExpression = (e => {
         e.preventDefault();
         this.searchExpr = e.target.value;
     }).bind(this);
 
-    constructor(props){
-        super(props);
-        this.state = {
-            items: [],
-            isSearch: false
-        };
-        this.searchExpr = '';
-    }
 
     render() {
         if (this.state.isSearch)
@@ -80,7 +83,7 @@ export default class HeadCatalog extends React.Component{
                         onChange={this.setExpression}
                     />
                     <SearchButton type="submit">
-                        <FontAwesomeIcon icon={faSearch} size={'2x'} onClick={this.clickHandler}/>
+                        <FontAwesomeIcon icon={faSearch} size={'2x'} onClick={this.searchHandler}/>
                     </SearchButton>
                 </Search>
             </Container>

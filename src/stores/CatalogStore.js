@@ -22,10 +22,10 @@ class CatalogStore {
 
     @observable
     category = {
-        _id: null
+        _id : null
     };
 
-    limit = 12;
+    limit = 18;
     searchMode = false;
 
     @observable

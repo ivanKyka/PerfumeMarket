@@ -12,7 +12,7 @@ import {faPhone} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {theme} from "../../stores/StyleStore";
 import {Register as Reg} from "../../api/Authenticate";
-
+import {UrlStore} from "../../stores/UrlStore";
 
 export default class Register  extends React.Component{
 
@@ -26,7 +26,9 @@ export default class Register  extends React.Component{
                 this.nameRef.current.value,
                 this.surnameRef.current.value
             ).then(a => {
-                if (a) window.location.href='http://192.168.1.16:8080/'
+                console.log("#TODO Change to profumo URL");
+                if (a) window.location.href = 'http://profumo.com.ua'
+                // if (a) window.location.href = UrlStore.MAIN_URL
             })
         }
     });
@@ -72,7 +74,6 @@ render() {
         return (
             <ThemeProvider theme={theme}>
             <React.Fragment>
-                <Header/>
                 <MainFromLogin>
                     <Box>
                         <Form onSubmit={this.sendRegInfo}>
@@ -210,7 +211,6 @@ render() {
                         </Link>
                     </Box>
                 </MainFromLogin>
-                <Footer/>
 
             </React.Fragment>
             </ThemeProvider>

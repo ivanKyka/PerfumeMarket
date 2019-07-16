@@ -56,6 +56,7 @@ export default class Header extends React.Component{
 
     componentWillMount() {
         this.updateAuthData();
+        this.props.store.cart.getCartFromServer();
     }
 
     render() {
@@ -70,12 +71,9 @@ export default class Header extends React.Component{
                         </Logo>
                         <Menu>
                             <li>Главная</li>
-                            <li>Каталог</li>
                             <li>О нас</li>
                             <li>Контакты</li>
-                            <li
-                                onClick={this.props.store.cart.clearCart}
-                            >Доставка</li>
+                            <li>Доставка</li>
                         </Menu>
                         <Cart to={'/cart'}>
                             <FontAwesomeIcon icon={faShoppingCart}/>

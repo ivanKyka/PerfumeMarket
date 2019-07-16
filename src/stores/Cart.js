@@ -3,58 +3,74 @@
 import {observable} from "mobx";
 import {computed} from "mobx";
 import {action} from "mobx";
-import {ClearCart, ModifyCart, GetCart} from '../api/Cart';
+import {ModifyCart, GetCart} from '../api/Cart';
 
 export  class Cart {
 
 
-    @observable.deep
-    items = new Map();
+    @observable
+    items = [];
 
     totalPrice = 0;
 
     @action
     getElemFromCart = (id => {
-        return(this.items.get(id));
+        return(this.items.filter(a => {
+            if (a.product.id === id) return a;
+        })[0]);
     }).bind(this);
 
     getAll = (() => {
-        return Array.from(this.items.values());
+        return this.items.map(elem => {
+            return {
+                product: elem.product,
+                count: elem.count
+            }
+        });
     }).bind(this);
 
     saveCart = (() => {
-        window.localStorage.setItem('cart',JSON.stringify(Array.from(this.items.values())));
+        window.localStorage.setItem('cart',JSON.stringify(this.items));
     }).bind(this);
 
-    @action
-    addToCart = ((elem,count) => {
-        if (this.items.has(elem.id)){
-            this.items.set(elem.id,{elem: elem, count: count + this.items.get(elem.id).count});
-        } else
-        this.items.set(elem.id,{elem: elem, count: count});
-        this.saveCart();
-        ModifyCart(this.getAll());
+    isCartHasElem  = (id => {
+        return !!this.items.find(e => {
+            if (e.product.id === id) return e;
+        },this)
     }).bind(this);
-
     @action
     removeFromCart = ((id) => {
-        this.items.delete(id);
+        this.items = this.items.filter(el => {
+            if (el.product.id !== id) return el;
+        });
         this.saveCart();
-        ModifyCart(this.getAll());
+        ModifyCart(this.items);
+    }).bind(this);
+    @action
+    addToCart = ((elem,count) => {
+        if (this.isCartHasElem(elem.id)){
+            count = count + this.getElemFromCart(elem.id).count;
+            this.removeFromCart(elem.id);
+        }
+        this.items.push({
+            product: elem,
+            count: count
+        });
+        this.saveCart();
+        ModifyCart(this.items);
     }).bind(this);
 
     @action
     clearCart = (() => {
-        this.items.clear();
-        this.saveCart();
+        this.items.length = 0;
         this.totalPrice = 0;
-        ClearCart();
+        this.saveCart();
+        ModifyCart(this.items);
     }).bind(this);
 
     loadCart = (() => {
-        this.items = new Map();
         try{
-            JSON.parse(window.localStorage.getItem('cart')).forEach(a => this.items.set(a.elem.id,a));
+            JSON.parse(window.localStorage.getItem('cart')).forEach(a => this.items.push(a));
         }catch (e) {
 //            Oh crap, we should do something
 //            ...
@@ -85,32 +101,33 @@ export  class Cart {
     @action
     getCartFromServer = (() => {
         GetCart().then(data => {
-            window.localStorage.setItem('cart',JSON.stringify(data));
-            this.saveCart();
+            this.items.length = 0;
+            this.totalPrice = 0;
+            data.body.forEach(elem => {this.items.push(elem)});
+            window.localStorage.setItem('cart',JSON.stringify(data.body));
         })
     });
 
-    @computed get getTotal() {
-        let data = this.getAll().map(el => {return {elem: {id: el.elem.id, price: el.elem.price}, count: el.count}});
-        console.log(data);
-        return  data.reduce((acc, cur) => {
-            console.log(cur);
-            return acc + cur.elem.price * cur.count;
-        }, 0);
+    @computed get Total() {
+        return this.items.reduce((acc, el) => {
+           return acc + el.product.price * el.count;
+        },0)
+    }
+
+    @computed
+    get sizeOfCart() {
+        return this.items.length;
     }
 
     @action
     setCount(id, count) {
-        let elem = this.items.get(id);
-        elem.count = count;
-        this.items.set(id, elem);
+        this.items = this.items.map(el => {
+            if (el.product.id === id) el.count = count;
+            return el;
+        });
         this.saveCart();
+        ModifyCart(this.items);
     };
-
-    @computed
-    get sizeOfCart() {
-        return this.items.size;
-    }
 }
 
 //To understand recursion, see the top of this file
