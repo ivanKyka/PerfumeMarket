@@ -1,8 +1,6 @@
 //To understand recursion, see the bottom of this file
 
-import {observable} from "mobx";
-import {computed} from "mobx";
-import {action} from "mobx";
+import {action, computed, observable, toJS} from "mobx";
 import {ModifyCart, GetCart} from '../api/Cart';
 
 export  class Cart {
@@ -21,12 +19,7 @@ export  class Cart {
     }).bind(this);
 
     getAll = (() => {
-        return this.items.map(elem => {
-            return {
-                product: elem.product,
-                count: elem.count
-            }
-        });
+        return toJS(this.items);
     }).bind(this);
 
     saveCart = (() => {

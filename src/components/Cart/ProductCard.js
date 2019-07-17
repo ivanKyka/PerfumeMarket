@@ -12,7 +12,6 @@ import {theme} from "../../stores/StyleStore";
 @inject('store')
 export default class ProductCard extends React.Component {
 
-
     setCountHandler = (val => {
         this.setState({
             countOfProducts: val
@@ -85,7 +84,10 @@ render() {
                     </Query>
                 </InfoBlock>
                 <CloseButton onClick={this.deleteFromCart}>
-                    <FontAwesomeIcon icon={faTimes}/>
+                    <FontAwesomeIcon
+                        icon={faTimes}
+                        size={'lg'}
+                    />
                 </CloseButton>
             </Container>
         </ThemeProvider>

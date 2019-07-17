@@ -83,6 +83,7 @@ const Container = styled.div`
   svg {
     height: 12px;
     color: #777777;
+    margin: 0 3px;
   }  
   
   a {
