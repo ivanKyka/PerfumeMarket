@@ -12,4 +12,5 @@ export class UserStore {
     isLogged = (() => {
         return (typeof this.user._id !== 'undefined');
     }).bind(this);
+
 }

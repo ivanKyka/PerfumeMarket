@@ -12,6 +12,7 @@ import TwitterIcon from '../../resources/image/ProductIcons/Vector(1).svg'
 import Counter from "../public/Counter";
 import {inject} from "mobx-react";
 import Categories from "./Categories";
+import {AddToWishList} from "../../api/WishList";
 
 @inject('store')
 export default class PurchaseBlock extends React.Component {
@@ -128,7 +129,13 @@ export default class PurchaseBlock extends React.Component {
             </Query>
             <span>Поделиться</span>
             <SocialLinks theme={theme}>
-                <img src={LikeIcon}/>
+                <img
+                    src={LikeIcon}
+                    onClick={e => {
+                        e.preventDefault();
+                        AddToWishList(this.props.ProductID);
+                    }}
+                />
                 <img src={FacebookIcon}/>
                 <img src={TwitterIcon}/>
             </SocialLinks>
@@ -243,6 +250,12 @@ const SocialLinks = styled.div`
       &:hover{
          //background: ${props => props.theme.primary_light};
       }
+      
+      &:active {
+          box-shadow: 0px 0px 3px 3px rgba( 204,204,204,0.5);
+          background: rgba( 204,204,204,0.5);
+      }
+
     }
 `;
 

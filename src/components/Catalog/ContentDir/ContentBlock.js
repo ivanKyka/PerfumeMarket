@@ -7,6 +7,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faHeart, faGift, faCartPlus} from '@fortawesome/free-solid-svg-icons';
 import {theme} from "../../../stores/StyleStore";
 import {inject} from "mobx-react";
+import {AddToWishList} from "../../../api/WishList";
 
 @inject('store')
 export default class ContentBlock extends React.Component{
@@ -14,6 +15,11 @@ export default class ContentBlock extends React.Component{
     addToCart = e => {
         e.preventDefault();
         this.props.store.cart.addToCart(this.props.options, 1);
+    };
+
+    addToWishList = e => {
+        e.preventDefault();
+        AddToWishList(this.props.options.id);
     };
 
     render() {
@@ -49,7 +55,11 @@ export default class ContentBlock extends React.Component{
                            size={'2x'}
                            onClick={this.addToCart}
                        />
-                       <FontAwesomeIcon icon={faHeart} size={'2x'}/>
+                       <FontAwesomeIcon
+                           icon={faHeart}
+                           size={'2x'}
+                           onClick={this.addToWishList}
+                       />
                    </Bottom>
                </Block>
            </ThemeProvider>
@@ -96,13 +106,13 @@ const Block = styled.div`
 const Image = styled.img`
   justify-self: center;
   align-self: center;
+  max-height: 220px;
   max-width: 220px;
-  height: 220px;
   z-index: 5;
-  
+  object-fit: cover;
   :hover{
+    max-height: 250px;
     max-width: 250px;
-    height: 250px;
   }
 `;
 

@@ -3,7 +3,7 @@ import Collapsible from "react-collapsible";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus, faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {theme} from '../../stores/StyleStore';
 
 export default class DescriptionBlock extends React.Component {
@@ -35,7 +35,7 @@ export default class DescriptionBlock extends React.Component {
                             <Header theme={theme}
                                     opened={this.state.opened}>
                                 {this.props.elem.header}
-                                <FontAwesomeIcon icon={this.state.opened ? faTimes : faPlus}/>
+                                <FontAwesomeIcon icon={this.state.opened ? faMinus : faPlus}/>
                             </Header>
                             <Preview opened={this.state.opened}>
                                 <ReactMarkdown source={this.props.elem.body.split(' ').slice(0, 15).join(' ')}/>

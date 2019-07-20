@@ -12,7 +12,6 @@ import {theme} from "../../stores/StyleStore";
 @inject('store')
 export default class ProductCard extends React.Component {
 
-
     setCountHandler = (val => {
         this.setState({
             countOfProducts: val
@@ -72,22 +71,24 @@ render() {
                             }
 
                             return (
-                                <React.Fragment>
+                                <DescriptionBlock>
                                     <Name
                                         to={'/product/' + this.props.ProductID}
                                     >{data.product.name_ru}</Name>
                                     <Vendor>{data.product.vendor}</Vendor>
                                     <Price>{data.product.price}грн * {this.state.countOfProducts}</Price>
                                     <Counter setVal={this.setCountHandler} defaultValue={this.props.Count}/>
-                                </React.Fragment>
+                                </DescriptionBlock>
                             )
                         }}
                     </Query>
                 </InfoBlock>
-                <FontAwesomeIcon
-                    icon={faTimes}
-                    onClick={this.deleteFromCart}
-                />
+                <CloseButton onClick={this.deleteFromCart}>
+                    <FontAwesomeIcon
+                        icon={faTimes}
+                        size={'lg'}
+                    />
+                </CloseButton>
             </Container>
         </ThemeProvider>
         )
@@ -96,22 +97,15 @@ render() {
 
 const Container = styled.div`
     display: grid;
-    grid-template-columns: 1fr 2fr 20px;
+    grid-template-columns: 1fr 2fr 30px;
     padding: 10px;
-    
-    svg{
-      cursor: pointer;
-      color: #aaa;
-      
-      &:hover {
-        color: #222;
-      }
-    }
+   
 `;
 
 const Image = styled.img`
     max-width: 100%;
     max-height: 100%;
+    padding: 10px;
     
 `;
 
@@ -142,4 +136,25 @@ const Price = styled.span`
     color: #4A4A4A;
     font-weight: bold;
     margin-bottom: 10px;
+`;
+
+const DescriptionBlock = styled.div`
+    display: grid;
+    padding: 10px;  
+   
+`;
+
+const CloseButton = styled.div`
+    height: 30px;
+    width: 30px;
+    border-radius: 50px;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .2s ease-out;
+    &:hover{
+      background: rgba(50, 50, 50, 0.5);
+      color: #222;
+    }
 `;

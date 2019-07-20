@@ -8,10 +8,10 @@ const reactSelectStyles = {
         container: styles => ({...styles, height: '38px', display: 'block'}),
         control: (styles, state) => (
             {...styles,
-                border: state.isFocused?`2px solid ${theme.primary} !important`:'1px solid black',
+                boxShadow: state.isFocused?`${theme.primary_light} 0 0 2px 2px`:'none',
+                border: state.isFocused?`1px solid ${theme.primary} !important`:'1px solid black',
                 height: state.isFocused?'36px':'38px',
                 borderRadius: '10px',
-                boxShadow: 'none',
                 cursor: 'text',
                 '&:hover':{
                     border: `1px solid black`,
@@ -138,8 +138,8 @@ const Input = styled.input`
     font-size: 14pt;
     color: #000;
     &:focus{
-      border: ${props => props.theme.primary_light} 2px solid;
-      height: 32px;
+      border: 1px solid ${props => props.theme.primary_light};
+      box-shadow: ${props => props.theme.primary_light} 0 0 2px 2px;
     }
 `;
 

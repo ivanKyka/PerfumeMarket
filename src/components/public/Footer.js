@@ -52,7 +52,7 @@ export default class Footer extends React.Component{
 
 
                     <Foot4>
-                        <span>She gave my mother such a turn, that I have always been convinced I am indebted to Miss <br/>Betsey for having been born on a Friday.</span>
+                        <span>Пользуясь даным веб-сайтом, вы даете свое согласие на использование файлов cookies. Если вы не согласны с условиями использования, пожалуйста покиньте даный веб-сайт</span>
                     </Foot4>
                     <Foot5>
                         <a href="" >ПРИВАТНОСТЬ</a>
@@ -135,10 +135,9 @@ const Line = styled.hr`
 const Foot4 = styled.div`
  grid-column: 1/3;
  color: #CAC9D2;
- font-size: 14pt;
+ font-size: 12pt;
  padding-left: 100px;
  align-self: center;
- font-family: 'Dancing Script', cursive;
 `;
 const Foot5 = styled.div`
 grid-column-start: 3;

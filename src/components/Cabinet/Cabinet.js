@@ -5,7 +5,7 @@ import Footer from "../public/Footer";
 import Contacts from "./Contacts";
 import {theme} from "../../stores/StyleStore";
 import Address from "./Address";
-import Preference from "./Preference";
+import WishList from "./WishList";
 import Purchase from "./Purchase";
 import {deleteCookie, getCookie} from "../../controllers/Cookies";
 import {me} from "../../api/Users";
@@ -33,7 +33,6 @@ export default class Cabinet extends React.Component {
 
     componentDidMount() {
         me().then(data => {
-            console.log(!data);
             if(!data){
                 this.setState({
                     authorized: false
@@ -50,7 +49,7 @@ export default class Cabinet extends React.Component {
         switch (page) {
             case 'Address': return <Address/>;
             case 'Contacts': return <Contacts/>;
-            case 'Preference': return <Preference/>;
+            case 'WishList': return <WishList/>;
             case 'Purchase': return <Purchase/>;
         }
     };
@@ -74,8 +73,8 @@ render() {
                     active={!!(this.state.currentPage === 'Address')}
                     >Адрес доставки</Li>
                 <Li
-                    onClick={e => {this.setPage(e,'Preference')}}
-                    active={!!(this.state.currentPage === 'Preference')}
+                    onClick={e => {this.setPage(e,'WishList')}}
+                    active={!!(this.state.currentPage === 'WishList')}
                 >Пожелания</Li>
                 <Li
                     onClick={e => {this.setPage(e,'Purchase')}}
@@ -124,8 +123,9 @@ const Li = styled.li`
         display: inline-block;
         margin-right: 20px;
         cursor: pointer;
-        font-size: 1.2em;
+        font-size: 1em;
         color: ${props => props.active ? props.theme.primary : '#000'};
+        text-decoration: ${props => props.active ? 'underline':'none'};
     &:last-child {
         float: right;
     }

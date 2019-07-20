@@ -70,10 +70,10 @@ export default class Header extends React.Component{
                             </Link>
                         </Logo>
                         <Menu>
-                            <li>Главная</li>
-                            <li>О нас</li>
-                            <li>Контакты</li>
-                            <li>Доставка</li>
+                            <li>ГЛАВНАЯ</li>
+                            <li>КОНТАКТЫ</li>
+                            <li>О НАС</li>
+                            <li>ДОСТАВКА</li>
                         </Menu>
                         <Cart to={'/cart'}>
                             <FontAwesomeIcon icon={faShoppingCart}/>

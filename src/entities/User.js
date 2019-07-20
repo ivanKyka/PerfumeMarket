@@ -1,5 +1,12 @@
 export default class User {
 
+    getWishlist = (() => {
+        return this.wishlist;
+    }).bind(this);
+    setWishlist = ((list) => {
+        this.wishlist = list;
+    }).bind(this);
+
     constructor(obj) {
         this.id = obj._id;
         this.username = obj.username;
@@ -14,5 +21,6 @@ export default class User {
         this.thirdname = obj.thirdname;
         this.birthday = obj.birthday;
         this.adress = obj.adress;
+        this.wishlist = obj.wishlist;
     }
 }
