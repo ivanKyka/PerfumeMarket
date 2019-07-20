@@ -22,7 +22,7 @@ export default class FiltersDisplayBar extends Component {
                 >
                     {({loading, error, data}) => {
 
-                        if (loading) return "Loading";
+                        if (loading) return <span></span>;
                         if (error) return "Error!";
 
                         if (data.properties)

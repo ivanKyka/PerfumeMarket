@@ -25,11 +25,16 @@ class CatalogStore {
         _id : null
     };
 
-    limit = 18;
+    limit = 12;
     searchMode = false;
 
     @observable
     isMoreDataThanLimit = false;
+
+    @observable
+    startFrom = 0;
+
+    @observable
     productsCount = 0;
 
     refetch = null;
@@ -62,6 +67,13 @@ class CatalogStore {
     @action
     increaseLimit = () => {
         this.fetchMore();
+    };
+
+    @action
+    setStartFrom = (newStart) => {
+        this.startFrom = newStart;
+
+        this.refetch();
     };
 
     @action
@@ -127,6 +139,8 @@ class CatalogStore {
     setFiltersFromLeftBar = (filter) => {
         let filtersCopy = {...this.filters};
 
+        this.startFrom = 0;
+
         if (filtersCopy.properties._id.includes(filter)) {
             filtersCopy.properties._id = filtersCopy.properties._id.filter(el => el !== filter);
             this.filters = filtersCopy;
@@ -143,6 +157,8 @@ class CatalogStore {
     setFiltersFromTopBar = (filters) => {
         let filtersCopy = {...this.filters};
 
+        this.startFrom = 0;
+
         filtersCopy = {...filtersCopy, ...filters, desc_contains: filters.name_ru_contains, name_rozetka_contains: filters.name_ru_contains};
         this.filters = filtersCopy;
 
@@ -152,6 +168,8 @@ class CatalogStore {
     @action
     clearFiltersFormTopBar = () => {
         let filtersCopy = {...this.filters};
+
+        this.startFrom = 0;
 
         filtersCopy.price_lte = null;
         filtersCopy.price_gte = null;

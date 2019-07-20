@@ -1,0 +1,23 @@
+.pagination{
+    list-style: none;
+    float: left;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.pagination > *{
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.pagination > * :hover{
+    color: #e36f64;
+    border-bottom: 1px solid #e36f64;
+}
+
+.selected a{
+    color: #000 !important;
+    border-bottom: 1px solid black !important;
+    cursor: default !important;
+}

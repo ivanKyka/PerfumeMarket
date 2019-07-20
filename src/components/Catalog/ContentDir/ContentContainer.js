@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import ContentQueryTemp from "./ContentQuery";
+import ContentQuery from "./ContentQuery";
 import {inject} from "mobx-react";
 
 @inject('store')
@@ -11,7 +11,7 @@ export default class ContentContainer extends React.Component {
         return(
             <React.Fragment>
                 <Container searchMode={this.props.searchMode}>
-                    <ContentQueryTemp/>
+                    <ContentQuery/>
                 </Container>
             </React.Fragment>
         )
@@ -22,6 +22,7 @@ export default class ContentContainer extends React.Component {
 const Container = styled.div`
   padding: 0;
   display: grid;
+  min-height: 500px;
   
   @media(max-width: 1100px) {
       grid-template-columns: 1fr 1fr;
