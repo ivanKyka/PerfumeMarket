@@ -26,6 +26,7 @@ export default class PaginationComponent extends Component {
                 marginPagesDisplayed={3}
                 initialPage={this.activePage}
                 containerClassName={'pagination'}
+                pageClassName={'page'}
                 disableInitialCallback={true}
                 onPageChange={this.changeHandled}
             />

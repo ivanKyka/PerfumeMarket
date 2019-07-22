@@ -1,23 +1,47 @@
-.pagination{
+.pagination {
     list-style: none;
     float: left;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    width: 90%;
+    text-align: center;
 }
 
-.pagination > *{
+.page, .break {
     display: inline-block;
-    margin: 0 5px;
+    margin: 0 2px;
     cursor: pointer;
+    border: 1px solid #DADADA;
+    border-radius: 3px;
+    padding: 4px;
 }
 
-.pagination > * :hover{
+.page > a, .break > a {
+    color: #3f3f3f;
+}
+
+.page:hover, .break:hover {
+    border-color: #e36f64;
+}
+
+.page:hover > a, .break:hover > a{
     color: #e36f64;
-    border-bottom: 1px solid #e36f64;
 }
 
-.selected a{
-    color: #000 !important;
-    border-bottom: 1px solid black !important;
-    cursor: default !important;
+.next {
+    display: none;
+}
+
+.previous {
+    display: none;
+}
+
+
+
+.selected {
+    cursor: default;
+    background-color: #e36f64;
+    border-color: #e36f64;
+}
+
+.selected > a {
+    color: #3f3f3f !important;
 }
