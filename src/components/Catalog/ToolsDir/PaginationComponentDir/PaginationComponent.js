@@ -22,7 +22,7 @@ export default class PaginationComponent extends Component {
         return (
             <Pagination
                 pageCount={Math.ceil(CatalogStore.productsCount / CatalogStore.limit)}
-                pageRangeDisplayed={CatalogStore.limit}
+                pageRangeDisplayed={3}
                 marginPagesDisplayed={3}
                 initialPage={this.activePage}
                 containerClassName={'pagination'}

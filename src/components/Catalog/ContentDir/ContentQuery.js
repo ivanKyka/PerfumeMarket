@@ -64,8 +64,6 @@ export default class ContentQuery extends React.Component {
 
         this.normalizeFilterObject(filtersJS);
 
-        console.log('RENDER CONTENT');
-
         return (
             <Query
                 query={PRODUCTS_BY_FILTERS_PAGINATED}
