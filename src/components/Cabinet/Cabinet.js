@@ -7,7 +7,6 @@ import {theme} from "../../stores/StyleStore";
 import Address from "./Address";
 import WishList from "./WishList";
 import Purchase from "./Purchase";
-import {deleteCookie, getCookie} from "../../controllers/Cookies";
 import {me} from "../../api/Users";
 import {Redirect} from "react-router";
 import {inject} from "mobx-react";
@@ -16,12 +15,6 @@ import {Logout} from "../../api/Authenticate";
 @inject('store')
 export default class Cabinet extends React.Component {
 
-    setPage = ((e,page) => {
-        e.preventDefault();
-        this.setState({
-            currentPage: page
-        })
-    }).bind(this);
 
     constructor(props){
         super(props);
@@ -44,6 +37,13 @@ export default class Cabinet extends React.Component {
             }
         });
     }
+
+    setPage = ((e,page) => {
+        e.preventDefault();
+        this.setState({
+            currentPage: page
+        })
+    }).bind(this);
 
     returnPage = page => {
         switch (page) {

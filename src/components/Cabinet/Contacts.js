@@ -4,10 +4,11 @@ import {theme} from "../../stores/StyleStore";
 import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/themes/airbnb.css';
 import {Russian} from "flatpickr/dist/l10n/ru";
-import {inject} from "mobx-react";
+import {inject, observer} from "mobx-react";
 import {changeUserData} from "../../api/Users";
 
 @inject('store')
+@observer
 export default class Contacts extends React.Component{
 
     saveUserInfo = (e => {
@@ -15,7 +16,7 @@ export default class Contacts extends React.Component{
         changeUserData(this.userInfo)
             .then(respose => {
                 if (respose){
-                   location.reload();
+                    location.reload();
                 }
                 alert('failed');
             })
@@ -23,8 +24,16 @@ export default class Contacts extends React.Component{
 
     constructor(props){
         super(props);
-        this.userInfo = props.store.userStore.getUser();
         this.phoneRegEx = /[+]?[0-9]{10,12}/;
+
+        this.state = {
+            userInfo: {}
+        };
+        setTimeout(() => {
+            this.setState({
+                userInfo: props.store.userStore.getUser()
+            })
+        }, 1500);
     }
 
     render() {
@@ -36,20 +45,24 @@ export default class Contacts extends React.Component{
                         <span>Имя</span>
                         <Input
                             type={'text'}
-                            onChange={e => {this.userInfo.name = e.target.value}}
+                            onChange={e => {this.state.userInfo.name = e.target.value}}
+                            defaultValue={this.state.userInfo.name}
                         />
                     </Label>
                     <Label>
                         <span>Фамилия</span>
                         <Input
                             type={'text'}
-                            onChange={e => {this.userInfo.surname = e.target.value}}
+                            onChange={e => {this.state.userInfo.surname = e.target.value}}
+                            defaultValue={this.state.userInfo.surname}
                         />
                     </Label>
                     <Label>
                         <span>E-mail</span>
                         <Input
                             type={'text'}
+                            defaultValue={this.state.userInfo.email}
+                            readOnly={true}
                         />
                     </Label>
                 </div>
@@ -59,9 +72,11 @@ export default class Contacts extends React.Component{
                         <Flatpickr
                             options={{
                                 locale: Russian,
-                                dateFormat: 'd.m.Y'
+                                dateFormat: 'd.m.Y',
+                                defaultDate: this.state.userInfo.birthday?this.state.userInfo.birthday.format("yyyy-mm-dd"):''
                             }}
-                            onChange={date => {this.userInfo.birthday =  date[0].toISOString()}}
+
+                            onChange={date => {this.state.userInfo.birthday =  date[0].toISOString()}}
                         />
                     </Label>
                     <Label>
@@ -69,10 +84,12 @@ export default class Contacts extends React.Component{
                         <Input
                             type={'text'}
                             pattern={'([+]{0,1}[0-9]{10,12})'}
-                            onChange={e => {
-                                if (this.phoneRegEx.test(e.target.value))
-                                    this.userInfo.surname = e.target.value
-                            }}
+                            // onChange={e => {
+                            //     if (this.phoneRegEx.test(e.target.value))
+                            //         this.state.userInfo.surname = e.target.value
+                            // }}
+                            defaultValue={this.state.userInfo.username}
+                            readOnly={true}
                         />
                     </Label>
                         <Button

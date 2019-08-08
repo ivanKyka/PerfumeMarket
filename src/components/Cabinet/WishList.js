@@ -25,19 +25,22 @@ export default class WishList extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            dataList: []
+            dataList: [],
+            ready: false
         }
     }
     
     componentWillMount() {
         GetWishList().then(data => {
             this.setState({
-                dataList: data
+                dataList: data,
+                ready: true
             })
         })
     }
 
     render() {
+        if (this.state.ready)
         return(
             <ThemeProvider theme={theme}>
                 {this.state.dataList.length === 0?
@@ -47,7 +50,9 @@ export default class WishList extends React.Component{
                 </EmptyBlock>:
                 <Container>
                 {this.state.dataList.map(el => 
-                    <Query query={
+                    <Query
+                        key={el}
+                        query={
                         gql`query MyProductCategory($id: ID!){
                           product(id: $id){
                             photos{
@@ -102,6 +107,7 @@ export default class WishList extends React.Component{
                 </Container>}
             </ThemeProvider>
         )
+        else return ''
     }
 }
 
@@ -127,14 +133,14 @@ const Image = styled.img`
 
 const InfoBlock = styled.div`
     display: grid;
-    grid-template-rows: 30px min-content 25px 25px 30px;
+    grid-template-rows: min-content min-content 25px 25px 30px;
     padding: 20px;
 `;
 
 const Name = styled(Link)`
     font-size: 14px;
-    margin-bottom: 15px;
     color: ${props => props.theme.primary};
+    padding-top: 5px;
     
     &:hover {
       color: ${props => props.theme.primary_light};

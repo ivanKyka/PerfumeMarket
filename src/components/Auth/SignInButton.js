@@ -34,17 +34,31 @@ export default class SignInButton extends React.Component {
 
 
 const Button = styled.button`
+  @media(min-width: 1000px) {
+      border: 2px #ececed solid;
+      -webkit-border-radius: 15px;
+      -moz-border-radius: 15px;
+      border-radius: 15px;
+      height: 30px;
+      width: 80px;
+      justify-self: right;
+  }
+  @media(max-width: 1000px) {
+      border: none;
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      border-radius: 0;
+      height: 60px;
+      padding: 0 10px;
+      width: 100%;
+      justify-self: left;
+      font-size: 12pt;
+  }
+
   font-family: "Gilroy", sans-serif;
-  height: 30px;
-  border: 2px #ececed solid;
   background: #222328;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  border-radius: 15px;
-  width: 80px;
   cursor: pointer;
   font-weight: bold;
-  justify-self: right;
   color: white;
   &:hover {
     background: #0d0e11;

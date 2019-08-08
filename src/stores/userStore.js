@@ -1,6 +1,11 @@
+import {observable, action} from "mobx";
+
 export class UserStore {
+
+    @observable
     user = {};
 
+    @action
     setUser = (user => {
         this.user = user;
     }).bind(this);

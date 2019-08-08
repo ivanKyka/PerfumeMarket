@@ -20,7 +20,10 @@ export default class User {
         this.orders = obj.orders;
         this.thirdname = obj.thirdname;
         this.birthday = obj.birthday;
-        this.adress = obj.adress;
+        this.adress = {};
+        this.adress.cityName = obj.adress.cityName;
+        this.adress.postOfficeName = obj.adress.postOfficeName;
+        this.adress.postOfficeCode = obj.adress.postOfficeCode;
         this.wishlist = obj.wishlist;
     }
 }

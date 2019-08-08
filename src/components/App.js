@@ -9,7 +9,6 @@ import Cart from "./Cart/Cart";
 import Catalog from "./Catalog/Catalog";
 import Checkout from "./Checkout/Checkout";
 import Product from "./Product/Product";
-import Profile from "./Profile/Profile";
 import {UrlStore} from "../stores/UrlStore";
 import {Provider} from 'mobx-react';
 import Register from './Auth/Register';
@@ -17,6 +16,8 @@ import AboutUs from './About/AboutUs';
 import Cabinet from "./Cabinet/Cabinet";
 import {UserStore} from '../stores/userStore';
 import {Cart as CartStore} from '../stores/Cart';
+import BlogCatalog from './Blog/BlogCatalog';
+import BlogPage from "./Blog/BlogPage";
 
 const httpLink = createHttpLink({
     uri: UrlStore.MAIN_GRAPHQL_URI
@@ -62,11 +63,11 @@ class App extends Component {
                             <Route path={'/catalog/:id'} component={Catalog}/>
                             <Route path={'/checkout'} component={Checkout}/>
                             <Route path={'/product/:id'} component={Product}/>
-                            <Route path={'/profile'} component={Profile}/>
-                            <Route path={'/signIn'} component={Profile}/>
                             <Route path={'/signUp'} component={Register}/>
                             <Route path={'/aboutUs'} component={AboutUs}/>
                             <Route path={'/cabinet'} component={Cabinet}/>
+                            <Route exact path={'/blog'} component={BlogCatalog}/>
+                            <Route path={'/blog/:id'} component={BlogPage}/>
 
                         </Switch>
                     </BrowserRouter>

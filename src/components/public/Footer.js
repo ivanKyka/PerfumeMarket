@@ -24,6 +24,7 @@ export default class Footer extends React.Component{
                         <Menu>
                             <ListPoint><Link to={'/'}>ГЛАВНАЯ</Link></ListPoint>
                             <ListPoint><a href="">КОНТАКТЫ</a></ListPoint>
+                            <ListPoint><Link to={'/blog'}>БЛОГ</Link></ListPoint>
                             <ListPoint><Link to={'/aboutUs'}>О НАС</Link></ListPoint>
                             <ListPoint><a href="">ДОСТАВКА</a></ListPoint>
                         </Menu>
@@ -54,6 +55,7 @@ export default class Footer extends React.Component{
                     <Foot4>
                         <span>Пользуясь даным веб-сайтом, вы даете свое согласие на использование файлов cookies. Если вы не согласны с условиями использования, пожалуйста покиньте даный веб-сайт</span>
                     </Foot4>
+
                     <Foot5>
                         <a href="" >ПРИВАТНОСТЬ</a>
                         <a href="" >ЛИЦЕНЗИОННОЕ СОГЛАШЕНИЕ</a>
@@ -66,23 +68,45 @@ export default class Footer extends React.Component{
     }
 }
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 149px 1px 149px;
-  height: 300px;
   background-color: #222328;
   padding: 0;
   margin: 0;
  
+ 
+  @media(min-width: 1000px) {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-rows: 149px 1px 149px;
+      height: 300px;
+  }
+  @media(max-width: 999px) {
+      padding: 10px;
+      
+      * {
+        margin-bottom: 15px;
+      }
+  } 
 `;
 const Foot1 = styled.div`
   color: #ffffff;
-  padding-left: 100px;
   align-self: center;
+  @media(min-width: 1000px) {
+      padding-left: 100px;
+  }
+  @media(max-width: 999px) {
+      img {
+          margin: 0 auto;
+      }
+  }
 `;
 const Foot2 = styled.div`
   align-self: center;
-  grid-column: 2/4;
+  @media(min-width: 1000px) {
+      grid-column: 2/4;
+  }
+  @media(max-width: 999px) {
+      display: none;
+  }
 `;
 const Menu = styled.ul`
   list-style: none;
@@ -91,8 +115,8 @@ const Menu = styled.ul`
 const ListPoint = styled.li`
   display: inline-block;
   color: #ffffff;
-  font-size: 12pt;
-  padding-left: 20px;
+  font-size: 1.1vw;
+  padding-left: 10px;
   a{
     text-decoration: none;
     color: white;
@@ -108,7 +132,15 @@ const Foot3 = styled.div`
    grid-template-columns: 45px 45px 45px;
    align-self: center;
    justify-self: center;
-   //margin-right: 100px;
+    @media(min-width: 1000px) {
+        
+    }
+    @media(max-width: 999px) {
+        height: 35px;
+        grid-template-rows: 35px;
+        margin: 15px calc(50% - 65px);
+    }
+
 `;
 
 const MenuIconFoot = styled.svg`
@@ -125,6 +157,11 @@ const MenuIconFoot = styled.svg`
 const FootLine = styled.div`
  grid-column-start: 1;
  grid-column-end: 5;
+ 
+      @media(max-width: 999px) {
+          display: none;
+      }
+ 
 `;
 const Line = styled.hr`
  border: 0;
@@ -133,13 +170,26 @@ const Line = styled.hr`
  margin: 0 100px 0 100px;
 `;
 const Foot4 = styled.div`
- grid-column: 1/3;
+  @media(min-width: 1000px) {
+      grid-column: 1/3;
+      padding-left: 100px;
+  }
+  @media(max-width: 999px) {
+      display: block;
+      padding: 25px;
+  }
+ text-align: justify;
  color: #CAC9D2;
  font-size: 12pt;
- padding-left: 100px;
  align-self: center;
 `;
 const Foot5 = styled.div`
+  @media(min-width: 1000px) {
+
+  }
+  @media(max-width: 999px) {
+      padding: 0 25px;
+  }
 grid-column-start: 3;
 grid-column-end: 5;
 align-self: center;
@@ -160,6 +210,12 @@ justify-self: center;
 `;
 
 const Logo = styled.div`
+  @media(min-width: 1000px) {
+
+  }
+  @media(max-width: 999px) {
+
+  }
   display: block;
   height: 50px;
   align-self: center;

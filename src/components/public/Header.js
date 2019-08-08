@@ -10,11 +10,38 @@ import SignIn from "../Auth/SignIn";
 import {me} from "../../api/Users";
 import User from "../../entities/User";
 import {inject} from "mobx-react";
-import {observer} from "mobx-react";
+import {faBars} from "@fortawesome/free-solid-svg-icons";
+import {debounce} from "lodash";
 
 @inject('store')
-@observer
 export default class Header extends React.Component{
+
+    setMobile = (() => {
+        this.setState({
+            mobile: document.body.clientWidth < 1000
+        });
+        console.log(document.body.clientWidth);
+    }).bind(this);
+    toggleMenu = (() => {
+        this.setState(oldState => {
+            return {
+                menuOpened: !oldState.menuOpened
+            }
+        })
+    }).bind(this);
+
+    constructor(props){
+        super(props);
+        this.state = {
+            loginOpen: false,
+            authorized: false,
+            ready: false,
+            data: {},
+            mobile: document.body.clientWidth < 1000,
+            menuOpened: false
+        }
+    }
+
 
     updateAuthData = (() => {
         me().then(data => {
@@ -44,34 +71,33 @@ export default class Header extends React.Component{
         })
     }).bind(this);
 
-    constructor(props){
-        super(props);
-        this.state = {
-            loginOpen: false,
-            authorized: false,
-            ready: false,
-            data: {}
-        }
-    }
-
     componentWillMount() {
         this.updateAuthData();
         this.props.store.cart.getCartFromServer();
+        window.addEventListener('resize', debounce(this.setMobile, 100));
     }
 
     render() {
         return(
             <React.Fragment>
-                <ThemeProvider theme={theme}>
+                <ThemeProvider theme={{
+                    colors: theme,
+                    mobile: this.state.mobile,
+                    opened: this.state.menuOpened
+                }}>
                     <Container>
                         <Logo>
                             <Link to={'/'}>
                                 <img src={LogoImg}/>
                             </Link>
                         </Logo>
+                        <MenuIcon icon={faBars} onClick={this.toggleMenu} size={'2x'}/>
                         <Menu>
                             <li>ГЛАВНАЯ</li>
                             <li>КОНТАКТЫ</li>
+                            <Link to={'/blog'}>
+                                <li>БЛОГ</li>
+                            </Link>
                             <li>О НАС</li>
                             <li>ДОСТАВКА</li>
                         </Menu>
@@ -99,43 +125,79 @@ export default class Header extends React.Component{
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns:  1fr 4fr 1fr 150px ;
-  padding: 0 50px;
-  grid-template-rows: 60px;
-  background: ${props => props.theme.bgCol};
+  @media(min-width: 1000px) {
+      grid-template-columns:  1fr 4fr 1fr 150px ;
+      padding: 0 50px;
+      grid-template-rows: 60px;
+      align-items: center;
+  }
+  @media(max-width: 999px) {
+      height: ${props => props.theme.opened?'480px':'60px'};
+      grid-template-rows: ${props => props.theme.opened?'60px 300px 60px 60px':'60px'};
+      padding: 0;
+      overflow: hidden;
+  }
+  transition: height .5s;
+  background: ${props => props.theme.colors.bgCol};
   color: #fff;
   margin: 0;
-  align-items: center;
   width: 100%;
 `;
 
 const Menu = styled.ul`
   list-style: none;
-  padding: 0 10px;
   margin: 0;
-  justify-self: center;
   height: 100%;
+  
+  @media(min-width: 1000px) {
+      padding: 0 10px;
+      margin: 0 auto;
+      justify-self: center;
+      li {
+          display: inline-block;
+          font-size: 1vw;
+      }
+  }
+  @media(max-width: 999px) {
+      padding: 0;
+      li {
+          display: block;
+          width: 100%;
+          font-size: 12pt;
+          padding: 0 10px;
+      }
+  }
+  
   li {
     display: inline-block;
     padding: 20px 10px;
-    font-size: 1vw;
-    height: 100%;
+    height: 60px;
     vertical-align: center;
     cursor: pointer;
     margin: 0;
+    color: white;
   }
   li:hover{
-    background: ${props => props.theme.bgDarkCol};
+    background: ${props => props.theme.colors.bgDarkCol};
+    text-decoration: underline;
   }
 `;
 
 
 const Logo = styled.div`
+  @media(min-width: 1000px) {
+      width: 100%;
+  }
+  @media(max-width: 999px) {
+      width: 225px;
+      margin-left: 20px;
+  }
+
   display: block;
   height: 60px;
   padding: 5px;
   align-self: center;
-  width: min-content;
+  justify-items: center;
   a{
     display: block;
     height: 50px;
@@ -146,11 +208,11 @@ const Logo = styled.div`
       height: 50px;
       align-self: center;
       display: block;
-      justify-content: right;
       cursor: pointer;
+      object-fit: contain;
   }
   &:hover{
-    background: ${props => props.theme.bgDarkCol};
+    background: ${props => props.theme.colors.bgDarkCol};
   }
  
 
@@ -163,7 +225,7 @@ const Counter = styled.div`
   -moz-border-radius: 10px;
   border-radius: 10px;
   background: #fff;
-  color: ${props => props.theme.bgCol};
+  color: ${props => props.theme.colors.bgCol};
   width: 18px;
   font-size: 14px;
   font-weight: bold;
@@ -174,16 +236,29 @@ const Counter = styled.div`
 `;
 
 const Cart = styled(Link)`
+  
+  @media(min-width: 1000px) {
+      justify-self: right;
+      span {
+          font-size: 14px;
+      }
+  }
+  @media(max-width: 999px) {
+      justify-self: left;
+      padding: 0 10px;
+      width: 100%;
+      span {
+          font-size: 12pt;
+      }
+  }
   display: grid;
   align-content: center;
   grid-template-columns: 20px 1fr 15px;
   cursor: pointer;
-  justify-self: right;
   padding: 10px;
-  height: 100%;
+  height: 60px;
   color: white;
   span {
-    font-size: 14px;
     padding: 0 10px;
   }
   
@@ -193,10 +268,18 @@ const Cart = styled(Link)`
   
   &:hover {
     color: white;
-    background: ${props => props.theme.bgDarkCol};
+    background: ${props => props.theme.colors.bgDarkCol};
    }
    
   &:hover span {
       text-decoration: underline;
   }
+`;
+
+const MenuIcon = styled(FontAwesomeIcon)`
+    display: ${props => props.theme.mobile?'block':'none'};
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    cursor: pointer;
 `;

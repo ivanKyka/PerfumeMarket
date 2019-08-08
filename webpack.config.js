@@ -29,18 +29,6 @@ module.exports = {
                     }
                 ]
             },
-            // {
-            //     test: /\.(css)$/,
-            //     use: [
-            //         {
-            //             loader: "file-loader",
-            //             options: {
-            //                 outputPath: './',
-            //                 name: '[name].[ext]'
-            //             }
-            //         }
-            //     ]
-            // },
             {
                 test: /\.(css)$/,
                 use:  [{ loader: 'style-loader' }, { loader: 'css-loader' }]

@@ -28,6 +28,27 @@ const reactSelectStyles = {
 
 export default class Address extends React.Component {
 
+
+    setPostOffice = (option => {
+        if (option !== null)
+        getPostOffices(option.value).then(data => {return data.map(elem => {
+            return {
+                value: elem.Ref,
+                label: elem.Description
+            }
+        })}).then(options => this.setState({
+            postOffices: options,
+            cityName: option.label,
+            postOfficeName: '',
+            postOfficeCode: ''
+        }))
+        else this.setState({
+            postOffices: [],
+            postOfficeName: '',
+            postOfficeCode: ''
+        })
+    }).bind(this);
+    
     setCities = (name => {
         if (name.length >= 3)
             getCitiesByName(name).then(data => {return data.map(elem => {
@@ -39,25 +60,10 @@ export default class Address extends React.Component {
                 cities: options
             }));
     }).bind(this);
-    setPostOffice = (option => {
-        if (option !== null)
-        getPostOffices(option.value).then(data => {return data.map(elem => {
-            return {
-                value: elem.SiteKey,
-                label: elem.Description
-            }
-        })}).then(options => this.setState({
-            postOffices: options,
-            postOffice: {label:'', value:''}
-        }))
-        else this.setState({
-            postOffices: [],
-            postOffice: {label:'', value:''}
-        })
-    }).bind(this);
     setCurrentPostOffice = (e => {
         this.setState({
-            postOffice: e
+            postOfficeName: e.label,
+            postOfficeCode: e.value
         })
     }).bind(this);
 
@@ -65,14 +71,19 @@ export default class Address extends React.Component {
         super(props);
         this.state = {
             cities: [],
+            cityName: '',
             postOffices: [],
-            postOffice: {label:'', value:''}
+            postOfficeName: '',
+            postOfficeCode: ''
         }
     }
 
 render() {
     return(
-        <Form>
+        <Form onSubmit={e => {
+            e.preventDefault();
+            console.log(this.state);
+        }}>
             <div>
                 <Label>
                     <span>Имя</span>
@@ -108,7 +119,10 @@ render() {
                         styles={reactSelectStyles}
                         options={this.state.postOffices}
                         isClearable={true}
-                        value={this.state.postOffice}
+                        value={{
+                            label: this.state.postOfficeName,
+                            value: this.state.postOfficeCode
+                        }}
                         onChange={this.setCurrentPostOffice}
                     />
                 </Label>

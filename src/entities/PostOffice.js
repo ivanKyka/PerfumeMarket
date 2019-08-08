@@ -11,5 +11,8 @@ export class PostOffice {
         this.CityDescriptionRu = data.CityDescriptionRu;
         this.Longitude = data.Longitude;
         this.Latitude = data.Latitude;
+        this.CityRef = data.CityRef;
+        this.Ref = data.Ref;
+
     }
 }
