@@ -6,13 +6,13 @@ import CatalogStore from '../../../stores/CatalogStore'
 import {toJS} from "mobx";
 import {UrlStore} from "../../../stores/UrlStore";
 import {PRODUCTS_BY_FILTERS_PAGINATED} from "../../../stores/Queries";
+import ShowMoreButtonWrapper from "./ShowMoreButtonWrapper";
 
 @inject('store')
 @observer
 export default class ContentQuery extends React.Component {
 
     urlStore = this.props.store.urlStore;
-
 
     normalizeFilterObject = (filterObject) => {
         if (filterObject.category._id.length === 0) {
@@ -59,49 +59,55 @@ export default class ContentQuery extends React.Component {
         let filtersJS = toJS(filters);
         let limit = CatalogStore.limit;
         let limitJS = toJS(limit);
+        let startFrom = CatalogStore.startFrom;
+        let startFromJS = toJS(startFrom);
 
         this.normalizeFilterObject(filtersJS);
 
         return (
-            <Fragment>
-                <Query
-                    query={PRODUCTS_BY_FILTERS_PAGINATED}
-                    fetchPolicy={'cache'}
-                    variables={{
-                        filters: filtersJS,
-                        sortOption: sortOptionJS,
-                        limit: limitJS,
-                        startFrom: 0
-                    }}
-                >
-                    {({loading, error, data, refetch, fetchMore}) => {
-                        CatalogStore.refetch = refetch;
-                        CatalogStore.fetchMore = fetchMore;
+            <Query
+                query={PRODUCTS_BY_FILTERS_PAGINATED}
+                fetchPolicy={'cache'}
+                variables={{
+                    filters: filtersJS,
+                    sortOption: sortOptionJS,
+                    limit: limitJS,
+                    startFrom: startFromJS
+                }}
+            >
+                {({loading, error, data, refetch, fetchMore}) => {
+                    CatalogStore.refetch = refetch;
+                    CatalogStore.fetchMore = fetchMore;
 
-                        if (loading) return <p></p>;
-                        if (error) return <p>Error :(</p>;
+                    if (loading) {
+                        CatalogStore.isMoreDataThanLimit = false;
+                        return <span></span>;
+                    }
 
-                        this.getProductsCount(filtersJS).then(() => {
-                            CatalogStore.checkIsMoreDataThan(data.products.length);
+                    if (error) return <p>Error :( `${error.message}`</p>;
+
+                    this.getProductsCount(filtersJS).then(() => {
+                        CatalogStore.checkIsMoreDataThan(startFromJS + data.products.length);
+                    });
+
+                    CatalogStore.fetchMore = () => {
+                        fetchMore({
+                            variables: {
+                                startFrom: startFromJS + data.products.length,
+                            },
+                            updateQuery: (prev, {fetchMoreResult}) => {
+                                if (!fetchMoreResult) return prev;
+                                return Object.assign({}, prev, {
+                                    products: [...prev.products, ...fetchMoreResult.products],
+                                });
+                            },
                         });
+                        CatalogStore.checkIsMoreDataThan(data.products.length + CatalogStore.limit);
+                    };
 
-                        CatalogStore.fetchMore = () => {
-                            fetchMore({
-                                variables: {
-                                    startFrom: data.products.length,
-                                },
-                                updateQuery: (prev, {fetchMoreResult}) => {
-                                    if (!fetchMoreResult) return prev;
-                                    return Object.assign({}, prev, {
-                                        products: [...prev.products, ...fetchMoreResult.products],
-                                    });
-                                },
-                            });
-                            CatalogStore.checkIsMoreDataThan(data.products.length + CatalogStore.limit);
-                        };
-
-                        return (
-                            (data.products || []).map((content, index) => {
+                    return (
+                        <Fragment>
+                            {(data.products || []).map((content, index) => {
                                 return (
                                     <ContentBlock
                                         key={index}
@@ -119,10 +125,12 @@ export default class ContentQuery extends React.Component {
                                     />
                                 )
                             })
-                        )
-                    }}
-                </Query>
-            </Fragment>
+                            }
+                            <ShowMoreButtonWrapper/>
+                        </Fragment>
+                    )
+                }}
+            </Query>
         );
     }
 }

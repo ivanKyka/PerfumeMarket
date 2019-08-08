@@ -2,7 +2,9 @@ import React, {Component} from 'react'
 import styled from 'styled-components'
 import ShowMoreImg from '../../../resources/image/ToolsBar/ShowMoreImg.png'
 import CatalogStore from "../../../stores/CatalogStore";
+import {observer} from "mobx-react";
 
+@observer
 export default class ShowMoreButton extends Component {
     render() {
         return (
@@ -14,7 +16,7 @@ export default class ShowMoreButton extends Component {
             >
                 <ButtonImg src={ShowMoreImg}/>
                 <ButtonTitle>
-                    Показать ещё
+                    {/*{ >= CatalogStore.limit ? CatalogStore.limit : CatalogStore.productsCount - toJS(CatalogStore.startFrom)}*/}
                 </ButtonTitle>
             </Container>
         )
@@ -25,13 +27,12 @@ const Container = styled.div`
     display: inline-block;
     padding: 10px;
     cursor: pointer;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    margin-top: 50%;      
 `;
 
 const ButtonImg = styled.img`
-    width: 15px;
-    height: 15px;
+    width: 100px;
+    height: 100px;
 `;
 
 const ButtonTitle = styled.span`

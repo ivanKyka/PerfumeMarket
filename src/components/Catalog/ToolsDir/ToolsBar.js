@@ -1,21 +1,19 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
-import ShowMoreButton from "./ShowMoreButton";
 import ScrollToTopButton from "./ScrollToTopButton";
-import CatalogStore from "../../../stores/CatalogStore";
-import {toJS} from "mobx";
 import {observer} from "mobx-react";
+import PaginationComponent from "./PaginationComponentDir/PaginationComponent";
 
 @observer
 export default class ToolsBar extends Component {
-    render(){
-        let isMoreDataThanLimit = CatalogStore.isMoreDataThanLimit;
-        return(
+
+    render() {
+        return (
             <Container searchMode={this.props.searchMode}>
-                {toJS(isMoreDataThanLimit) ? <ShowMoreButton/> : ""}
+                <PaginationComponent/>
                 <ScrollToTopButton IntervalInMs={16} Step={40}/>
             </Container>
-            )
+        )
     }
 }
 
