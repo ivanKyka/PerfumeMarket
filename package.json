@@ -73,6 +73,7 @@
     "react-router-dom": "5.0.0",
     "react-scrollbar": "0.5.6",
     "react-select": "3.0.4",
+    "react-share": "^3.0.1",
     "react-star-ratings": "2.3.0",
     "react-table": "6.9.2",
     "react-transition-group": "4.1.1",
