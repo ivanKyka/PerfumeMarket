@@ -7,10 +7,10 @@ export async function me() {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
-                "authorization": `Bearer ${getCookie('jwt')}`
+                "Authorization": `Bearer ${getCookie('jwt')}`
             }
         });
-    if (response.status === 200) {
+    if (response.status >= 200 && response.status <= 400) {
         let data = await response.json();
         return new User(data);
     }
@@ -19,10 +19,10 @@ export async function me() {
 
 export async function changeUserData(data) {
     let response = await fetch(`${UrlStore.MAIN_URL}/users/me`, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
             "Content-Type": "application/json",
-            "authorization": `Bearer ${getCookie('jwt')}`
+            "Authorization": `Bearer ${getCookie('jwt')}`
         },
         body: JSON.stringify(data)
     });

@@ -1,10 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 import StarRatings from "react-star-ratings";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimes} from "@fortawesome/free-solid-svg-icons";
+import {deleteComment} from "../../api/Comments";
+import {inject} from "mobx-react";
 
+@inject('store')
 export default class CommentBlock extends React.Component {
 
+    constructor(props){
+        super(props);
+        this.clickHandler = this.clickHandler.bind(this);
+    }
+
+    clickHandler = () => {
+        deleteComment(this.props.elem._id);
+        this.props.refetch();
+    }
+
 render() {
+    let user = this.props.store.userStore.getUser();
     return(
         <Container>
             <Comment>
@@ -19,6 +35,11 @@ render() {
                     starSpacing={'1px'}
                 />
                 <Verified>{this.props.elem.verified?'Verified':''}</Verified>
+                {this.props.elem.owner._id === user._id?<DeleteComment
+                    icon={faTimes}
+                    size={'lg'}
+                    key={this.props.elem._id}
+                    onClick={this.clickHandler}/>:''}
                 <p>{this.props.elem.text}</p>
             </Comment>
             {this.props.elem.response ===''?'':
@@ -34,7 +55,7 @@ render() {
 }
 
 const Container = styled.div`
-    margin-bottom: 30px;
+    margin-top: 30px;
 `;
 
 const Comment = styled.div`
@@ -60,4 +81,9 @@ const Verified = styled.span`
     font-size: 14pt;
     margin-left: 20px;
     font-weight: bold;
+`;
+
+const DeleteComment = styled(FontAwesomeIcon)`
+    float: right;
+    cursor: pointer;    
 `;

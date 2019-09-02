@@ -18,19 +18,12 @@ import {UserStore} from '../stores/userStore';
 import {Cart as CartStore} from '../stores/Cart';
 import BlogCatalog from './Blog/BlogCatalog';
 import BlogPage from "./Blog/BlogPage";
+import {me} from "../api/Users";
 
 const httpLink = createHttpLink({
     uri: UrlStore.MAIN_GRAPHQL_URI
 });
 
-// const authLink = setContext((_, {headers}) => {
-//     return {
-//         headers: {
-//             ...headers,
-//             authorization: urlStore.TOKEN ? `Bearer ${urlStore.TOKEN}` : "",
-//         }
-//     }
-// });
 
 export const client = new ApolloClient({
     link: httpLink,
@@ -38,9 +31,10 @@ export const client = new ApolloClient({
 });
 
 const cart = new CartStore();
+export const userStore =  new UserStore();
 
 const store = {
-    userStore: new UserStore(),
+    userStore: userStore,
     urlStore: UrlStore,
     cart: cart
 };
@@ -49,6 +43,9 @@ class App extends Component {
 
 
     componentWillMount() {
+        me().then(data => {
+            if (data) userStore.setUser(data);
+        })
         cart.loadCart();
     }
 

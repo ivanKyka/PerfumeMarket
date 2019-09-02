@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
-import SpreadImgOpened from '../../../../resources/image/Categories/SpreadImgOpened.png'
-import SpreadImgClosed from '../../../../resources/image/Categories/SpreadImgClosed.png'
+import SpreadImgOpened from '../../../../resources/image/Catalog/Categories/SpreadImgOpened.png'
+import SpreadImgClosed from '../../../../resources/image/Catalog/Categories/SpreadImgClosed.png'
 
 export default class CategoriesItem extends Component {
     constructor(props) {

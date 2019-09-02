@@ -10,8 +10,11 @@ import Footer from "../public/Footer";
 import {Query} from "react-apollo";
 import gql from "graphql-tag";
 import Links from "./Links";
+import AddComentModalPane from "./AddComentModalPane";
 
 export default class Product extends React.Component {
+
+
 
 
 render() {
@@ -45,6 +48,7 @@ render() {
                 <Description ProductID={this.props.match.params.id}/>
             </Container>
                 <Links/>
+
             <CommentsContainer ProductID={this.props.match.params.id}/>
             <Footer/>
         </div>

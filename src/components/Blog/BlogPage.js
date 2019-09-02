@@ -6,6 +6,7 @@ import Header from "../public/Header";
 import Footer from "../public/Footer";
 import ReactMarkdown from 'react-markdown';
 import RecomendedBlock from "./RecomendedBlock";
+import {UrlStore} from "../../stores/UrlStore";
 
 export default class BlogPage extends React.Component {
 
@@ -21,6 +22,10 @@ render() {
                             publishing
                             newsBody
                             link
+                            short_desc
+                            header_photo {
+                                  url
+                                }
                             }
                         }`
             }
@@ -32,7 +37,11 @@ render() {
                     }
                     return(
                         <Content>
+                            <h1>{data.blog.title}</h1>
+                            <p>{data.blog.short_desc}</p>
+                            <img src={UrlStore.MAIN_URL + data.blog.header_photo.url}/>
                             <ReactMarkdown source={data.blog.newsBody}/>
+                            <span>Ссылка на товар: <a href={data.blog.link}>{data.blog.link}</a></span>
                         </Content>
                     );
                 }}
@@ -53,15 +62,21 @@ const Content = styled.div`
         display: block;
     }
     
+    a {
+        display: inline-block;
+    }
+    
     img {
-        width: 100%;
+        max-width: 100%;
+        object-fit: contain;
+        margin: auto;
         margin-bottom: 20px;
     }
     
     p {
         font-size: 12pt;
         text-align: justify;
-        letter-spacing: 1px;
+        letter-spacing: 0px;
         line-height: 140%;
     }
     

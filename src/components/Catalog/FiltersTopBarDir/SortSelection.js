@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
-import HideImgClosed from "../../../resources/image/Categories/SpreadImgClosed.png"
-import HideImgOpened from "../../../resources/image/Categories/SpreadImgOpened.png"
-import ArrowCheckImg from "../../../resources/image/OptionsComponent/ArrowCheck.png"
+import HideImgClosed from "../../../resources/image/Catalog/Categories/SpreadImgClosed.png"
+import HideImgOpened from "../../../resources/image/Catalog/Categories/SpreadImgOpened.png"
+import ArrowCheckImg from "../../../resources/image/Catalog/OptionsComponent/ArrowCheck.png"
 import CatalogStore from "../../../stores/CatalogStore";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock, faDollarSign, faStar} from "@fortawesome/free-solid-svg-icons";

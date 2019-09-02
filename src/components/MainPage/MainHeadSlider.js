@@ -35,7 +35,9 @@ export default class MainHeadSlider extends React.Component {
                     });
                     return (<ImageGallery items={images}
                                           showThumbnails={false}
+                                          autoPlay={true}
                                           showBullets={true}
+                                          slideInterval={5000}
                                           showPlayButton={false}
                                           showFullscreenButton={false}
                                           renderItem={(item, index) => {

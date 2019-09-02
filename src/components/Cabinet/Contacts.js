@@ -13,7 +13,7 @@ export default class Contacts extends React.Component{
 
     saveUserInfo = (e => {
         e.preventDefault();
-        changeUserData(this.userInfo)
+        changeUserData(this.state.userInfo)
             .then(respose => {
                 if (respose){
                     location.reload();

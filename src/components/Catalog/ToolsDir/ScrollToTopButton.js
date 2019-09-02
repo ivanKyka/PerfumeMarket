@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import styled from "styled-components"
-import ScrollImg from '../../../resources/image/ToolsBar/ScrollUpImg.png'
+import ScrollImg from '../../../resources/image/Catalog/ToolsBar/ScrollUpImg.png'
 
 export default class ScrollToTopButton extends Component{
     constructor(props){

@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
 import ScrollArea from 'react-scrollbar'
-import RadioButtonClickedImg from '../../../../resources/image/OptionsComponent/RadionButtonClicked.png'
-import RadioButtonDefaultImg from '../../../../resources/image/OptionsComponent/RadionButtonDefault.png'
-import SelectionButtonClickedImg from '../../../../resources/image/OptionsComponent/SelectionButtonClicked.png'
-import SelectionButtonDefaultImg from '../../../../resources/image/OptionsComponent/SelectionButtonDefault.png'
+import RadioButtonClickedImg from '../../../../resources/image/Catalog/OptionsComponent/RadionButtonClicked.png'
+import RadioButtonDefaultImg from '../../../../resources/image/Catalog/OptionsComponent/RadionButtonDefault.png'
+import SelectionButtonClickedImg from '../../../../resources/image/Catalog/OptionsComponent/SelectionButtonClicked.png'
+import SelectionButtonDefaultImg from '../../../../resources/image/Catalog/OptionsComponent/SelectionButtonDefault.png'
 import CatalogStore from "../../../../stores/CatalogStore";
 import {toJS} from "mobx";
 import {observer} from "mobx-react";

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
-import ShowMoreImg from '../../../resources/image/ToolsBar/ShowMoreImg.png'
+import ShowMoreImg from '../../../resources/image/Catalog/ToolsBar/ShowMoreImg.png'
 import CatalogStore from "../../../stores/CatalogStore";
 import {observer} from "mobx-react";
 

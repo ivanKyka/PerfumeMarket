@@ -29,6 +29,23 @@ const reactSelectStyles = {
 export default class Address extends React.Component {
 
 
+    constructor(props){
+        super(props);
+        this.state = {
+            cities: [],
+            cityName: '',
+            postOffices: [],
+            postOfficeName: '',
+            postOfficeCode: '',
+            addressData: {
+                name: '',
+                surname: '',
+                phone: '',
+                postId: ''
+            }
+        }
+    }
+
     setPostOffice = (option => {
         if (option !== null)
         getPostOffices(option.value).then(data => {return data.map(elem => {
@@ -67,16 +84,6 @@ export default class Address extends React.Component {
         })
     }).bind(this);
 
-    constructor(props){
-        super(props);
-        this.state = {
-            cities: [],
-            cityName: '',
-            postOffices: [],
-            postOfficeName: '',
-            postOfficeCode: ''
-        }
-    }
 
 render() {
     return(
@@ -102,7 +109,7 @@ render() {
                 <Label>
                     <span>Город</span>
                     <ReactSelect
-                        noOptionsMessage={() => 'Загрузка'}
+                        noOptionsMessage={() => 'Введите ваш город'}
                         placeholder={''}
                         styles={reactSelectStyles}
                         onInputChange={e => {this.setCities(e)}}
@@ -114,7 +121,7 @@ render() {
                 <Label>
                     <span>Отделение</span>
                     <ReactSelect
-                        noOptionsMessage={() => 'Загрузка'}
+                        noOptionsMessage={() => 'Выберите отделение'}
                         placeholder={''}
                         styles={reactSelectStyles}
                         options={this.state.postOffices}

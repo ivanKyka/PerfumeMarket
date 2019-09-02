@@ -1,15 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import gql from "graphql-tag";
-import CatalogCard from "./CatalogCard";
+import CatalogCard from "../Blog/CatalogCard";
 import {Query} from "react-apollo";
+import BlogCard from "./BlogCard";
 
-export default class RecomendedBlock extends React.Component {
+
+export default class BlogRefs extends React.Component {
 
 render() {
     return(
         <React.Fragment>
-            <Header>Недавно опубликованные статьи</Header>
+            <Title>НАШ БЛОГ</Title>
             <Container>
                 <Query query={
                     gql`query ($limit: Int!, $startFrom: Int!, $sortOption: String!){
@@ -17,9 +19,10 @@ render() {
                                 id
                                 title
                                 publishing
+                                short_desc
                                 header_photo {
-                                      url
-                                    }
+                                  url
+                                }
                                 }
                             }`
                 }
@@ -34,9 +37,7 @@ render() {
                         if (error) {
                             return <p>Error :(</p>;
                         }
-                        let arr = data.blogs.filter(elem => {return elem.id !== this.props.CurrentId});
-                        if (arr.length > 3) arr.pop();
-                        return arr.map(elem => <CatalogCard Data={elem} key={elem.id}/>)
+                        return data.blogs.map(elem => <BlogCard Data={elem} key={elem.id}/>)
                     }}
                 </Query>
             </Container>
@@ -47,23 +48,12 @@ render() {
 
 const Container = styled.div`
     display: grid;
+    grid-template-columns: 1fr 1fr;
     width: 100%;
-    justify-content: center;
-    margin: 30px 0;
-    @media(min-width: 1000px) {
-      grid-template-columns: repeat(3, 300px);
-    }
-    @media(min-width: 650px) and (max-width: 999px){
-      grid-template-columns: repeat(2, 300px);
-    }
-    @media(max-width: 649px) {
-      grid-template-columns: 300px;
-    }
-    
+    justify-items: center;
 `;
 
-const Header = styled.h2`
-    width: 100%;
+const Title = styled.h2`
     text-align: center;
-    margin-top: 60px;
+    
 `;

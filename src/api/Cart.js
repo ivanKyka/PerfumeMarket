@@ -11,7 +11,7 @@ export async function ModifyCart(cartBody) {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
-                "authorization": `Bearer ${getCookie('jwt')}`
+                "Authorization": `Bearer ${getCookie('jwt')}`
 
             },
             body: JSON.stringify({
@@ -29,7 +29,7 @@ export async function GetCart() {
     let response = await fetch(`${UrlStore.MAIN_URL}/cart/me`,
         {
             headers: {
-                "authorization": `Bearer ${getCookie('jwt')}`
+                "Authorization": `Bearer ${getCookie('jwt')}`
             },
         });
     if (response.status >= 200 && response.status < 300){
@@ -48,7 +48,7 @@ export async function ClearCart() {
         {
             method: 'DELETE',
             headers: {
-                "authorization": `Bearer ${getCookie('jwt')}`
+                "Authorization": `Bearer ${getCookie('jwt')}`
             },
         });
     return (response.status >= 200 && response.status < 300);

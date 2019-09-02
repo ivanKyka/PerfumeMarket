@@ -30,12 +30,12 @@ export default class PhotoGalerry extends React.Component {
 
     render() {
         return (<Query query={gql`query ProductPhotos($id: ID!){
-  product(id: $id){
-        photos{
-          url
-        }
-      }
-    }`}
+                                      product(id: $id){
+                                            photos{
+                                              url
+                                            }
+                                          }
+                                        }`}
         variables={{"id": this.props.ProductID}}>
             {({loading, error, data}) => {
                 if (loading) return <p></p>;

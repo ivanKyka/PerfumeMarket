@@ -8,7 +8,7 @@ export async function GetWishList() {
     let response = await fetch(`${UrlStore.MAIN_URL}/users/me`,
         {
             headers: {
-                "authorization": `Bearer ${getCookie('jwt')}`
+                "Authorization": `Bearer ${getCookie('jwt')}`
             },
         });
     if (response.status >= 200 && response.status < 300){
@@ -29,7 +29,7 @@ export async function AddToWishList(id) {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
-                    "authorization": `Bearer ${getCookie('jwt')}`
+                    "Authorization": `Bearer ${getCookie('jwt')}`
 
                 },
                 body: JSON.stringify({
@@ -56,7 +56,7 @@ export async function RemoveFromWishList(id) {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
-                "authorization": `Bearer ${getCookie('jwt')}`
+                "Authorization": `Bearer ${getCookie('jwt')}`
 
             },
             body: JSON.stringify({
@@ -82,7 +82,7 @@ export async function ClearWishList() {
         {
             method: 'POST',
             headers: {
-                "authorization": `Bearer ${getCookie('jwt')}`
+                "Authorization": `Bearer ${getCookie('jwt')}`
             },
             body: `[]`
         });

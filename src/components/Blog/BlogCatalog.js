@@ -8,25 +8,17 @@ import CatalogCard from "./CatalogCard";
 import Footer from "../public/Footer";
 import Pagination from 'rc-pagination';
 import './Pagination.css';
-import {getCount} from "../../api/Blog";
 
 export default class Catalog extends React.Component {
 
     constructor(props){
         super(props);
         this.state = {
-            count: 0,
             currentPage: 1
         }
-        this.defaultPageSize = 4;
+        this.defaultPageSize = 15;
     }
-    
-    componentWillMount() {
-        getCount().then(count => 
-        this.setState({
-            count: count
-        }));
-    }
+
 
     setPage = page => {
         this.setState({
@@ -46,6 +38,9 @@ export default class Catalog extends React.Component {
                                 id
                                 title
                                 publishing
+                                header_photo {
+                                      url
+                                    }
                                 }
                             }`
                         }
@@ -65,13 +60,31 @@ export default class Catalog extends React.Component {
                         </Query>
                     </Content>
                     <PaginationWrapper>
-                        <Pagination
-                            defaultCurrent={1}
-                            total={this.state.count}
-                            defaultPageSize={this.defaultPageSize}
-                            hideOnSinglePage={true}
-                            onChange={this.setPage}
-                        />
+                        <Query query={
+                            gql`query{
+                                  blogsConnection{
+                                    aggregate{
+                                      totalCount
+                                    }
+                                  }
+                                }`
+                        }
+
+                        >
+                            {({loading, error, data}) => {
+                                if (loading) return <p></p>;
+                                if (error) {
+                                    return <p>Error :(</p>;
+                                }
+                                return <Pagination
+                                    defaultCurrent={1}
+                                    total={data.blogsConnection.aggregate.totalCount}
+                                    defaultPageSize={this.defaultPageSize}
+                                    hideOnSinglePage={true}
+                                    onChange={this.setPage}
+                                />
+                            }}
+                        </Query>
                     </PaginationWrapper>
                     <Footer/>
                 </React.Fragment>

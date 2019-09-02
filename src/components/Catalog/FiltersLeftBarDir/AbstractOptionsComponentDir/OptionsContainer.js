@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import styled from 'styled-components'
 import CatalogStore from '../../../../stores/CatalogStore'
 import OptionsContent from "./OptionsContent";
-import HideImgClosed from '../../../../resources/image/OptionsComponent/HideImgClosed.png'
-import HideImgOpened from '../../../../resources/image/OptionsComponent/HideImgOpened.png'
+import HideImgClosed from '../../../../resources/image/Catalog/OptionsComponent/HideImgClosed.png'
+import HideImgOpened from '../../../../resources/image/Catalog/OptionsComponent/HideImgOpened.png'
 
 export default class OptionsContainer extends Component {
     constructor(props) {

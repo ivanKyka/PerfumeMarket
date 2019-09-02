@@ -16,6 +16,20 @@ import {debounce} from "lodash";
 @inject('store')
 export default class Header extends React.Component{
 
+    constructor(props){
+        super(props);
+        this.state = {
+            loginOpen: false,
+            authorized: false,
+            ready: false,
+            data: {},
+            mobile: document.body.clientWidth < 1000,
+            menuOpened: false
+        }
+    }
+
+
+
     setMobile = (() => {
         this.setState({
             mobile: document.body.clientWidth < 1000
@@ -29,19 +43,6 @@ export default class Header extends React.Component{
             }
         })
     }).bind(this);
-
-    constructor(props){
-        super(props);
-        this.state = {
-            loginOpen: false,
-            authorized: false,
-            ready: false,
-            data: {},
-            mobile: document.body.clientWidth < 1000,
-            menuOpened: false
-        }
-    }
-
 
     updateAuthData = (() => {
         me().then(data => {

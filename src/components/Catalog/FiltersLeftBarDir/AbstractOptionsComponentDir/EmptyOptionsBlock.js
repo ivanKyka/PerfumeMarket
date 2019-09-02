@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
-import HideImgClosed from '../../../../resources/image/OptionsComponent/HideImgClosed.png'
+import HideImgClosed from '../../../../resources/image/Catalog/OptionsComponent/HideImgClosed.png'
 import Skeleton from "react-loading-skeleton";
 
 export default class EmptyOptionsBlock extends Component {
