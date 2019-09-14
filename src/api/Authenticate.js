@@ -1,5 +1,6 @@
 import {UrlStore} from "../stores/UrlStore";
-import {deleteCookie, getCookie, setCookie} from "../controllers/Cookies";
+import {getCookie, setCookie} from "../controllers/Cookies";
+import {userStore} from "../components/App";
 
 /**
  * @return {undefined}
@@ -25,7 +26,7 @@ async function Login(identifier, password) {
 }
 
 
-async function Register(username, email, password, name, surname) {
+async function Register(username, email, password, name, surname, gender) {
     let response = await fetch(`${UrlStore.MAIN_URL}/auth/local/register`,
         {
             method: 'POST',
@@ -37,12 +38,12 @@ async function Register(username, email, password, name, surname) {
                 email: email,
                 password: password,
                 name: name,
-                surname: surname
+                surname: surname,
+                gender: gender
             })
         });
     if (response.status >= 200 && response.status < 300){
         let data = await response.json();
-        console.log(data);
         setCookie('jwt', data.jwt);
         return true;
     } else {
@@ -52,12 +53,40 @@ async function Register(username, email, password, name, surname) {
 }
 
  function Logout() {
-    setCookie('jwt','',{expires: -1});
+    userStore.setUser({});
+    document.cookie = 'jwt=false'
     console.log(getCookie('jwt'));
+    location.pathname = '/';
 }
+
+async function forgotPassword(email) {
+    let response = await fetch(UrlStore.MAIN_URL + '/auth/forgot-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email})
+    });
+    return response.status >= 200 && response.status < 400;
+}
+
+
+async function resetPassword(data) {
+    let response = await fetch(UrlStore.MAIN_URL + '/auth/reset-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+    return response.status >= 200 && response.status < 400;
+}
+
 
 export {
     Login,
     Register,
-    Logout
+    Logout,
+    forgotPassword,
+    resetPassword
 }

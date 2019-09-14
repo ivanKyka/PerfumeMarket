@@ -40,7 +40,7 @@ render() {
         >
                 <Container>
                     <Title>Добавить коментарий</Title>
-                    <Textarea ref={this.textRef}></Textarea>
+                    <Textarea ref={this.textRef} spellcheck={'false'}></Textarea>
                     <div>
                         Оценка &nbsp;&nbsp;
                         <StarRatings

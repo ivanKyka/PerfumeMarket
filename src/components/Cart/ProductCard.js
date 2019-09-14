@@ -61,6 +61,7 @@ render() {
                                             name_ru
                                             price
                                             vendor
+                                            avaliable
                                               }
                                             }`}
                            variables={{"id": this.props.ProductID}}>
@@ -76,8 +77,11 @@ render() {
                                         to={'/product/' + this.props.ProductID}
                                     >{data.product.name_ru}</Name>
                                     <Vendor>{data.product.vendor}</Vendor>
-                                    <Price>{data.product.price}грн * {this.state.countOfProducts}</Price>
-                                    <Counter setVal={this.setCountHandler} defaultValue={this.props.Count}/>
+                                    {data.product.avaliable?
+                                        <Price>{data.product.price}грн * {this.state.countOfProducts}</Price>:
+                                        <Price>Нет в наличии</Price>}
+                                    {data.product.avaliable?
+                                        <Counter setVal={this.setCountHandler} defaultValue={this.props.Count}/>:''}
                                 </DescriptionBlock>
                             )
                         }}

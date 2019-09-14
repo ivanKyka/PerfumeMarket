@@ -10,6 +10,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {inject} from "mobx-react";
 import StarRatings from "react-star-ratings";
+import MetaTags from "react-meta-tags";
 
 @inject('store')
 export default class WishList extends React.Component{
@@ -42,18 +43,22 @@ export default class WishList extends React.Component{
     render() {
         if (this.state.ready)
         return(
-            <ThemeProvider theme={theme}>
-                {this.state.dataList.length === 0?
-                <EmptyBlock>
-                    <h2>Хмм... Как-то здесь пусто :(</h2>
-                    <p>Но может <ToMain to={'/'}>добавим что-нибудь</ToMain>?</p>
-                </EmptyBlock>:
-                <Container>
-                {this.state.dataList.map(el => 
-                    <Query
-                        key={el}
-                        query={
-                        gql`query MyProductCategory($id: ID!){
+            <React.Fragment>
+                <MetaTags>
+                    <title>Пожелания</title>
+                </MetaTags>
+                <ThemeProvider theme={theme}>
+                    {this.state.dataList.length === 0?
+                        <EmptyBlock>
+                            <h2>Хмм... Как-то здесь пусто :(</h2>
+                            <p>Но может <ToMain to={'/'}>добавим что-нибудь</ToMain>?</p>
+                        </EmptyBlock>:
+                        <Container>
+                            {this.state.dataList.map(el =>
+                                <Query
+                                    key={el}
+                                    query={
+                                        gql`query MyProductCategory($id: ID!){
                           product(id: $id){
                             photos{
                               url
@@ -65,47 +70,48 @@ export default class WishList extends React.Component{
                             vendor
                           }
                         }`
-                    }
-                           variables={{"id": el}}>
-                        {({loading, error, data}) => {
-                            if (loading) return <p></p>;
-                            if (error) {
-                                return <p>Error :(</p>;
-                            }
-                            const images = data.product.photos.map(a => a.url).reverse();
-                            return(
-                                <ProductCard>
-                                    <Image src={this.props.store.urlStore.MAIN_URL + images[0]}/>
-                                    <InfoBlock>
-                                        <Categories ProductID={el}/>
-                                        <Name
-                                            to={'/product/' + el}
-                                        >{data.product.name_ru}</Name>
-                                        <StarRatings
-                                            rating={data.product.rating}
-                                            starRatedColor={"black"}
-                                            starEmptyColor={'gray'}
-                                            numberOfStars={5}
-                                            name='rating'
-                                            starDimension={'16px'}
-                                            starSpacing={'1px'}
-                                        />
-                                        <Vendor>{data.product.vendor}</Vendor>
-                                        <Price>{data.product.avaliable?data.product.price + ' грн':'Нет в наличии'}</Price>
-                                    </InfoBlock>
-                                    <CloseButton onClick={e =>{
-                                        e.preventDefault();
-                                        this.removeFromWishList(el);
-                                    }}>
-                                        <FontAwesomeIcon icon={faTimes} size={'lg'}/>
-                                    </CloseButton>
-                                </ProductCard>
-                            );
-                        }}
-                    </Query>
-                )}
-                </Container>}
-            </ThemeProvider>
+                                    }
+                                    variables={{"id": el}}>
+                                    {({loading, error, data}) => {
+                                        if (loading) return <p></p>;
+                                        if (error) {
+                                            return <p>Error :(</p>;
+                                        }
+                                        const images = data.product.photos.map(a => a.url).reverse();
+                                        return(
+                                            <ProductCard>
+                                                <Image src={this.props.store.urlStore.MAIN_URL + images[0]}/>
+                                                <InfoBlock>
+                                                    <Categories ProductID={el}/>
+                                                    <Name
+                                                        to={'/product/' + el}
+                                                    >{data.product.name_ru}</Name>
+                                                    <StarRatings
+                                                        rating={data.product.rating}
+                                                        starRatedColor={"black"}
+                                                        starEmptyColor={'gray'}
+                                                        numberOfStars={5}
+                                                        name='rating'
+                                                        starDimension={'16px'}
+                                                        starSpacing={'1px'}
+                                                    />
+                                                    <Vendor>{data.product.vendor}</Vendor>
+                                                    <Price>{data.product.avaliable?data.product.price + ' грн':'Нет в наличии'}</Price>
+                                                </InfoBlock>
+                                                <CloseButton onClick={e =>{
+                                                    e.preventDefault();
+                                                    this.removeFromWishList(el);
+                                                }}>
+                                                    <FontAwesomeIcon icon={faTimes} size={'lg'}/>
+                                                </CloseButton>
+                                            </ProductCard>
+                                        );
+                                    }}
+                                </Query>
+                            )}
+                        </Container>}
+                </ThemeProvider>
+            </React.Fragment>
         )
         else return ''
     }

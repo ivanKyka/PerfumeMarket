@@ -9,11 +9,12 @@ import {theme} from "../../stores/StyleStore";
 import SignIn from "../Auth/SignIn";
 import {me} from "../../api/Users";
 import User from "../../entities/User";
-import {inject} from "mobx-react";
+import {inject, observer} from "mobx-react";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
 import {debounce} from "lodash";
 
 @inject('store')
+@observer
 export default class Header extends React.Component{
 
     constructor(props){
@@ -34,7 +35,6 @@ export default class Header extends React.Component{
         this.setState({
             mobile: document.body.clientWidth < 1000
         });
-        console.log(document.body.clientWidth);
     }).bind(this);
     toggleMenu = (() => {
         this.setState(oldState => {
@@ -94,13 +94,15 @@ export default class Header extends React.Component{
                         </Logo>
                         <MenuIcon icon={faBars} onClick={this.toggleMenu} size={'2x'}/>
                         <Menu>
-                            <li>ГЛАВНАЯ</li>
-                            <li>КОНТАКТЫ</li>
+                            <Link to={'/'}><li>ГЛАВНАЯ</li></Link>
+                            <Link to={'/contacts'}>
+                                <li>КОНТАКТЫ</li>
+                            </Link>
                             <Link to={'/blog'}>
                                 <li>БЛОГ</li>
                             </Link>
-                            <li>О НАС</li>
-                            <li>ДОСТАВКА</li>
+                            <Link to={'/aboutUs'}><li>О НАС</li></Link>
+                            <Link to={'/delivery'}><li>ДОСТАВКА</li></Link>
                         </Menu>
                         <Cart to={'/cart'}>
                             <FontAwesomeIcon icon={faShoppingCart}/>

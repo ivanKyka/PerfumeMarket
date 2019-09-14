@@ -26,7 +26,7 @@ export default class Footer extends React.Component{
                             <ListPoint><a href="">КОНТАКТЫ</a></ListPoint>
                             <ListPoint><Link to={'/blog'}>БЛОГ</Link></ListPoint>
                             <ListPoint><Link to={'/aboutUs'}>О НАС</Link></ListPoint>
-                            <ListPoint><a href="">ДОСТАВКА</a></ListPoint>
+                            <ListPoint><Link to={'/delivery'}>ДОСТАВКА</Link></ListPoint>
                         </Menu>
 
                     </Foot2>
@@ -57,8 +57,8 @@ export default class Footer extends React.Component{
                     </Foot4>
 
                     <Foot5>
-                        <a href="" >ПРИВАТНОСТЬ</a>
-                        <a href="" >ЛИЦЕНЗИОННОЕ СОГЛАШЕНИЕ</a>
+                        <Link to={'/user_agreement'}>ПРИВАТНОСТЬ</Link>
+                        <Link to={'/license'}>ЛИЦЕНЗИОННОЕ СОГЛАШЕНИЕ</Link>
                     </Foot5>
 
 

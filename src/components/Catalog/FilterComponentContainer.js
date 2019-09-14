@@ -7,6 +7,9 @@ import CatalogStore from "../../stores/CatalogStore";
 import ToolsBar from "./ToolsDir/ToolsBar";
 import FiltersDisplayBar from "./FiltersDisplayBarDir/FiltersDisplayBar";
 import {UrlStore} from "../../stores/UrlStore";
+import Query from "react-apollo/Query";
+import gql from "graphql-tag";
+import MetaTags from "react-meta-tags";
 
 export default class FilterComponentContainer extends Component {
 
@@ -35,13 +38,36 @@ export default class FilterComponentContainer extends Component {
 
     render() {
         return (
-            <Container>
-                <FiltersDisplayBar/>
-                <FiltersLeftBar param={this.props.param} searchMode={this.props.searchMode}/>
-                <FiltersTopBar searchMode={this.props.searchMode} searchRequest={this.props.param}/>
-                <ContentContainer searchMode={this.props.searchMode}/>
-                <ToolsBar searchMode={this.props.searchMode}/>
-            </Container>
+            <React.Fragment>
+                {location.pathname.split('/').pop().includes('&')?
+                    <MetaTags>
+                        <title>Поиск: {decodeURIComponent(location.pathname.split('/').pop().substring(1))}</title>
+                    </MetaTags>:
+                    <Query
+                        query={gql`
+                    query($id: ID!){
+                      category(id: $id){
+                        name_ru
+                      }
+                    }`}
+                        variables={{'id': location.pathname.split('/').pop()}}
+                    >
+                        {({loading,error,data}) => {
+                            if (loading) return ''
+                            return <MetaTags>
+                                <title>Категория: {data.category.name_ru}</title>
+                            </MetaTags>
+                        }
+                        }
+                    </Query>}
+                <Container>
+                    <FiltersDisplayBar/>
+                    <FiltersLeftBar param={this.props.param} searchMode={this.props.searchMode}/>
+                    <FiltersTopBar searchMode={this.props.searchMode} searchRequest={this.props.param}/>
+                    <ContentContainer searchMode={this.props.searchMode}/>
+                    <ToolsBar searchMode={this.props.searchMode}/>
+                </Container>
+            </React.Fragment>
         )
     }
 }

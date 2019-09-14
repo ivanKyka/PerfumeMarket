@@ -7,14 +7,39 @@ import HeadCatalog from "../public/HeadCatalog";
 import {inject, observer} from "mobx-react";
 import {Link} from "react-router-dom";
 import ManageCartPane from "./ManageCartPane";
+import Checkout from '../Checkout/Checkout'
+import MetaTags from "react-meta-tags";
 
 @inject("store")
 @observer
 export default class Cart extends React.Component {
 
+    constructor(props){
+        super(props);
+        this.state = {
+            checkoutOpen: false
+        }
+
+        this.closeCheckout = this.closeCheckout.bind(this);
+        this.openCheckout = this.openCheckout.bind(this);
+    }
+
+    openCheckout = e => {
+        e.preventDefault();
+        this.setState({checkoutOpen: true})
+    }
+
+    closeCheckout = e => {
+        e.preventDefault();
+        this.setState({checkoutOpen: false})
+    }
+
     render() {
         return(
             <React.Fragment>
+                <MetaTags>
+                    <title>Корзина</title>
+                </MetaTags>
                 <Header/>
                 <HeadCatalog/>
                 <Container>
@@ -31,7 +56,7 @@ export default class Cart extends React.Component {
                                 })
                             }
                         </List>
-                        <ManageCartPane/>
+                        <ManageCartPane openCheckout={this.openCheckout}/>
                     </React.Fragment>
                         :<EmptyCart>
                         <h2>Корзина пока пуста :(</h2>
@@ -39,6 +64,7 @@ export default class Cart extends React.Component {
                     </EmptyCart>}
                 </Container>
                 <Footer/>
+                <Checkout open={this.state.checkoutOpen} closeCheckout={this.closeCheckout} getCart={this.props.store.cart.getAll}/>
             </React.Fragment>
         )
     }

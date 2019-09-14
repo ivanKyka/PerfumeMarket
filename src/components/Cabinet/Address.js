@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import ReactSelect from 'react-select'
 import {theme} from "../../stores/StyleStore";
 import {getCitiesByName, getPostOffices} from "../../api/NovaPoshta";
+import {me} from "../../api/Users";
+import {changeUserData} from "../../api/Users";
+import Preloader from "../public/Preloader";
+import MetaTags from "react-meta-tags";
+import {Link} from "react-router-dom";
 
 const reactSelectStyles = {
         container: styles => ({...styles, height: '38px', display: 'block'}),
@@ -29,26 +34,14 @@ const reactSelectStyles = {
 export default class Address extends React.Component {
 
 
-    constructor(props){
-        super(props);
-        this.state = {
-            cities: [],
-            cityName: '',
-            postOffices: [],
-            postOfficeName: '',
-            postOfficeCode: '',
-            addressData: {
-                name: '',
-                surname: '',
-                phone: '',
-                postId: ''
-            }
-        }
-    }
-
     setPostOffice = (option => {
+        this.setState({
+            cityName: option.label,
+            cityCode: option.value.code,
+            cityDescription: option.value.desc
+        })
         if (option !== null)
-        getPostOffices(option.value).then(data => {return data.map(elem => {
+        getPostOffices(option.value.code).then(data => {return data.map(elem => {
             return {
                 value: elem.Ref,
                 label: elem.Description
@@ -65,18 +58,84 @@ export default class Address extends React.Component {
             postOfficeCode: ''
         })
     }).bind(this);
-    
     setCities = (name => {
         if (name.length >= 3)
             getCitiesByName(name).then(data => {return data.map(elem => {
                 return {
-                    value: elem.DeliveryCity,
+                    value: {code: elem.DeliveryCity, desc: elem.MainDescription},
                     label: elem.Present
                 }
             })}).then(options => this.setState({
                 cities: options
             }));
     }).bind(this);
+
+    constructor(props){
+        super(props);
+        this.state = {
+            cities: [],
+            cityName: '',
+            cityCode: '',
+            postOffices: [],
+            postOfficeName: '',
+            postOfficeCode: '',
+            name: '',
+            surname: '',
+            phone: '',
+            ready: false,
+            cityDescription: ''
+        }
+    }
+
+    componentWillMount() {
+        me().then(data => {
+            if (data !== false) {
+                this.setState({
+                    name: data.adress.name || '',
+                    surname: data.adress.surname || '',
+                    phone: data.adress.phone || '',
+                    cityName: data.adress.cityName || '',
+                    cityCode: data.adress.cityCode || '',
+                    postOfficeName: data.adress.postOfficeName || '',
+                    postOfficeCode: data.adress.postOfficeCode || '',
+                    cityDescription: data.adress.cityDescription || '',
+                    ready: true
+                })
+            }
+        });
+    }
+
+    saveData = e => {
+        let data = {};
+        data.name = this.state.name;
+        data.surname = this.state.surname;
+        data.phone = this.state.phone;
+        data.cityName = this.state.cityName;
+        data.cityCode = this.state.cityCode;
+        data.postOfficeName = this.state.postOfficeName;
+        data.postOfficeCode = this.state.postOfficeCode;
+        data.cityDescription = this.state.cityDescription;
+        changeUserData({adress: data});
+    }
+
+    setName = e => {
+        this.setState({
+            name: e.target.value
+        })
+    }
+
+    setSurname = e => {
+        this.setState({
+            surname: e.target.value
+        })
+    }
+    
+    setPhone = e => {
+        this.setState({
+            phone: e.target.value
+        })
+    }
+
     setCurrentPostOffice = (e => {
         this.setState({
             postOfficeName: e.label,
@@ -84,25 +143,37 @@ export default class Address extends React.Component {
         })
     }).bind(this);
 
-
 render() {
+    if (!this.state.ready) return <Preloader/>
     return(
-        <Form onSubmit={e => {
+        <React.Fragment>
+            <MetaTags>
+                <title>Адрес доставки</title>
+            </MetaTags>
+            <Form onSubmit={e => {
             e.preventDefault();
             console.log(this.state);
         }}>
             <div>
                 <Label>
                     <span>Имя</span>
-                    <Input type={'text'}/>
+                    <Input type={'text'}
+                           onChange={this.setName}
+                           defaultValue={this.state.name}/>
                 </Label>
                 <Label>
                     <span>Фамилия</span>
-                    <Input type={'text'}/>
+                    <Input type={'text'}
+                           onChange={this.setSurname}
+                           defaultValue={this.state.surname}
+                    />
                 </Label>
                 <Label>
                     <span>Телефон</span>
-                    <Input type={'text'}/>
+                    <Input type={'text'}
+                           onChange={this.setPhone}
+                           defaultValue={this.state.phone}
+                    />
                 </Label>
             </div>
             <div>
@@ -115,6 +186,10 @@ render() {
                         onInputChange={e => {this.setCities(e)}}
                         onChange={this.setPostOffice}
                         options={this.state.cities}
+                        value={{
+                            label: this.state.cityName,
+                            value: this.state.cityCode
+                        }}
                         isClearable={true}
                     />
                 </Label>
@@ -133,9 +208,10 @@ render() {
                         onChange={this.setCurrentPostOffice}
                     />
                 </Label>
-                <Button>Сохранить</Button>
+                <Button onClick={this.saveData}>Сохранить</Button>
             </div>
         </Form>
+        </React.Fragment>
     )
     }
 }

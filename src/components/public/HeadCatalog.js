@@ -94,7 +94,7 @@ export default class HeadCatalog extends React.Component{
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 250px;
+  grid-template-columns: 1fr min-content;
   background: #fff;
   height: 52px;
   padding: 0 50px;

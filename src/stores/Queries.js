@@ -42,6 +42,7 @@ export let PRODUCTS_BY_FILTERS_PAGINATED = gql`query PRODUCTS_BY_FILTERS($filter
                             url
                           }
                           rating
+                          avaliable
                           vendor
                           comments{
                             rate

@@ -2,143 +2,102 @@ import React from "react"
 import styled from 'styled-components';
 import Footer from "../public/Footer"
 import Header from "../public/Header";
-import {faCircle} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import dior from "../../resources/image/LogoBrand/dior.png";
-import lor from "../../resources/image/LogoBrand/lor.png";
-import pupa from "../../resources/image/LogoBrand/pupa.png";
-import bour from "../../resources/image/LogoBrand/Bourjois.png";
-import lacoste from "../../resources/image/LogoBrand/LACOSTE.png";
-import shanel from "../../resources/image/LogoBrand/shanel.png";
+import ReactMarkdown from "react-markdown";
+import Query from "react-apollo/Query";
+import gql from "graphql-tag";
+import {UrlStore} from "../../stores/UrlStore";
+import MetaTags from 'react-meta-tags';
 
 export default class AboutUs  extends React.Component{
 
     render(){
-        return(
+        return (
             <React.Fragment>
+                <MetaTags>
+                    <title>О нас</title>
+                </MetaTags>
                 <Header/>
                 <MainAbout>
                     <Title>
-                        <h2> About Us </h2>
+                        <h2> О НАС </h2>
                     </Title>
-                    <SomeText>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure rerum sint veniam!</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                    </SomeText>
-                    <WhyOur>
-                        <h3> Why choose us </h3>
-                    </WhyOur>
-                    <Advantages>
-                        <Adv>
-                            <TitleAdv>
-                                <span> Cause </span>
-                            </TitleAdv>
-                            <Icon>
-                            <FontAwesomeIcon icon={faCircle}/>
-                            </Icon>
-                            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?</span>
-                        </Adv>
-                        <Adv>
-                            <TitleAdv>
-                                <span> Cause </span>
-                            </TitleAdv>
-                            <Icon>
-                                <FontAwesomeIcon icon={faCircle}/>
-                            </Icon>
-                            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?</span>
-                        </Adv>
-                        <Adv>
-                            <TitleAdv>
-                                <span> Cause </span>
-                            </TitleAdv>
-                            <Icon>
-                                <FontAwesomeIcon icon={faCircle}/>
-                            </Icon>
-                            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio enim excepturi, facilis omnis quia soluta velit. Aliquid aut cum deserunt dicta est illo laudantium magni, nihil nobis non quasi voluptas?</span>
-                        </Adv>
-                    </Advantages>
-                    <WhyOur>
-                        <h3> Our Brands </h3>
-                    </WhyOur>
-                    <LogoBrands>
-                        <img src={dior} alt=""/>
-                        <img src={lor} alt=""/>
-                        <img src={pupa} alt=""/>
-                        <img src={bour} alt=""/>
-                        <img src={lacoste} alt=""/>
-                        <img src={shanel} alt=""/>
-                    </LogoBrands>
+                    <Query
+                        query={gql`
+                            query{
+                              aboutuses{
+                                first_block
+                                second_block
+                                third_block
+                                brands {
+                                  url
+                                }
+                              }
+                            }
+                        `}
+                    >
+                        {({loading, error, data}) => {
+                            if (loading) return <p/>
+                            if (error) return <p/>
+
+                            return (
+                                <React.Fragment>
+                                    <Articles>
+                                        <div>
+                                            <ReactMarkdown source={data.aboutuses[0].first_block||''}/>
+                                        </div>
+                                        <div>
+                                            <ReactMarkdown source={data.aboutuses[0].second_block||''}/>
+                                        </div>
+                                        <div>
+                                            <ReactMarkdown source={data.aboutuses[0].third_block||''}/>
+                                        </div>
+                                    </Articles>
+                                    <Title> У нас в продаже: </Title>
+                                    <BannerImg src={UrlStore.MAIN_URL + data.aboutuses[0].brands[0].url}/>
+                                </React.Fragment>
+                            )
+                        }}
+                    </Query>
                 </MainAbout>
                 <Footer/>
             </React.Fragment>
-        )
+        );
     }
 }
 
 
 const MainAbout = styled.div`
     display: grid;
-    grid-template-rows: 80px 60px 60px 3fr 60px 2fr ;
-    height: 1000px;
+    min-height: calc(100vh - 360px);
 `
 const Title = styled.div`
     justify-self: center;
     align-self: center;
 `
-const SomeText = styled.div`
-    p{
-     text-align: center;
-     font-weight: bold;
-     font-size: 12px;
-     margin: 0;
+
+const BannerImg = styled.img`
+    width: 90%;
+    margin: 50px 5%;
+    
+`;
+
+const Articles = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 25px;
+    text-align: center;
+    @media(min-width: 1000px){
+        margin: 5vw;
+        width: 90vw;
+    }   
+    @media(max-width: 1000px){
+        margin: 10px;
+        width: calc(100vw - 20px);
+    }   
+    
+    img {
+        max-width: 90%;
+        margin: 10px auto;
+        object-fit: contain;
     }
-`
-const WhyOur = styled.div`
-    justify-self: center;
-`
-const Advantages = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-`
-
-const Adv = styled.div`
-    justify-self: right;
-    min-width: 300px;
-    display: grid;
-    grid-template-rows:1fr 3fr 3fr 
-`
-const TitleAdv = styled.div`
-    justify-self: center;
-    span{
-      font-size: 16px;  
-      font-weight: bold;  
-     }
-`
-const Icon = styled.svg`
-    height: 150px;
-    width:150px;
-    justify-self: center;
-    color: #ccc;
-    
-    
-`
-const LogoBrands = styled.div`
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    height: 150px;
-    width: calc(100% - 160px);
-    justify-self: center;
-    img{
-      max-height: 100px;
-      max-width: 140px;
-      padding-left: 20px;
-      display: block;
-    }
-    
-`
-
-
+`;

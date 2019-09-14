@@ -7,6 +7,8 @@ import Footer from "../public/Footer";
 import ReactMarkdown from 'react-markdown';
 import RecomendedBlock from "./RecomendedBlock";
 import {UrlStore} from "../../stores/UrlStore";
+import MetaTags from 'react-meta-tags';
+import Recomendations from "../public/Recomendations";
 
 export default class BlogPage extends React.Component {
 
@@ -36,17 +38,23 @@ render() {
                         return <p>Error :(</p>;
                     }
                     return(
-                        <Content>
-                            <h1>{data.blog.title}</h1>
-                            <p>{data.blog.short_desc}</p>
-                            <img src={UrlStore.MAIN_URL + data.blog.header_photo.url}/>
-                            <ReactMarkdown source={data.blog.newsBody}/>
-                            <span>Ссылка на товар: <a href={data.blog.link}>{data.blog.link}</a></span>
-                        </Content>
+                        <React.Fragment>
+                            <MetaTags>
+                                <title>{data.blog.title}</title>
+                            </MetaTags>
+                            <Content>
+                                <h1>{data.blog.title}</h1>
+                                <p>{data.blog.short_desc}</p>
+                                <img src={UrlStore.MAIN_URL + data.blog.header_photo.url}/>
+                                <ReactMarkdown source={data.blog.newsBody}/>
+                                <span>Ссылка на товар: <a href={data.blog.link}>{data.blog.link}</a></span>
+                            </Content>
+                        </React.Fragment>
                     );
                 }}
             </Query>
             <RecomendedBlock CurrentId={this.props.match.params.id}/>
+            <Recomendations/>
             <Footer/>
         </React.Fragment>
     )

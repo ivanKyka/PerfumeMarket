@@ -5,7 +5,9 @@ import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/themes/airbnb.css';
 import {Russian} from "flatpickr/dist/l10n/ru";
 import {inject, observer} from "mobx-react";
-import {changeUserData} from "../../api/Users";
+import {changeUserData, me} from "../../api/Users";
+import Preloader from "../public/Preloader";
+import MetaTags from "react-meta-tags";
 
 @inject('store')
 @observer
@@ -13,12 +15,13 @@ export default class Contacts extends React.Component{
 
     saveUserInfo = (e => {
         e.preventDefault();
+        this.setState({ready: false});
         changeUserData(this.state.userInfo)
             .then(respose => {
                 if (respose){
-                    location.reload();
+                    this.setState({ready: true});
+
                 }
-                alert('failed');
             })
     }).bind(this);
 
@@ -27,76 +30,126 @@ export default class Contacts extends React.Component{
         this.phoneRegEx = /[+]?[0-9]{10,12}/;
 
         this.state = {
-            userInfo: {}
+            userInfo: {},
+            birthday: '',
+            ready: false
         };
-        setTimeout(() => {
+
+        this.maleButton = React.createRef();
+        this.femaleButton = React.createRef();
+    }
+
+    componentWillMount() {
+        me().then(data => {
             this.setState({
-                userInfo: props.store.userStore.getUser()
+                userInfo: data,
+                birthday: data.birthday?data.birthday.slice(0,10):'',
+                ready: false
             })
-        }, 1500);
+        })
+    }
+
+
+    componentDidUpdate() {
+        console.log(this.state.userInfo.gender);
+        if (this.state.userInfo.gender === 'male') {
+            this.maleButton.current.checked = true;
+        }
+        if (this.state.userInfo.gender === 'female') {
+            this.femaleButton.current.checked = true;
+        }
     }
 
     render() {
+        if (!this.state.ready) <Preloader/>
+
         return (
             <ThemeProvider theme={theme}>
-            <Form>
-                <div>
-                    <Label>
-                        <span>Имя</span>
-                        <Input
-                            type={'text'}
-                            onChange={e => {this.state.userInfo.name = e.target.value}}
-                            defaultValue={this.state.userInfo.name}
-                        />
-                    </Label>
-                    <Label>
-                        <span>Фамилия</span>
-                        <Input
-                            type={'text'}
-                            onChange={e => {this.state.userInfo.surname = e.target.value}}
-                            defaultValue={this.state.userInfo.surname}
-                        />
-                    </Label>
-                    <Label>
-                        <span>E-mail</span>
-                        <Input
-                            type={'text'}
-                            defaultValue={this.state.userInfo.email}
-                            readOnly={true}
-                        />
-                    </Label>
-                </div>
-                <div>
-                    <Label>
-                        <span>Дата рождения</span>
-                        <Flatpickr
-                            options={{
-                                locale: Russian,
-                                dateFormat: 'd.m.Y',
-                                defaultDate: this.state.userInfo.birthday?this.state.userInfo.birthday.format("yyyy-mm-dd"):''
-                            }}
-
-                            onChange={date => {this.state.userInfo.birthday =  date[0].toISOString()}}
-                        />
-                    </Label>
-                    <Label>
-                        <span>Телефон</span>
-                        <Input
-                            type={'text'}
-                            pattern={'([+]{0,1}[0-9]{10,12})'}
-                            // onChange={e => {
-                            //     if (this.phoneRegEx.test(e.target.value))
-                            //         this.state.userInfo.surname = e.target.value
-                            // }}
-                            defaultValue={this.state.userInfo.username}
-                            readOnly={true}
-                        />
-                    </Label>
-                        <Button
-                            onClick={this.saveUserInfo}
-                        >Сохранить</Button>
-                </div>
-            </Form>
+                <React.Fragment>
+                <MetaTags>
+                    <title>Контактная информация</title>
+                </MetaTags>
+                <Form>
+                    <div>
+                        <Label>
+                            <span>Имя</span>
+                            <Input
+                                type={'text'}
+                                onChange={e => {this.state.userInfo.name = e.target.value}}
+                                defaultValue={this.state.userInfo.name}
+                            />
+                        </Label>
+                        <Label>
+                            <span>Фамилия</span>
+                            <Input
+                                type={'text'}
+                                onChange={e => {this.state.userInfo.surname = e.target.value}}
+                                defaultValue={this.state.userInfo.surname}
+                            />
+                        </Label>
+                        <Label>
+                            <span>E-mail</span>
+                            <Input
+                                type={'text'}
+                                defaultValue={this.state.userInfo.email}
+                                readOnly={true}
+                            />
+                        </Label>
+                    </div>
+                    <div>
+                        <Label>
+                            <span>Дата рождения</span>
+                            <Flatpickr
+                                options={{
+                                    locale: Russian,
+                                    dateFormat: 'd.m.Y',
+                                }}
+                                value={this.state.birthday}
+                                onChange={date => {this.state.userInfo.birthday =  date[0].toISOString()}}
+                            />
+                        </Label>
+                        <Label>
+                            <span>Телефон</span>
+                            <Input
+                                type={'text'}
+                                pattern={'([+]{0,1}[0-9]{10,12})'}
+                                // onChange={e => {
+                                //     if (this.phoneRegEx.test(e.target.value))
+                                //         this.state.userInfo.surname = e.target.value
+                                // }}
+                                defaultValue={this.state.userInfo.username}
+                                readOnly={true}
+                            />
+                        </Label>
+                        <GenderBlock>
+                            <span>Пол</span>
+                            <label>
+                                <input
+                                    type={"radio"}
+                                    name={"gender"}
+                                    value={'male'}
+                                    onChange={e => {this.state.userInfo.gender = e.target.value}}
+                                    ref={this.maleButton}
+                                />
+                                <span>Мужчина</span>
+                            </label>
+                            <label>
+                                <input
+                                    type={"radio"}
+                                    name={"gender"}
+                                    value={'female'}
+                                    onChange={e => {this.state.userInfo.gender = e.target.value}}
+                                    ref={this.femaleButton}
+                                />
+                                <span>Женщина</span>
+                            </label>
+                        </GenderBlock>
+                            <Button
+                                onClick={this.saveUserInfo}
+                            >Сохранить</Button>
+                    </div>
+                </Form>
+                </React.Fragment>
             </ThemeProvider>
         );
     }
@@ -152,6 +205,7 @@ const Label = styled.label`
       display: block;
       margin-bottom: 5px;
     }  
+
 `;
 
 const Button = styled.button`
@@ -168,5 +222,21 @@ const Button = styled.button`
     cursor: pointer; 
     &:hover{
       background: ${props => props.theme.primary_light};
+    }
+`;
+
+const GenderBlock = styled.div`
+    margin-top: 10px;  
+    span{
+        display: block;
+        margin-bottom: 5px;
+    }  
+    label {
+        display: inline-block;
+        margin-right: 10px;
+        input, span {
+        display: inline-block;
+        cursor: pointer;
+        }
     }
 `;

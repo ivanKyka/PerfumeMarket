@@ -8,6 +8,7 @@ import CatalogCard from "./CatalogCard";
 import Footer from "../public/Footer";
 import Pagination from 'rc-pagination';
 import './Pagination.css';
+import MetaTags from "react-meta-tags";
 
 export default class Catalog extends React.Component {
 
@@ -30,6 +31,9 @@ export default class Catalog extends React.Component {
         return(
             <ThemeProvider theme={theme}>
                 <React.Fragment>
+                    <MetaTags>
+                        <title>Наш блог</title>
+                    </MetaTags>
                     <Header/>
                     <Content>
                         <Query query={

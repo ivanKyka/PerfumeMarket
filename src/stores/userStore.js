@@ -4,7 +4,6 @@ export class UserStore {
 
     constructor(props){
         this.getUser = this.getUser.bind(this);
-        this.isLogged = this.isLogged.bind(this);
         this.setUser = this.setUser.bind(this);
     }
 
@@ -20,9 +19,10 @@ export class UserStore {
         return(this.user);
     }).bind(this);
 
-    isLogged = (() => {
+    @computed
+    get isLogged() {
         return (typeof this.user._id !== 'undefined');
-    }).bind(this);
+    };
 
     @computed
     get userId() {

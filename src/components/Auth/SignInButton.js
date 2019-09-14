@@ -14,7 +14,7 @@ export default class SignInButton extends React.Component {
             if (this.props.authorized)
                 return (
                         <Name theme={theme}>
-                            <Link to={'/cabinet'}>
+                            <Link to={'/cabinet/contacts'}>
                                 <FontAwesomeIcon icon={faUser}/>
                                 <span>{this.props.data.name} {this.props.data.surname}</span>
                             </Link>

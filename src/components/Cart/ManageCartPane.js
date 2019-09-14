@@ -13,6 +13,7 @@ export default class ManageCartPane extends React.Component {
             <ThemeProvider theme={theme}>
                 <Container>
                     <Table>
+                        <tbody>
                         <tr>
                             <td>Всего</td>
                             <td>{this.props.store.cart.Total} грн</td>
@@ -21,26 +22,29 @@ export default class ManageCartPane extends React.Component {
                             <td>Доставка</td>
                             <td>Бесплатно</td>
                         </tr>
-                        <tr>
-                            <td>Промокод</td>
-                            <td>
-                                <AddInviteButton>
-                                    <FontAwesomeIcon icon={faPlus} size={'1x'}/>
-                                </AddInviteButton>
-                            </td>
-                        </tr>
+
                         <tr>
                             <td>К оплате</td>
                             <td>{this.props.store.cart.Total} грн</td>
                         </tr>
+                        </tbody>
                     </Table>
                     <br/>
-                    <Button>Купить</Button>
+                    <Button onClick={this.props.openCheckout}>Купить</Button>
                 </Container>
             </ThemeProvider>
         )
     }
 }
+
+//                        <tr>
+//                             <td>Промокод</td>
+//                             <td>
+//                                 <AddInviteButton>
+//                                     <FontAwesomeIcon icon={faPlus} size={'1x'}/>
+//                                 </AddInviteButton>
+//                             </td>
+//                         </tr>
 
 const Container = styled.div`
     display: grid;
@@ -79,6 +83,9 @@ const Button = styled.button`
     &:hover {
       text-decoration: underline;
       color: ${props => props.theme.primary_light};
+    }
+    &:active{
+        outline: none;
     }
     
 `;

@@ -8,7 +8,7 @@ export  class Cart {
 
     @observable
     items = [];
-
+    @observable
     totalPrice = 0;
 
     @action
@@ -111,8 +111,11 @@ export  class Cart {
     });
 
     @computed get Total() {
-        return this.items.reduce((acc, el) => {
-           return acc + el.product.price * el.count;
+        console.log(toJS(this.items));
+        return toJS(this.items).reduce((acc, el) => {
+            if (el.product.avaliable)
+                return acc + el.product.price * el.count;
+            else return acc;
         },0)
     }
 
@@ -133,9 +136,7 @@ export  class Cart {
 
     @action
     mergeCart = (() => {
-        console.log(this.getAll());
         this.getCartFromServer(this.getAll());
-        console.log(this.getAll());
     }).bind(this);
 }
 

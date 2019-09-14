@@ -1,12 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
-import banner from '../../resources/image/MainPage/banner.png'
+import gql from "graphql-tag";
+import Query from "react-apollo/Query";
+import {UrlStore} from "../../stores/UrlStore";
 
 export default class Banner extends React.Component {
 
 render() {
     return(
-        <BannerImg src={banner}/>
+
+        <Query query={gql`
+                   query {
+                    additionaldata{   
+                        banner{
+                          url
+                        }
+                      }
+                    } 
+                `}>
+        {({loading, error, data})=> {
+        if (loading) return <p/>
+        if (error) return <p>Error :)</p>
+        return <BannerImg src={UrlStore.MAIN_URL + data.additionaldata[0].banner.url}/>
+    }}
+</Query>
     )
     }
 }

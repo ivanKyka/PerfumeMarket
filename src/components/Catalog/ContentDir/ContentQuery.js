@@ -7,12 +7,40 @@ import {toJS} from "mobx";
 import {UrlStore} from "../../../stores/UrlStore";
 import {PRODUCTS_BY_FILTERS_PAGINATED} from "../../../stores/Queries";
 import ShowMoreButtonWrapper from "./ShowMoreButtonWrapper";
+import Checkout from "../../Checkout/Checkout";
 
 @inject('store')
 @observer
 export default class ContentQuery extends React.Component {
 
     urlStore = this.props.store.urlStore;
+
+    constructor(props){
+        super(props);
+        this.state = {
+            checkoutOpen: false
+        }
+        this.cart = [];
+
+
+        this.closeCheckout = this.closeCheckout.bind(this);
+        this.openCheckout = this.openCheckout.bind(this);
+        this.getCart = this.getCart.bind(this);
+    }
+
+    getCart = e => {
+        return this.cart;
+    }
+
+    openCheckout = data => {
+        this.cart = data;
+        this.setState({checkoutOpen: true})
+    }
+
+    closeCheckout = e => {
+        e.preventDefault();
+        this.setState({checkoutOpen: false})
+    }
 
     normalizeFilterObject = (filterObject) => {
         if (filterObject.category._id.length === 0) {
@@ -119,14 +147,17 @@ export default class ContentQuery extends React.Component {
                                                 name: content.name_ru,
                                                 id: content._id,
                                                 vendor: content.vendor,
-                                                price: content.price
+                                                price: content.price,
+                                                avaliable: content.avaliable
                                             }
                                         }
+                                        openCheckout={this.openCheckout}
                                     />
                                 )
                             })
                             }
                             <ShowMoreButtonWrapper/>
+                            <Checkout open={this.state.checkoutOpen} closeCheckout={this.closeCheckout} getCart={this.getCart}/>
                         </Fragment>
                     )
                 }}

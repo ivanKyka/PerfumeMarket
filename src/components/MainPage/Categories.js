@@ -60,6 +60,7 @@ export default class Categories extends React.Component {
                                         if (error) {
                                             return <p>Error :(</p>;
                                         }
+                                        if (data.category.category_photo === null) return ''
                                         return (
                                             <Category>
                                                 <Image src={UrlStore.MAIN_URL + data.category.category_photo.url}/>

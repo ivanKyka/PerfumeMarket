@@ -6,11 +6,13 @@ import Contacts from "./Contacts";
 import {theme} from "../../stores/StyleStore";
 import Address from "./Address";
 import WishList from "./WishList";
-import Purchase from "./Purchase";
+import Purchase from "./OrdersHistory/OrdersHistory";
 import {me} from "../../api/Users";
 import {Redirect} from "react-router";
 import {inject} from "mobx-react";
 import {Logout} from "../../api/Authenticate";
+import {Link} from "react-router-dom";
+import MetaTags from "react-meta-tags";
 
 @inject('store')
 export default class Cabinet extends React.Component {
@@ -19,7 +21,7 @@ export default class Cabinet extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            currentPage: 'Contacts',
+            currentPage: props.match.params.page,
             authorized: true
         }
     }
@@ -47,10 +49,10 @@ export default class Cabinet extends React.Component {
 
     returnPage = page => {
         switch (page) {
-            case 'Address': return <Address/>;
-            case 'Contacts': return <Contacts/>;
-            case 'WishList': return <WishList/>;
-            case 'Purchase': return <Purchase/>;
+            case 'contacts': return <Contacts/>;
+            case 'address': return <Address/>;
+            case 'wishList': return <WishList/>;
+            case 'purchase': return <Purchase/>;
         }
     };
 
@@ -64,30 +66,32 @@ render() {
             <Header/>
             <Container>
             <Head>
-                <Li
-                    onClick={e => {this.setPage(e,'Contacts')}}
-                    active={!!(this.state.currentPage === 'Contacts')}
-                >Контактная информация</Li>
-                <Li
-                    onClick={e => {this.setPage(e,'Address')}}
-                    active={!!(this.state.currentPage === 'Address')}
-                    >Адрес доставки</Li>
-                <Li
-                    onClick={e => {this.setPage(e,'WishList')}}
-                    active={!!(this.state.currentPage === 'WishList')}
-                >Пожелания</Li>
-                <Li
-                    onClick={e => {this.setPage(e,'Purchase')}}
-                    active={!!(this.state.currentPage === 'Purchase')}
-                >История покупок</Li>
+                <Li active={this.state.currentPage === 'contacts'}
+                    onClick={e => {this.setPage(e,'contacts')}}
+                >
+                    <Link to={'/cabinet/contacts'}>Контактная информация</Link>
+                </Li>
+                <Li active={this.state.currentPage === 'address'}
+                    onClick={e => {this.setPage(e,'address')}}
+                >
+                    <Link to={'/cabinet/address'}>Адрес доставки</Link>
+                </Li>
+                <Li active={this.state.currentPage === 'wishList'}
+                    onClick={e => {this.setPage(e,'wishList')}}
+                >
+                    <Link to={'/cabinet/wishList'}>Пожелания</Link>
+                </Li>
+                <Li active={this.state.currentPage === 'purchase'}
+                    onClick={e => {this.setPage(e,'purchase')}}
+                >
+                    <Link to={'/cabinet/purchase'}>История покупок</Link>
+                </Li>
+
                 <Li
                     onClick={e => {
                         e.preventDefault();
-                        Logout();
                         this.props.store.cart.clearCart();
-                        this.setState({
-                            authorized: false
-                        })
+                        Logout();
                     }}
                 >Выход</Li>
             </Head>
@@ -105,13 +109,20 @@ render() {
 
 const Container = styled.div`
     display: block;
-    padding: 20px 50px;
+    min-height: calc(100vh - 300px) !important;
+    overflow: hidden;
+    @media(min-width: 1100px){
+        padding: 20px 50px;
+    }
+    @media(max-width: 1100px){
+        padding: 20px 10px;
+    }
 `;
 
 const Head = styled.ul`
     list-style: none;
     display: block;
-    padding: 0 40px;   
+    padding: 0;   
 `;
 
 const Page = styled.div`
@@ -132,5 +143,12 @@ const Li = styled.li`
     &:hover {
         text-decoration: underline;
         color: ${props => props.theme.primary};
+    }
+    
+    a {
+        color: inherit;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 `;

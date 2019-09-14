@@ -1,10 +1,12 @@
 export default class User {
 
     constructor(obj) {
+
         this._id = obj._id;
         this.username = obj.username;
         this.name = obj.name;
         this.surname = obj.surname;
+        this.gender = obj.gender;
         this.email = obj.email;
         this.provider = obj.provider;
         this.confirmed = obj.confirmed;

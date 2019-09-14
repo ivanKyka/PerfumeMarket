@@ -11,6 +11,8 @@ import {Query} from "react-apollo";
 import gql from "graphql-tag";
 import Links from "./Links";
 import AddComentModalPane from "./AddComentModalPane";
+import MetaTags from "react-meta-tags";
+import Recomendations from "../public/Recomendations";
 
 export default class Product extends React.Component {
 
@@ -28,6 +30,10 @@ render() {
                         gql`query MyProductCategory($id: ID!){
                           product(id: $id){
                             name_ru
+                            vendor
+                            meta_title
+                            meta_keywords
+                            meta_decription
                           }
                         }`
                     }
@@ -38,7 +44,17 @@ render() {
                                 return <p>Error :(</p>;
                             }
                             return(
-                                <ProductName>{data.product.name_ru}</ProductName>
+                                <React.Fragment>
+                                    <MetaTags>
+                                        <title>{data.product.name_ru}</title>
+                                        <meta name='title' content={data.product.meta_title}/>
+                                        <meta name='keywords' content={data.product.meta_keywords}/>
+                                        <meta name='decription' content={data.product.meta_decription}/>
+                                    </MetaTags>
+                                    <ProductName>{data.product.name_ru}</ProductName>
+                                    <Vendor>{data.product.vendor}</Vendor>
+                                </React.Fragment>
+
                             );
                         }}
                     </Query>
@@ -50,6 +66,7 @@ render() {
                 <Links/>
 
             <CommentsContainer ProductID={this.props.match.params.id}/>
+            <Recomendations/>
             <Footer/>
         </div>
     )
@@ -75,4 +92,13 @@ const ProductName = styled.p`
   font-family: "Gotham Pro Bold";
   padding-top: 0;
   margin-top: 0;
+  margin: 0;
+  padding: 0;
+`;
+
+const Vendor = styled.span`
+    color: #666666;
+    width: 100%;
+    display: block;
+    margin: 5px 0;
 `;

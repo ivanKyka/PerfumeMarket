@@ -13,6 +13,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {theme} from "../../stores/StyleStore";
 import {Register as Reg} from "../../api/Authenticate";
 import {UrlStore} from "../../stores/UrlStore";
+import {Link} from "react-router-dom";
+import MetaTags from "react-meta-tags";
 
 export default class Register  extends React.Component{
 
@@ -24,11 +26,10 @@ export default class Register  extends React.Component{
                 this.emailRef.current.value,
                 this.passwordRef.current.value,
                 this.nameRef.current.value,
-                this.surnameRef.current.value
+                this.surnameRef.current.value,
+                this.gender
             ).then(a => {
-                console.log("#TODO Change to profumo URL");
-                if (a) window.location.href = 'http://profumo.com.ua'
-                // if (a) window.location.href = UrlStore.MAIN_URL
+                if (a) window.location.pathname = '/'
             })
         }
     });
@@ -36,7 +37,8 @@ export default class Register  extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            passIsCorrect: true
+            passIsCorrect: true,
+            isAgree: false
         };
         this.nameRef = React.createRef();
         this.surnameRef = React.createRef();
@@ -44,8 +46,15 @@ export default class Register  extends React.Component{
         this.phoneRef = React.createRef();
         this.passwordRef = React.createRef();
         this.confirmPasswordRef = React.createRef();
+        this.gender = 'male';
+
+        this.changeGender = this.changeGender.bind(this);
     }
 
+    changeGender = e => {
+        this.gender = e.target.value
+    }
+    
     passEnterHandler = e => {
         e.preventDefault();
         if(e.target.value === document.getElementById('confirm_password').value
@@ -74,6 +83,9 @@ render() {
         return (
             <ThemeProvider theme={theme}>
             <React.Fragment>
+                <MetaTags>
+                    <title>Регистрация</title>
+                </MetaTags>
                 <MainFromLogin>
                     <Box>
                         <Form onSubmit={this.sendRegInfo}>
@@ -162,6 +174,17 @@ render() {
                                                       />
                                         </InputBlock>
                                     </div>
+                                    <GenderBlock>
+                                        <span>Ваш пол</span>
+                                        <label>
+                                            <input type={"radio"}  name={"gender"} value={'male'} onChange={this.changeGender}/>
+                                            <span>Мужчина</span>
+                                        </label>
+                                        <label>
+                                            <input type={"radio"} name={"gender"} value={'female'} onChange={this.changeGender}/>
+                                            <span>Женщина</span>
+                                        </label>
+                                    </GenderBlock>
 
                                 </Add>
                                 <Remain>
@@ -170,45 +193,25 @@ render() {
                                             type="checkbox"
                                             id="agree"
                                             required
+                                            defaultChecked={false}
+                                            onChange={e => {this.setState({isAgree: e.target.checked})}}
                                         />
-                                        <label htmlFor="agree"> Я соглашаюсь </label>
+                                        <label htmlFor="agree"> </label>
+                                        <p>Я соглашаюсь c <Link to={'/license'}>условиями использования</Link> данного сайта и политикой обработки <Link to={'/user_agreement'}>персональньх данньх</Link></p>
                                     </Agree>
                                     <BoxBut>
                                         <But
                                             type="submit"
-                                            disabled={this.state.checked}
-                                        > REGISTER NOW</But>
+                                            disabled={!this.state.isAgree && this.state.passIsCorrect}
+                                        > Зарегистрироватся</But>
                                     </BoxBut>
                                     <SomeText>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A consectetur
-                                            doloremque explicabo labore minima rerum!</p>
+                                        <p>Уже есть акаунт? <Link to={'/'}>Войти</Link></p>
                                     </SomeText>
                                 </Remain>
 
                             </Information>
                         </Form>
-                        <Link>
-                            <LinkTxt>
-                                <h3>Or Sing In As User</h3>
-                            </LinkTxt>
-                            <IconLink>
-                                    <a href="">
-                                        <MenuIcon>
-                                            <FontAwesomeIcon icon={faGoogle} size={'2x'}/>
-                                        </MenuIcon>
-                                    </a>
-                                    <a href="">
-                                        <MenuIcon>
-                                            <FontAwesomeIcon icon={faFacebookF} size={'2x'}/>
-                                        </MenuIcon>
-                                    </a>
-                                    <a href="">
-                                        <MenuIcon>
-                                            <FontAwesomeIcon icon={faTwitter} size={'2x'}/>
-                                        </MenuIcon>
-                                    </a>
-                            </IconLink>
-                        </Link>
                     </Box>
                 </MainFromLogin>
 
@@ -226,11 +229,10 @@ const MainFromLogin = styled.div`
 `;
 const Box = styled.div`
     display: grid;
-    height: 600px;
     width: 500px;
-    grid-template-rows: 500px 100px;
+    grid-template-rows: 500px 150px;
     justify-self: center;
-    margin: 100px;
+    margin-top: 40px;
     ::-webkit-input-placeholder {font-size: 10px;}
     ::-moz-placeholder          {font-size: 10px;}
     :-moz-placeholder           {font-size: 10px;}
@@ -238,12 +240,13 @@ const Box = styled.div`
 `;
 const Form = styled.form`
     display: grid;
-    grid-template-rows: 50px 450px;
+    grid-template-rows: 50px min-content;
     border: 1px solid gray;
     border-radius: 15px;
     -moz-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
     -o-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
     -webkit-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
+    padding-bottom: 20px;
 `;
 const TitleForm = styled.div`
     display: grid;
@@ -259,7 +262,7 @@ const TitleForm = styled.div`
 `;
 const Information = styled.div`
     display: grid;
-    grid-template-rows: 250px 200px;
+    padding-bottom: 10px;
     div {
       p{
         margin-left: 10px;
@@ -270,7 +273,7 @@ const Add = styled.div`
     width: 450px;
     background-color: white;
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr;
     justify-self: center;
 `;
@@ -286,18 +289,22 @@ const InputBlock = styled.div`
 
 const Remain = styled.div`
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-gap: 5px;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
 `;
 const Agree = styled.div`
+    display: grid;
     margin-left: 35px;
     align-self: center;
+    grid-template-columns: 40px 1fr;
     input[type=checkbox]{
         display: none;
     }
     label{
+        margin-top: 5px;
         padding-left: 20px;
+        display: inline-block;
 
     }
     label:before{
@@ -310,7 +317,12 @@ const Agree = styled.div`
         border: 1px solid black;
     }
     input[type="checkbox"]:checked + label::before{
-        background-color: ${props => props.theme.bgCol};
+        background-color: ${props => props.theme.primary};
+    }
+    
+    p {
+        display: inline-block;
+        margin: 0;
     }
 `;
 const BoxBut = styled.div`
@@ -327,8 +339,12 @@ const But = styled.button`
     background-color: ${props => props.theme.primary};
     cursor: pointer;
     color: white;
+    font-size: 16pt;
+    &[disabled]{
+        background: #4d4d4d;
+    }
     
-    &:hover{
+    &:hover:not([disabled]){
       background-color: ${props => props.theme.primary_light};
     }
 `
@@ -337,10 +353,10 @@ const SomeText = styled.div`
     justify-self: center;
     width: 80%;
     p{
-        font-size: 12px;    
+        font-size: 11pt;    
     }
 `
-const Link = styled.div`
+const LinkBlock = styled.div`
     display: grid;
     grid-template-rows: 40px 60px;
 `
@@ -399,4 +415,11 @@ const Input = styled.input`
     box-sizing: border-box; 
     background: #fff;
     color: #000;
+`;
+
+const GenderBlock = styled.div`
+    padding: 10px;
+    label {
+      display: block;
+    }  
 `;

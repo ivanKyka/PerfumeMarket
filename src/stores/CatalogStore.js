@@ -25,7 +25,7 @@ class CatalogStore {
         _id : null
     };
 
-    limit = 12;
+    limit = 20;
     searchMode = false;
 
     @observable

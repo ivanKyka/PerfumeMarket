@@ -9,6 +9,7 @@ import {Login} from "../../api/Authenticate";
 import {setCookie} from "../../controllers/Cookies";
 import {inject} from "mobx-react";
 import User from "../../entities/User";
+import ForgotPassword from "./ForgotPassword";
 
 @inject('store')
 export default class SignIn extends React.Component {
@@ -48,7 +49,8 @@ export default class SignIn extends React.Component {
         super(props);
         this.state = {
             messageVisible: false,
-            isPassVisible: false
+            isPassVisible: false,
+            isForgotPassword: false
         }
     }
 
@@ -59,8 +61,11 @@ export default class SignIn extends React.Component {
     };
 
     render() {
+        if (this.state.isForgotPassword) return <ForgotPassword open={this.props.open}
+                                                                closeLogin={this.props.closeLogin}/>
         return(
             <React.Fragment>
+
                 <ThemeProvider theme={theme}>
                     <Modal
                         open={this.props.open}
@@ -77,7 +82,7 @@ export default class SignIn extends React.Component {
                         }}
                         }
                     >
-                        <LoginForm  onSubmit={this.submitHandler} ErrVisible={this.state.messageVisible}>
+                        <LoginForm  onSubmit={this.submitHandler}>
                             <Head >Вход</Head>
                             <Field >
                                 <FontAwesomeIcon icon={faUser}/>
@@ -110,6 +115,9 @@ export default class SignIn extends React.Component {
                             </Field>
                             <Err visible={this.state.messageVisible}>Логин или пароль введен неправильно</Err>
                             <Button  >Войти</Button>
+                            <LinkButton onClick={() => this.setState({isForgotPassword: true})}>
+                                Забыли пароль?
+                            </LinkButton>
                             <RegLink>
                                 <Link to={'/signUp'}>Регистрация</Link>
                             </RegLink>
@@ -122,9 +130,8 @@ export default class SignIn extends React.Component {
 }
 
 const LoginForm = styled.form`
-    padding: 0;
+    padding: 0 0 15px 0;
     display: grid;
-    grid-template-rows: ${props => props.ErrVisible?'60px 60px 60px 40px 60px 40px':'60px 60px 60px 60px 40px'};
     justify-items: center;
     grid-gap: 15px;
     width: 300px;
@@ -213,4 +220,14 @@ const RegLink = styled.div`
       color: ${props => props.theme.primary_light};
     }
     
+`;
+
+const LinkButton = styled.span`
+    font-size: 16pt;
+    color: ${props => props.theme.primary}; 
+    cursor: pointer;
+    &:hover {
+      color: ${props => props.theme.primary_light};
+      text-decoration: underline;
+    }
 `;

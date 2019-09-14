@@ -66,9 +66,9 @@ const CountButton = styled.button`
     border: 1px solid #ccc;
     border-radius: 1px;
     background: #ffffff;
+    cursor: pointer;
     svg{
       color: black;
-      cursor: pointer;
     }
     
     &:active{

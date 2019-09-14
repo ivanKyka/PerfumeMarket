@@ -5,7 +5,11 @@ import gql from "graphql-tag";
 import CommentBlock from "./CommentBlock";
 import {theme} from "../../stores/StyleStore";
 import AddComentModalPane from "./AddComentModalPane";
+import {userStore} from "../App"
+import {inject, observer} from "mobx-react";
 
+@inject('store')
+@observer
 export default class CommentsContainer extends React.Component {
 
 
@@ -32,7 +36,8 @@ render() {
             <Container>
                 <div>
                     <Title>Коментарии</Title>
-                    <AddCommentButton onClick={this.createComment}>Добавить комментарий</AddCommentButton>
+                    {this.props.store.userStore.isLogged?<AddCommentButton onClick={this.createComment}>Добавить комментарий</AddCommentButton>:''}
+
                 </div>
                 <Query
                     query={
@@ -45,7 +50,9 @@ render() {
                                   response
                                   verified
                                   owner{
-                                    username
+                                    name
+                                    surname
+                                    gender
                                     _id
                                   }
                                 }
@@ -65,7 +72,7 @@ render() {
                                 <React.Fragment>
                                     <NoCommentsBlock>
                                         <h2>Коментариев пока нет :(</h2>
-                                        <p>Но вы можете <AddCommentSign onClick={this.createComment}>оставить свой</AddCommentSign></p>
+                                        {userStore.isLogged?<p>Но вы можете <AddCommentSign onClick={this.createComment}>оставить свой</AddCommentSign></p>:''}
                                     </NoCommentsBlock>
                                     <AddComentModalPane closeWindow={this.closeCommentCreation}
                                                         ProductID={this.props.ProductID}

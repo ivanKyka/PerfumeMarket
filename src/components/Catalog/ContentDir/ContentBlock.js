@@ -46,7 +46,12 @@ export default class ContentBlock extends React.Component{
                        <br/>
                        <span>{this.props.options.vendor}</span>
                    </Describe>
-                   <Button>Купить</Button>
+                   <Button
+                    onClick={e => {
+                        e.preventDefault();
+                        this.props.openCheckout([{product:this.props.options, count:1}])
+                    }}
+                   >Купить</Button>
                    <Price>{this.props.options.price} грн.</Price>
                    <Bottom>
                        <FontAwesomeIcon icon={faGift} size={'2x'}/>

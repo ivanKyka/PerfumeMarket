@@ -19,6 +19,15 @@ import {Cart as CartStore} from '../stores/Cart';
 import BlogCatalog from './Blog/BlogCatalog';
 import BlogPage from "./Blog/BlogPage";
 import {me} from "../api/Users";
+import Payment from "./public/Payment";
+import Contacts from "./Contacts/Contacts";
+import Recomendations from "./public/Recomendations";
+import License from "./public/License";
+import UserAgreement from "./public/UserAgreement";
+import Delivery from "./public/Delivery";
+import Warranty from "./public/Warranty";
+import ForgotPassword from "./Auth/ForgotPassword";
+import ResetPassword from "./Auth/ResetPassword";
 
 const httpLink = createHttpLink({
     uri: UrlStore.MAIN_GRAPHQL_URI
@@ -45,6 +54,7 @@ class App extends Component {
     componentWillMount() {
         me().then(data => {
             if (data) userStore.setUser(data);
+
         })
         cart.loadCart();
     }
@@ -62,10 +72,18 @@ class App extends Component {
                             <Route path={'/product/:id'} component={Product}/>
                             <Route path={'/signUp'} component={Register}/>
                             <Route path={'/aboutUs'} component={AboutUs}/>
-                            <Route path={'/cabinet'} component={Cabinet}/>
+                            <Route path={'/cabinet/:page'} component={Cabinet}/>
                             <Route exact path={'/blog'} component={BlogCatalog}/>
                             <Route path={'/blog/:id'} component={BlogPage}/>
-
+                            <Route path={'/checkout'} component={Checkout}/>
+                            <Route path={'/contacts'} component={Contacts}/>
+                            <Route exact path={'/payment'} component={Payment}/>
+                            <Route exact path={'/license'} component={License}/>
+                            <Route exact path={'/user_agreement'} component={UserAgreement}/>
+                            <Route exact path={'/delivery'} component={Delivery}/>
+                            <Route exact path={'/warranty'} component={Warranty}/>
+                            <Route exact path={'/forgotPassword'} component={ForgotPassword}/>
+                            <Route exact path={'/resetPassword'} component={ResetPassword}/>
                         </Switch>
                     </BrowserRouter>
                 </ApolloProvider>
