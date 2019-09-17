@@ -16,15 +16,15 @@ export default class Warranty extends React.Component {
                 <Content>
                     <Query query={gql`
                    query {
-                    additionaldata{   
-                        warranty
+                    warranties{   
+                        text
                       }
                     } 
                 `}>
                         {({loading, error, data})=> {
                             if (loading) return <p/>
                             if (error) return <p>Error :)</p>
-                            return <ReactMarkdown source={data.additionaldata[0].warranty}/>
+                            return <ReactMarkdown source={data.warranties[0].text}/>
                         }}
                     </Query>
                 </Content>

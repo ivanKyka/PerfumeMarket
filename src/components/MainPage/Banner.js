@@ -11,7 +11,7 @@ render() {
 
         <Query query={gql`
                    query {
-                    additionaldata{   
+                      banners{
                         banner{
                           url
                         }
@@ -21,7 +21,7 @@ render() {
         {({loading, error, data})=> {
         if (loading) return <p/>
         if (error) return <p>Error :)</p>
-        return <BannerImg src={UrlStore.MAIN_URL + data.additionaldata[0].banner.url}/>
+        return <BannerImg src={UrlStore.MAIN_URL + data.banners[0].banner.url}/>
     }}
 </Query>
     )

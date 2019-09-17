@@ -300,10 +300,6 @@ const SocialLinks = styled.div`
     }
 `;
 
-const IsAvaliable = styled.ul`
-    padding-left: 15px;
-    margin-top: 0;
-`;
 
 const TwitterShare = styled(TwitterShareButton)`
     display: block;

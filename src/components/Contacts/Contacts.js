@@ -9,6 +9,10 @@ import Footer from "../public/Footer";
 import {sendFeedback} from "../../api/Feedback";
 import ProgressButton from "react-progress-button";
 import MetaTags from "react-meta-tags";
+import marked from 'marked'
+import viber from "../../resources/image/SocialIcons/viber.png";
+import whatsap from "../../resources/image/SocialIcons/whatsap.png";
+import telegram from "../../resources/image/SocialIcons/telegram.png";
 
 export default class Contacts extends React.Component {
 
@@ -34,17 +38,26 @@ export default class Contacts extends React.Component {
 
     send = e => {
         e.preventDefault();
-        this.setState({sending: 'loading'})
-        let data = {
-            text: 'Тема: ' + this.info.theme + ';\n' + this.info.text,
-            phone: this.info.phone,
-            email: this.info.email,
-            name: this.info.name
+        this.setState({sending: 'loading'});
+        if (this.info.phone === '' || this.info.email === '' || this.info.text === ''){
+            this.setState({sending: 'error'});
+            setTimeout(() => {this.setState({sending: ''})},1000)
         }
-        sendFeedback(data).then(response => setTimeout(() => this.setState({sending: response?'success':'error'}),1500));
+        else {
+            let data = {
+                text: 'Тема: ' + this.info.theme + ';\n' + this.info.text,
+                phone: this.info.phone,
+                email: this.info.email,
+                name: this.info.name
+            }
+            sendFeedback(data).then(response => setTimeout(() => this.setState({sending: response?'success':'error'}),1500));
+
+        }
     }
 
-render() {
+    
+
+    render() {
     return(
         <React.Fragment>
             <MetaTags>
@@ -57,14 +70,22 @@ render() {
                                 query{
                                   contacts{
                                     contacts_block
+                                    telegram
+                                    whats_app
+                                    viber
                                   }
                                 }`}>
                     {({loading,error,data}) => {
                         if (loading) return <p/>
-                        if (error) return <p>Error :(</p>
+                        if (error) return <p></p>
                         return (
-                            <MarkdownContainer>
-                                <ReactMarkdown source={data.contacts[0].contacts_block}/>
+                            <MarkdownContainer id={'container'}>
+                                <div dangerouslySetInnerHTML={{__html: marked(data.contacts[0].contacts_block).replace('!social_links', `<div
+                                    class="links-container">
+                                    <a href="${data.contacts[0].viber}"><img src="src/resources/image/SocialIcons/viber.png"/></a>
+                                    <a href="${data.contacts[0].whats_app}"><img src="src//resources/image/SocialIcons/whatsap.png"/></a>
+                                    <a href="${data.contacts[0].telegram}"><img src="src/resources/image/SocialIcons/telegram.png"/></a>
+                                </div>`)}}/>
                             </MarkdownContainer>)
                     }}
                 </Query>
@@ -84,7 +105,7 @@ render() {
                     />
                     <Input
                         type={'text'}
-                        placeholder={'Ваше номер телефона'}
+                        placeholder={'Ваш номер телефона'}
                         name={'phone'}
                         onChange={this.setProperty}
                     />
@@ -101,7 +122,7 @@ render() {
                         onChange={this.setProperty}
                     />
                     <StyledProgressButton onClick={this.send} state={this.state.sending}>
-                        Отправить
+                        отправить
                     </StyledProgressButton>
                 </Form>
 
@@ -126,6 +147,19 @@ const MarkdownContainer = styled.div`
     border-radius: 15px;
     box-shadow: 0 0 1px 1px #949494, 0 0 1px 1px #949494 inset;
     border: none;
+    
+    .links-container{
+        display: grid !important;
+        grid-template-columns: repeat(3, 40px);
+        grid-gap: 30px;
+        height: 40px;
+        img{
+            cursor: pointer;
+            max-height: 40px;
+            max-width: 40px;
+            object-fit: contain;
+        }
+    }
 `
 
 const Container = styled.div`
@@ -135,9 +169,6 @@ const Container = styled.div`
     justify-content: center;
     min-height: calc(100vh - 360px);
     margin-bottom: 20px;
-    *{
-        display: block;
-    }
     
     a {
         display: inline-block;
@@ -207,7 +238,7 @@ const Textarea = styled.textarea`
     border: none;
     resize: none;
     font-size: 12pt;
-
+    font-family: "Gotham Pro" !important;
     &:focus {
         box-shadow: 0 0 1px 1px ${theme.primary}, 0 0 1px 1px ${theme.primary} inset;
     }
@@ -235,11 +266,14 @@ const StyledProgressButton = styled(ProgressButton)`
     
     button {
         width: 250px !important;
-        height: 35px !important;
+        height: 40px !important;
         color: white !important;
         background: ${theme.primary} !important; 
         margin: 0 auto !important;
         padding: 0 !important;
+        border-radius: 5px !important;
+        border: none !important;
+        outline: none !important;
     }
     
     button:hover {
@@ -256,9 +290,18 @@ const StyledProgressButton = styled(ProgressButton)`
         height: 25px !important;
         width: 25px !important;
         margin-left: 115px !important;
-}
+    }
+    .pb-cross{
+        height: 25px !important;
+        width: 25px !important;
+        margin-left: 123px !important;
+    }
     
     &.success .pb-button {
+          border-color: ${theme.bgCol} !important;
+          background-color:${theme.bgCol} !important;
+    }   
+    &.error .pb-button {
           border-color: ${theme.bgCol} !important;
           background-color:${theme.bgCol} !important;
     }

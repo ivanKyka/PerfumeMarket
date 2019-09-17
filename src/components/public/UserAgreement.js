@@ -16,15 +16,15 @@ export default class UserAgreement extends React.Component {
                 <Content>
                     <Query query={gql`
                    query {
-                    additionaldata{   
-                        user_agreement
+                    useragreements{   
+                        text
                       }
                     } 
                 `}>
                         {({loading, error, data})=> {
                             if (loading) return <p/>
                             if (error) return <p>Error :)</p>
-                            return <ReactMarkdown source={data.additionaldata[0].user_agreement}/>
+                            return <ReactMarkdown source={data.useragreements[0].text}/>
                         }}
                     </Query>
                 </Content>

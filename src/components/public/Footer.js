@@ -6,6 +6,11 @@ import {faInstagram} from '@fortawesome/free-brands-svg-icons';
 import {faFacebook} from '@fortawesome/free-brands-svg-icons';
 import {Link} from 'react-router-dom';
 import LogoImg from "../../resources/image/Logo.svg";
+import {FacebookShareButton, TwitterShareButton, InstapaperShareButton} from "react-share";
+import {UrlStore} from "../../stores/UrlStore";
+import Query from "react-apollo/Query";
+import gql from "graphql-tag";
+
 
 export default class Footer extends React.Component{
     render() {
@@ -23,7 +28,7 @@ export default class Footer extends React.Component{
                     <Foot2>
                         <Menu>
                             <ListPoint><Link to={'/'}>ГЛАВНАЯ</Link></ListPoint>
-                            <ListPoint><a href="">КОНТАКТЫ</a></ListPoint>
+                            <ListPoint><Link to={'/contacts'}>КОНТАКТЫ</Link></ListPoint>
                             <ListPoint><Link to={'/blog'}>БЛОГ</Link></ListPoint>
                             <ListPoint><Link to={'/aboutUs'}>О НАС</Link></ListPoint>
                             <ListPoint><Link to={'/delivery'}>ДОСТАВКА</Link></ListPoint>
@@ -31,23 +36,38 @@ export default class Footer extends React.Component{
 
                     </Foot2>
                     <Foot3>
-                        <a href="">
+                        <FacebookShareButton  url={UrlStore.MAIN_URL}>
                             <MenuIconFoot>
                                 <FontAwesomeIcon icon={faFacebook} size={'2x'}/>
                             </MenuIconFoot>
-                        </a>
-                        <a href="">
+                        </FacebookShareButton>
+                        <InstapaperShareButton  url={UrlStore.MAIN_URL}>
                             <MenuIconFoot>
                                 <FontAwesomeIcon icon={faInstagram} size={'2x'}/>
                             </MenuIconFoot>
-                        </a>
-                        <a href="">
+                        </InstapaperShareButton>
+                        <TwitterShareButton  url={UrlStore.MAIN_URL}>
                             <MenuIconFoot>
                                 <FontAwesomeIcon icon={faTwitter} size={'2x'}/>
                             </MenuIconFoot>
-                        </a>
+                        </TwitterShareButton>
                     </Foot3>
-                    <FootLine>
+
+                <Query query={gql`query{
+                                  contacts{
+                                    phones
+                                  }
+                                }`}>
+                    {({loading, error, data}) => {
+                        if (loading) return <p/>
+                        if (error) return <p/>
+                        return <Numbers>
+                            <p>{data.contacts[0].phones.split(',').join(' ')}</p>
+                            <span>Есть вопросы? Звоните, мы поможем! &nbsp;	&nbsp;	&nbsp; понедельник-субота с 9:00 до 20:00</span>
+                        </Numbers>
+                    }}
+                </Query>
+                <FootLine>
                         <Line/>
                     </FootLine>
 
@@ -76,7 +96,7 @@ const Container = styled.div`
   @media(min-width: 1000px) {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
-      grid-template-rows: 149px 1px 149px;
+      grid-template-rows: 99px 50px 1px 149px;
       height: 300px;
   }
   @media(max-width: 999px) {
@@ -232,4 +252,32 @@ const Logo = styled.div`
       justify-content: right;
       cursor: pointer;
   }
+`;
+
+const Numbers = styled.div`
+     color: #CAC9D2;
+     display: grid;
+     height: 30px;
+     grid-column: 1/5;
+     p, span{
+        margin: 0;
+        padding: 0;
+        font-size: 15pt;
+     }
+     
+     p{
+        text-align: center;
+        font-weight: bold;
+        padding: 2px 5px;
+     }
+     
+     
+     span {
+        width: 100%;
+        font-size: 9px;
+        text-align: center;
+        padding: 5px;
+     } 
+
+     
 `;

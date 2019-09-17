@@ -8,6 +8,7 @@ import Query from "react-apollo/Query";
 import gql from 'graphql-tag'
 import {UrlStore} from "../../stores/UrlStore";
 import {Link} from "react-router-dom";
+import {theme} from "../../stores/StyleStore";
 
 @inject('store')
 @observer
@@ -49,7 +50,7 @@ export default class Recomendations extends React.Component {
                     pagination={false}
                 >
                     {this.state.data.map(group =>
-                        <Group>
+                        <Group key={group[0]}>
                             {group.map(elem =>
                                 <Query query={
                                     gql`query MyProductCategory($id: ID!){
@@ -63,6 +64,7 @@ export default class Recomendations extends React.Component {
                           }
                         }`
                                 }
+                                       key={elem}
                                        variables={{"id":elem}}>
                                     {({loading, error, data}) => {
                                         if (loading) return <p/>;
@@ -108,7 +110,11 @@ const Image = styled.img`
 
 const Name = styled(Link)`
     font-size: 11pt;
-    
+    color: ${theme.primary};
+    &:hover{
+        color: ${theme.primary_light};
+        text-decoration: underline;
+    }
 `;
 
 const Vendor = styled.span`

@@ -16,15 +16,15 @@ export default class Payment extends React.Component {
             <Content>
                 <Query query={gql`
                    query {
-                    additionaldata{   
-                        payment
+                    payments{   
+                        text
                       }
                     } 
                 `}>
                     {({loading, error, data})=> {
                         if (loading) return <p/>
                         if (error) return <p>Error :)</p>
-                        return <ReactMarkdown source={data.additionaldata[0].payment}/>
+                        return <ReactMarkdown source={data.payments[0].text}/>
                     }}
                 </Query>
             </Content>

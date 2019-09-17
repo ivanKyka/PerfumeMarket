@@ -258,7 +258,6 @@ export default class Checkout extends React.Component {
                     <AmountPrice>
                         <span>Всего:</span>
                         <Price>{this.state.cart.reduce((acc, el) =>  {
-                            console.log(el);
                             return acc += el.count * el.product.price}, 0)
                         }₴</Price>
                     </AmountPrice>
@@ -271,7 +270,9 @@ export default class Checkout extends React.Component {
                                 <option value={'liqpay'}>Электронный платеж (Liqpay)</option>
                             </Select>
                         </div>
-                        <Button onClick={this.goToNext} disabled={this.state.cart.length === 0}>Далее</Button>
+                        <Button onClick={this.goToNext}
+                                disabled={this.state.cart.length === 0}
+                        >Далее</Button>
                     </DeliveryBlock>
                 </Container>
             </Modal>
@@ -342,7 +343,16 @@ export default class Checkout extends React.Component {
                             </Label>
                             <ButtonBlock>
                                 <BackButton onClick={this.goToPrev}>Назад</BackButton>
-                                <Button onClick={this.postNextClick}>Сохранить</Button>
+                                <Button
+                                    onClick={this.postNextClick}
+                                    disabled={
+                                        this.state.name === '' ||
+                                        this.state.surname === '' ||
+                                        this.state.phone === '' ||
+                                        this.state.cityCode === '' ||
+                                        this.state.postOfficeCode === ''
+                                    }
+                                >Сохранить</Button>
                             </ButtonBlock>
                         </div>
                     </Form>

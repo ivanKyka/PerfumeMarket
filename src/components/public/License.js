@@ -15,16 +15,16 @@ export default class License extends React.Component {
                 <Header/>
                 <Content>
                     <Query query={gql`
-                   query {
-                    additionaldata{   
+                   query{
+                      licenses{
                         license
                       }
-                    } 
+                    }
                 `}>
                         {({loading, error, data})=> {
                             if (loading) return <p/>
                             if (error) return <p>Error :)</p>
-                            return <ReactMarkdown source={data.additionaldata[0].license}/>
+                            return <ReactMarkdown source={data.licenses[0].license}/>
                         }}
                     </Query>
                 </Content>

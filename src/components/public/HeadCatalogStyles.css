@@ -7,7 +7,6 @@
 
 body .p-component {
 	font-family: "Gotham Pro", sans-serif;
-	font-size: 16px;
 	text-decoration: none;
 }
 body a {
@@ -3833,3 +3832,21 @@ body .p-fluid .p-inplace.p-inplace-closable .p-inplace-content > :first-child {
 }
 
 /* Add your customizations of theme here */
+
+.p-submenu-icon{
+	display: none !important;
+}
+
+@media(max-width: 1366px) {
+	body .p-component {
+		font-size: 1.5vw;
+	}
+}
+
+
+@media(min-width: 1366px) {
+	body .p-component {
+		font-size: 1.3vw;
+	}
+}
+

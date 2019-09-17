@@ -51,6 +51,7 @@
     "graphql": "14.1.1",
     "graphql-tag": "2.10.1",
     "lodash": "^4.17.15",
+    "marked": "^0.7.0",
     "mobx": "5.8.0",
     "mobx-react": "5.4.3",
     "primeflex": "1.0.0-rc.1",

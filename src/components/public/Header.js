@@ -24,18 +24,13 @@ export default class Header extends React.Component{
             authorized: false,
             ready: false,
             data: {},
-            mobile: document.body.clientWidth < 1000,
             menuOpened: false
         }
     }
 
 
 
-    setMobile = (() => {
-        this.setState({
-            mobile: document.body.clientWidth < 1000
-        });
-    }).bind(this);
+
     toggleMenu = (() => {
         this.setState(oldState => {
             return {
@@ -75,7 +70,6 @@ export default class Header extends React.Component{
     componentWillMount() {
         this.updateAuthData();
         this.props.store.cart.getCartFromServer();
-        window.addEventListener('resize', debounce(this.setMobile, 100));
     }
 
     render() {
@@ -83,7 +77,6 @@ export default class Header extends React.Component{
             <React.Fragment>
                 <ThemeProvider theme={{
                     colors: theme,
-                    mobile: this.state.mobile,
                     opened: this.state.menuOpened
                 }}>
                     <Container>
@@ -223,7 +216,7 @@ const Logo = styled.div`
 
 const Counter = styled.div`
   justify-self: left;
-  padding: 2px;
+  padding: 3px 2px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -263,6 +256,7 @@ const Cart = styled(Link)`
   color: white;
   span {
     padding: 0 10px;
+    font-size: 14pt;
   }
   
   a:visited {
@@ -280,7 +274,12 @@ const Cart = styled(Link)`
 `;
 
 const MenuIcon = styled(FontAwesomeIcon)`
-    display: ${props => props.theme.mobile?'block':'none'};
+      @media(min-width: 1000px) {
+          display: none;
+      }
+      @media(max-width: 999px) {
+          display: block;
+      }
     position: absolute;
     top: 14px;
     right: 16px;

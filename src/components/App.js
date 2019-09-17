@@ -21,13 +21,13 @@ import BlogPage from "./Blog/BlogPage";
 import {me} from "../api/Users";
 import Payment from "./public/Payment";
 import Contacts from "./Contacts/Contacts";
-import Recomendations from "./public/Recomendations";
 import License from "./public/License";
 import UserAgreement from "./public/UserAgreement";
 import Delivery from "./public/Delivery";
 import Warranty from "./public/Warranty";
 import ForgotPassword from "./Auth/ForgotPassword";
 import ResetPassword from "./Auth/ResetPassword";
+import icon from '../resources/image/icon.svg';
 
 const httpLink = createHttpLink({
     uri: UrlStore.MAIN_GRAPHQL_URI

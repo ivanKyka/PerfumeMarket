@@ -15,8 +15,8 @@ export default class Delivery extends React.Component {
                 <Header/>
                 <Content>
                     <Query query={gql`
-                   query {
-                    additionaldata{   
+                   query{
+                      deliveries{
                         delivery
                       }
                     } 
@@ -24,7 +24,7 @@ export default class Delivery extends React.Component {
                         {({loading, error, data})=> {
                             if (loading) return <p/>
                             if (error) return <p>Error :)</p>
-                            return <ReactMarkdown source={data.additionaldata[0].delivery}/>
+                            return <ReactMarkdown source={data.deliveries[0].delivery}/>
                         }}
                     </Query>
                 </Content>

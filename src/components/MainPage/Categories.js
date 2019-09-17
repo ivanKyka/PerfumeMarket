@@ -64,7 +64,7 @@ export default class Categories extends React.Component {
                                         return (
                                             <Category>
                                                 <Image src={UrlStore.MAIN_URL + data.category.category_photo.url}/>
-                                                <LinkToCategory to={'/' + id}>{data.category.name_ru}</LinkToCategory>
+                                                <LinkToCategory to={'/catalog/' + id}>{data.category.name_ru}</LinkToCategory>
                                                 <p>{data.category.desc}</p>
                                             </Category>
                                         );

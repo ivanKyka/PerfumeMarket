@@ -46,12 +46,14 @@ export default class ContentBlock extends React.Component{
                        <br/>
                        <span>{this.props.options.vendor}</span>
                    </Describe>
-                   <Button
-                    onClick={e => {
-                        e.preventDefault();
-                        this.props.openCheckout([{product:this.props.options, count:1}])
-                    }}
-                   >Купить</Button>
+                   {this.props.options.avaliable?
+                       <Button
+                           onClick={e => {
+                               e.preventDefault();
+                               this.props.openCheckout([{product:this.props.options, count:1}])
+                           }}
+                       >Купить</Button>:
+                   <Button disabled={true}>Нет в наличии</Button>}
                    <Price>{this.props.options.price} грн.</Price>
                    <Bottom>
                        <FontAwesomeIcon icon={faGift} size={'2x'}/>
@@ -176,6 +178,14 @@ const Button = styled.button`
   border: ${props => props.theme.primary} solid 1px;
   &:hover {
     background: ${props => props.theme.primary_light};
+  }
+  &[disabled]{
+      width: 170px;
+      background: #cccccc;
+      border: #cccccc solid 1px;
+      &:hover{
+        background: #cccccc;
+      }
   }
 `;
 
