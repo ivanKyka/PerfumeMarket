@@ -21,6 +21,8 @@ export default class FiltersLeftBar extends Component {
 
         this.checkIsIn = this.checkIsIn.bind(this);
         this.renderSkeletonOptions = this.renderSkeletonOptions.bind(this);
+        this.aggregationForSearch = this.aggregationForSearch.bind(this);
+        this.aggregationForSimpleMode = this.aggregationForSimpleMode.bind(this);
     }
 
     componentDidMount() {
@@ -90,13 +92,65 @@ export default class FiltersLeftBar extends Component {
         )
     }
 
+    aggregationForSimpleMode(category){
+        let properties = category.properties.reduce((ac, cv) => {
+            ac[cv.property_name] = ac[cv.property_name] || [];
+            ac[cv.property_name].push({
+                property_val: cv.property_val,
+                id: cv._id
+            });
+            return ac;
+        }, []);
+
+        let propertiesIndexed = [];
+
+        for (let property in properties) {
+            propertiesIndexed.push({
+                title: property,
+                content: properties[property],
+            })
+        }
+
+        return propertiesIndexed;
+    }
+
+    aggregationForSearch(products){
+        let properties = products.reduce((ac, cv) => {
+            cv.properties.forEach(property => {
+                ac[property.property_name] = ac[property.property_name] || [];
+
+                if (ac[property.property_name].filter(val => val.id === property._id).length > 0) {
+
+                } else {
+                    ac[property.property_name].push({
+                        property_val: property.property_val,
+                        id: property._id
+                    });
+                }
+            });
+            return ac;
+        }, {});
+
+
+        let propertiesIndexed = [];
+
+        for (let property in properties) {
+            propertiesIndexed.push({
+                title: property,
+                content: properties[property],
+            })
+        }
+
+        return propertiesIndexed;
+    }
+
     render() {
         let category = CatalogStore.category;
         let categoryJS = toJS(category);
 
         return (
             <Container>
-                {this.props.searchMode ?
+                {this.props.searchMode || (!this.state.isLastChildID && categoryJS._id)?
                     (() => {
                         return (
                             <Query
@@ -109,33 +163,11 @@ export default class FiltersLeftBar extends Component {
                                 {({loading, error, data, refetch}) => {
                                     CatalogStore.refetchCategory = refetch;
                                     if (loading) return this.renderSkeletonOptions();
-                                    if (error) return this.renderSkeletonOptions();
+                                    if (error) return "";
 
-                                    let properties = data.products.reduce((ac, cv) => {
-                                        cv.properties.forEach(property => {
-                                            ac[property.property_name] = ac[property.property_name] || [];
+                                    console.log(categoryJS);
 
-                                            if (ac[property.property_name].filter(val => val.id === property._id).length > 0) {
-
-                                            } else {
-                                                ac[property.property_name].push({
-                                                    property_val: property.property_val,
-                                                    id: property._id
-                                                });
-                                            }
-                                        });
-                                        return ac;
-                                    }, {});
-
-
-                                    let propertiesIndexed = [];
-
-                                    for (let property in properties) {
-                                        propertiesIndexed.push({
-                                            title: property,
-                                            content: properties[property],
-                                        })
-                                    }
+                                    let propertiesIndexed = this.aggregationForSearch(data.products);
 
                                     return (
                                         <Fragment>
@@ -158,7 +190,7 @@ export default class FiltersLeftBar extends Component {
                         )
                     })()
                     :
-                    (() => this.state.isLastChildID && categoryJS._id ?
+                    (() => categoryJS._id ?
                             <Query
                                 query={CATEGORIES_BY_SINGLE_ID}
                                 variables={{"id": categoryJS._id}}
@@ -169,23 +201,7 @@ export default class FiltersLeftBar extends Component {
                                     if (loading) return this.renderSkeletonOptions();
                                     if (error) return `Error! ${error.message}`;
 
-                                    let properties = data.category.properties.reduce((ac, cv) => {
-                                        ac[cv.property_name] = ac[cv.property_name] || [];
-                                        ac[cv.property_name].push({
-                                            property_val: cv.property_val,
-                                            id: cv._id
-                                        });
-                                        return ac;
-                                    }, []);
-
-                                    let propertiesIndexed = [];
-
-                                    for (let property in properties) {
-                                        propertiesIndexed.push({
-                                            title: property,
-                                            content: properties[property],
-                                        })
-                                    }
+                                    let propertiesIndexed = this.aggregationForSimpleMode(data.category);
 
                                     return (
                                         <Fragment>
