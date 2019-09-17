@@ -12,48 +12,42 @@ export default class FiltersLeftBar extends Component {
     constructor(props) {
         super(props);
 
-        this.currentCategory = null;
-
         this.state = {
             categories: [],
             model: [],
-            isLastChildID: false
+            isLastChildID: false,
+            lastChildID: null
         };
 
         this.checkIsIn = this.checkIsIn.bind(this);
-        this.getCategories = this.getCategories.bind(this);
         this.renderSkeletonOptions = this.renderSkeletonOptions.bind(this);
+        this.aggregationForSearch = this.aggregationForSearch.bind(this);
+        this.aggregationForSimpleMode = this.aggregationForSimpleMode.bind(this);
     }
 
     componentDidMount() {
         categoryTree().then(categories => {
             for (let i = 0; i < categories.length; i++) {
+
                 if (this.checkIsIn(categories[i], this.props.param)) {
+                    if (this.state.isLastChildID){
+                        CatalogStore.addCategoriesToFilters(this.props.param);
+
+                        return;
+                    }
+
                     let temp = [];
-                    temp.push(categories[i]);
-                    this.setState({model: temp});
-                    this.getCategories(this.currentCategory);
+
+                    for (let j = 0; j < categories[i].items.length; j++) {
+                        temp.push(categories[i].items[j].id);
+                    }
+
+                    CatalogStore.addCategoriesToFilters(temp);
+
                     return;
                 }
             }
         });
-    }
-
-    getCategories(topLevelCategory) {
-        if (!topLevelCategory)
-            return;
-
-        if (topLevelCategory.lastChild) {
-            CatalogStore.addCategoriesToFilters(topLevelCategory.id);
-            return;
-        }
-
-        if (topLevelCategory.items) {
-            topLevelCategory.items.forEach(el => {
-                this.getCategories(el);
-            });
-        }
-
     }
 
     checkIsIn(categories, id) {
@@ -62,13 +56,22 @@ export default class FiltersLeftBar extends Component {
                 this.setState({isLastChildID: true});
             }
 
-            this.currentCategory = categories;
-
             return true;
         }
 
         if (categories.items) {
-            return categories.items.map(el => this.checkIsIn(el, id));
+            let isFound = false;
+
+            for (let i = 0;i < categories.items.length;i++){
+                if (id === categories.items[i].id){
+                    this.setState({isLastChildID: true});
+                    isFound = true;
+
+                    break;
+                }
+            }
+
+            return isFound;
         } else {
             return false;
         }
@@ -89,13 +92,65 @@ export default class FiltersLeftBar extends Component {
         )
     }
 
+    aggregationForSimpleMode(category){
+        let properties = category.properties.reduce((ac, cv) => {
+            ac[cv.property_name] = ac[cv.property_name] || [];
+            ac[cv.property_name].push({
+                property_val: cv.property_val,
+                id: cv._id
+            });
+            return ac;
+        }, []);
+
+        let propertiesIndexed = [];
+
+        for (let property in properties) {
+            propertiesIndexed.push({
+                title: property,
+                content: properties[property],
+            })
+        }
+
+        return propertiesIndexed;
+    }
+
+    aggregationForSearch(products){
+        let properties = products.reduce((ac, cv) => {
+            cv.properties.forEach(property => {
+                ac[property.property_name] = ac[property.property_name] || [];
+
+                if (ac[property.property_name].filter(val => val.id === property._id).length > 0) {
+
+                } else {
+                    ac[property.property_name].push({
+                        property_val: property.property_val,
+                        id: property._id
+                    });
+                }
+            });
+            return ac;
+        }, {});
+
+
+        let propertiesIndexed = [];
+
+        for (let property in properties) {
+            propertiesIndexed.push({
+                title: property,
+                content: properties[property],
+            })
+        }
+
+        return propertiesIndexed;
+    }
+
     render() {
         let category = CatalogStore.category;
         let categoryJS = toJS(category);
 
         return (
             <Container>
-                {this.props.searchMode ?
+                {this.props.searchMode || (!this.state.isLastChildID && categoryJS._id)?
                     (() => {
                         return (
                             <Query
@@ -108,33 +163,11 @@ export default class FiltersLeftBar extends Component {
                                 {({loading, error, data, refetch}) => {
                                     CatalogStore.refetchCategory = refetch;
                                     if (loading) return this.renderSkeletonOptions();
-                                    if (error) return this.renderSkeletonOptions();
+                                    if (error) return "";
 
-                                    let properties = data.products.reduce((ac, cv) => {
-                                        cv.properties.forEach(property => {
-                                            ac[property.property_name] = ac[property.property_name] || [];
+                                    console.log(categoryJS);
 
-                                            if (ac[property.property_name].filter(val => val.id === property._id).length > 0) {
-
-                                            } else {
-                                                ac[property.property_name].push({
-                                                    property_val: property.property_val,
-                                                    id: property._id
-                                                });
-                                            }
-                                        });
-                                        return ac;
-                                    }, {});
-
-
-                                    let propertiesIndexed = [];
-
-                                    for (let property in properties) {
-                                        propertiesIndexed.push({
-                                            title: property,
-                                            content: properties[property],
-                                        })
-                                    }
+                                    let propertiesIndexed = this.aggregationForSearch(data.products);
 
                                     return (
                                         <Fragment>
@@ -157,7 +190,7 @@ export default class FiltersLeftBar extends Component {
                         )
                     })()
                     :
-                    (() => this.state.isLastChildID && categoryJS._id ?
+                    (() => categoryJS._id ?
                             <Query
                                 query={CATEGORIES_BY_SINGLE_ID}
                                 variables={{"id": categoryJS._id}}
@@ -168,23 +201,7 @@ export default class FiltersLeftBar extends Component {
                                     if (loading) return this.renderSkeletonOptions();
                                     if (error) return `Error! ${error.message}`;
 
-                                    let properties = data.category.properties.reduce((ac, cv) => {
-                                        ac[cv.property_name] = ac[cv.property_name] || [];
-                                        ac[cv.property_name].push({
-                                            property_val: cv.property_val,
-                                            id: cv._id
-                                        });
-                                        return ac;
-                                    }, []);
-
-                                    let propertiesIndexed = [];
-
-                                    for (let property in properties) {
-                                        propertiesIndexed.push({
-                                            title: property,
-                                            content: properties[property],
-                                        })
-                                    }
+                                    let propertiesIndexed = this.aggregationForSimpleMode(data.category);
 
                                     return (
                                         <Fragment>
