@@ -12,48 +12,40 @@ export default class FiltersLeftBar extends Component {
     constructor(props) {
         super(props);
 
-        this.currentCategory = null;
-
         this.state = {
             categories: [],
             model: [],
-            isLastChildID: false
+            isLastChildID: false,
+            lastChildID: null
         };
 
         this.checkIsIn = this.checkIsIn.bind(this);
-        this.getCategories = this.getCategories.bind(this);
         this.renderSkeletonOptions = this.renderSkeletonOptions.bind(this);
     }
 
     componentDidMount() {
         categoryTree().then(categories => {
             for (let i = 0; i < categories.length; i++) {
+
                 if (this.checkIsIn(categories[i], this.props.param)) {
+                    if (this.state.isLastChildID){
+                        CatalogStore.addCategoriesToFilters(this.props.param);
+
+                        return;
+                    }
+
                     let temp = [];
-                    temp.push(categories[i]);
-                    this.setState({model: temp});
-                    this.getCategories(this.currentCategory);
+
+                    for (let j = 0; j < categories[i].items.length; j++) {
+                        temp.push(categories[i].items[j].id);
+                    }
+
+                    CatalogStore.addCategoriesToFilters(temp);
+
                     return;
                 }
             }
         });
-    }
-
-    getCategories(topLevelCategory) {
-        if (!topLevelCategory)
-            return;
-
-        if (topLevelCategory.lastChild) {
-            CatalogStore.addCategoriesToFilters(topLevelCategory.id);
-            return;
-        }
-
-        if (topLevelCategory.items) {
-            topLevelCategory.items.forEach(el => {
-                this.getCategories(el);
-            });
-        }
-
     }
 
     checkIsIn(categories, id) {
@@ -62,13 +54,22 @@ export default class FiltersLeftBar extends Component {
                 this.setState({isLastChildID: true});
             }
 
-            this.currentCategory = categories;
-
             return true;
         }
 
         if (categories.items) {
-            return categories.items.map(el => this.checkIsIn(el, id));
+            let isFound = false;
+
+            for (let i = 0;i < categories.items.length;i++){
+                if (id === categories.items[i].id){
+                    this.setState({isLastChildID: true});
+                    isFound = true;
+
+                    break;
+                }
+            }
+
+            return isFound;
         } else {
             return false;
         }

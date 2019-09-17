@@ -110,6 +110,9 @@ const Container = styled.div`
     grid-row-end: 2;
     grid-column-start: 1;
     grid-column-end: 3;
+    color: grey;
+    
+    opacity: 0.9;
 `;
 
 const Menu = styled.div`
@@ -132,8 +135,9 @@ const Label = styled.span`
 const Input = styled.input`
     width: ${props => props.width};
     margin-left: 15px;
-    background-color: #fff;
-    border: 1px solid ${props => props.theme.bgDarkCol};
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #bdbdbd;
     padding: 5px 10px;
     font-size: 12px;
     color: black;
