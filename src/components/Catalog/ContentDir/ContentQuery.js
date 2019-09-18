@@ -116,8 +116,6 @@ export default class ContentQuery extends React.Component {
 
                     if (error) return <p>Error :( `${error.message}`</p>;
 
-                    console.log(data);
-
                     this.getProductsCount(filtersJS).then(() => {
                         CatalogStore.checkIsMoreDataThan(startFromJS + data.products.length);
                     });

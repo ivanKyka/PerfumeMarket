@@ -6,8 +6,10 @@ import {categoryTree} from "../../../api/Categories";
 import CatalogStore from "../../../stores/CatalogStore";
 import {toJS} from "mobx";
 import EmptyOptionsBlock from "./AbstractOptionsComponentDir/EmptyOptionsBlock";
-import {CATEGORIES_BY_SINGLE_ID, PRODUCTS_BY_REQUEST} from "../../../stores/Queries";
+import {CATEGORIES_BY_SINGLE_ID, PRODUCTS_BY_REQUEST, PRODUCTS_BY_TOP_LEVEL_CATEGORY} from "../../../stores/Queries";
+import {observer} from "mobx-react";
 
+@observer
 export default class FiltersLeftBar extends Component {
     constructor(props) {
         super(props);
@@ -147,10 +149,12 @@ export default class FiltersLeftBar extends Component {
     render() {
         let category = CatalogStore.category;
         let categoryJS = toJS(category);
+        let filters = CatalogStore.filters;
+        let filtersJS = toJS(filters);
 
         return (
             <Container>
-                {this.props.searchMode || (!this.state.isLastChildID && categoryJS._id)?
+                {this.props.searchMode ?
                     (() => {
                         return (
                             <Query
@@ -164,8 +168,6 @@ export default class FiltersLeftBar extends Component {
                                     CatalogStore.refetchCategory = refetch;
                                     if (loading) return this.renderSkeletonOptions();
                                     if (error) return "";
-
-                                    console.log(categoryJS);
 
                                     let propertiesIndexed = this.aggregationForSearch(data.products);
 
@@ -190,7 +192,7 @@ export default class FiltersLeftBar extends Component {
                         )
                     })()
                     :
-                    (() => categoryJS._id ?
+                    (() => categoryJS._id && this.state.isLastChildID ?
                             <Query
                                 query={CATEGORIES_BY_SINGLE_ID}
                                 variables={{"id": categoryJS._id}}
@@ -199,7 +201,7 @@ export default class FiltersLeftBar extends Component {
                                     CatalogStore.refetchCategory = refetch;
 
                                     if (loading) return this.renderSkeletonOptions();
-                                    if (error) return `Error! ${error.message}`;
+                                    if (error) return "";
 
                                     let propertiesIndexed = this.aggregationForSimpleMode(data.category);
 
@@ -222,7 +224,42 @@ export default class FiltersLeftBar extends Component {
                                 }}
                             </Query>
                             :
-                            ""
+                            (() => {
+                                return(
+                                    <Query
+                                        fetchPolicy={'cache'}
+                                        query={PRODUCTS_BY_TOP_LEVEL_CATEGORY}
+                                        variables={{
+                                            categories: filtersJS.category
+                                        }}
+                                    >
+                                        {({loading, error, data, refetch}) => {
+                                            if (loading) return this.renderSkeletonOptions();
+                                            if (error) return "";
+
+                                            let propertiesIndexed = this.aggregationForSearch(data.products);
+
+                                            return (
+                                                <Fragment>
+                                                    {
+                                                        propertiesIndexed.map((el, i, arr) => {
+                                                            return (
+                                                                <OptionsContainer
+                                                                    optionsTitle={el.title}
+                                                                    contentType={"selection"}
+                                                                    content={el.content}
+                                                                    key={i}
+                                                                />)
+                                                        })
+                                                    }
+                                                </Fragment>
+
+                                            );
+                                        }}
+                                    </Query>
+                                )
+                                }
+                            )()
                     )()
                 }
             </Container>

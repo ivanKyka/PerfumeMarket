@@ -18,6 +18,8 @@ export let PRODUCTS_BY_REQUEST = gql`
                             products(limit: -1, where: {
                                                             name_ru_contains: $request
                                                             desc_contains: $request
+                                                            vendor_contains: $request
+                                                            name_rozetka_contains: $request
                                                         }){
                                                            properties{
                                                                property_name
@@ -27,6 +29,20 @@ export let PRODUCTS_BY_REQUEST = gql`
                             }
                         }
                     `;
+
+export let PRODUCTS_BY_TOP_LEVEL_CATEGORY = gql`
+    query PRODUCTS_BY_TOP_LEVEL_CATEGORY($categories: JSON!){
+        products(limit: -1, where: {
+            category: $categories
+        }){
+            properties{
+                property_name
+                _id
+                property_val
+            }
+        }
+    }
+`;
 
 export let PRODUCTS_BY_FILTERS_PAGINATED = gql`query PRODUCTS_BY_FILTERS($filters: JSON!, $sortOption: String!, $limit: Int!, $startFrom: Int!){
                         products(start: $startFrom, limit: $limit, sort: $sortOption, where: $filters){

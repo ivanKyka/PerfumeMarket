@@ -12,7 +12,8 @@ class CatalogStore {
         price_lte: null,
         name_ru_contains: null,
         desc_contains: null,
-        name_rozetka_contains: null
+        name_rozetka_contains: null,
+        vendor_contains: null
     };
 
     searchRequestForSearchMode = null;
@@ -57,6 +58,7 @@ class CatalogStore {
         filtersCopy.name_ru_contains = searchRequest;
         filtersCopy.desc_contains = searchRequest;
         filtersCopy.name_rozetka_contains = searchRequest;
+        filtersCopy.vendor_contains = searchRequest;
         this.searchRequestForSearchMode = searchRequest;
         this.searchMode = true;
 
@@ -117,9 +119,8 @@ class CatalogStore {
 
         this.category = categoryCopy;
 
-        /*if (this.refetchCategory)
-            console.trace('REFETCHING');
-            this.refetchCategory();*/
+        if (this.refetchCategory)
+            this.refetchCategory();
     };
 
     @action
