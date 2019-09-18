@@ -124,9 +124,10 @@ const Image = styled.img`
 
 const Link = styled.a`
     font-size: 10pt;
+    font-weight: bold;
     text-decoration: none;
     cursor: pointer;
-    color: ${props => props.theme.primary};
+    color: #000000;
     &:hover{
       text-decoration: underline;
       color: ${props => props.theme.primary};
