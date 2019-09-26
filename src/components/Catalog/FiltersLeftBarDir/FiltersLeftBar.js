@@ -8,6 +8,7 @@ import {toJS} from "mobx";
 import EmptyOptionsBlock from "./AbstractOptionsComponentDir/EmptyOptionsBlock";
 import {CATEGORIES_BY_SINGLE_ID, PRODUCTS_BY_REQUEST, PRODUCTS_BY_TOP_LEVEL_CATEGORY} from "../../../stores/Queries";
 import {observer} from "mobx-react";
+import {UrlStore} from "../../../stores/UrlStore";
 
 @observer
 export default class FiltersLeftBar extends Component {
@@ -154,7 +155,7 @@ export default class FiltersLeftBar extends Component {
 
         return (
             <Container>
-                {this.props.searchMode ?
+                {this.props.searchMode?
                     (() => {
                         return (
                             <Query

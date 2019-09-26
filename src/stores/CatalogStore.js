@@ -10,10 +10,7 @@ class CatalogStore {
         },
         price_gte: null,
         price_lte: null,
-        name_ru_contains: null,
-        desc_contains: null,
-        name_rozetka_contains: null,
-        vendor_contains: null
+        _q: null
     };
 
     searchRequestForSearchMode = null;
@@ -55,10 +52,7 @@ class CatalogStore {
     @action
     setSearchRequest = (searchRequest) => {
         let filtersCopy = {...this.filters};
-        filtersCopy.name_ru_contains = searchRequest;
-        filtersCopy.desc_contains = searchRequest;
-        filtersCopy.name_rozetka_contains = searchRequest;
-        filtersCopy.vendor_contains = searchRequest;
+        filtersCopy._q = searchRequest;
         this.searchRequestForSearchMode = searchRequest;
         this.searchMode = true;
 
@@ -181,9 +175,7 @@ class CatalogStore {
         filtersCopy.price_gte = null;
 
         if (!this.searchMode) {
-            filtersCopy.name_ru_contains = null;
-            filtersCopy.desc_contains = null;
-            filtersCopy.name_rozetka_contains = null;
+            filtersCopy._q = null;
         }
 
         this.filters = {...this.filters, ...filtersCopy};
@@ -210,7 +202,6 @@ class CatalogStore {
             values.push(decodeURIComponent(pair[1]));
         }
 
-        console.log(values);
         return values;
     }
 }

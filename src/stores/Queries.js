@@ -16,10 +16,8 @@ export let CATEGORIES_BY_SINGLE_ID = gql`
 export let PRODUCTS_BY_REQUEST = gql`
                         query PRODUCTS_BY_REQUEST($request: String!){
                             products(limit: -1, where: {
-                                                            name_ru_contains: $request
-                                                            desc_contains: $request
-                                                            vendor_contains: $request
-                                                            name_rozetka_contains: $request
+                                                            _q: $request
+                                                            
                                                         }){
                                                            properties{
                                                                property_name
