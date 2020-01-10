@@ -7,6 +7,8 @@ import StarRatings from "react-star-ratings";
 import {sendFeedback} from "../../../api/Feedback";
 import ProgressButton from 'react-progress-button';
 import 'react-progress-button/react-progress-button.css'
+import ReactNotification, {store} from "react-notifications-component";
+import Notification from "../../public/Notification";
 
 export default class OrderPane extends React.Component {
 
@@ -14,7 +16,7 @@ export default class OrderPane extends React.Component {
         super(props);
         this.state = {
             rating: 5,
-            sending: '',  //'', loading, success, error or disabled,
+            sending: '',  //'', loading, success, error or disabledIncrement,
             opened: false
         }
         this.feedback = '';
@@ -35,7 +37,11 @@ export default class OrderPane extends React.Component {
             order: this.props.order.id,
             rank: this.state.rating
         }
-        sendFeedback(data).then(response => setTimeout(() => this.setState({sending: response?'success':'error'}),1500));
+        sendFeedback(data)
+            .then(response => setTimeout(() => {
+                this.setState({sending: response?'success':'error'})
+                if (response) store.addNotification(Notification('Спасибо за ваш отзыв. Мы обязательно на него отреагируем'));
+            },1500));
     }
 
     togglePane = () => {
@@ -77,6 +83,7 @@ export default class OrderPane extends React.Component {
                     <StyledProgressButton onClick={this.sendFeedback} state={this.state.sending}>
                         Отправить
                     </StyledProgressButton>
+                    <ReactNotification/>
                 </Container>
             </React.Fragment>
     )
@@ -129,7 +136,7 @@ const Textarea = styled.div`
         border: none;
         border-radius: 10px;
         box-shadow: 0 0 1px 1px #b2b2b2,  0 0 1px 1px #b2b2b2 inset;
-        
+        outline: none;
         &:focus:not([readonly]) {
             box-shadow: 0 0 1px 1px ${theme.primary},  0 0 1px 1px ${theme.primary} inset;
         }
@@ -149,23 +156,6 @@ const Rating = styled.div`
     }
 `;
 
-const Button = styled.button`
-    width: 300px;
-    background: ${theme.primary};
-    font-size: 12pt;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    height: 35px;
-    grid-column: 1/6;
-    justify-self: right;
-    margin-top: 10px;
-    cursor: pointer;
-    
-    &:hover {
-        background: ${theme.primary_light};
-    }  
-`;
 
 const StyledProgressButton = styled(ProgressButton)`
     grid-column: 1/6;

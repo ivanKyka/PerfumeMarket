@@ -13,14 +13,18 @@ import Links from "./Links";
 import AddComentModalPane from "./AddComentModalPane";
 import MetaTags from "react-meta-tags";
 import Recomendations from "../public/Recomendations";
+import ReactGA from "react-ga";
 
 export default class Product extends React.Component {
 
+    componentWillMount() {
+        ReactGA.pageview(location.pathname);
+    }
 
+    render() {
+        window.scrollTo(0,0);
 
-
-render() {
-    return(
+        return(
         <div>
             <Header />
             <HeadCatalog />

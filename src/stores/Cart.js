@@ -44,7 +44,6 @@ export  class Cart {
     @action
     addToCart = ((elem,count) => {
         if (this.isCartHasElem(elem.id)){
-            count = count + this.getElemFromCart(elem.id).count;
             this.removeFromCart(elem.id);
         }
         this.items.push({
@@ -60,12 +59,12 @@ export  class Cart {
         this.items.length = 0;
         this.totalPrice = 0;
         this.saveCart();
-        ModifyCart(this.items);
     }).bind(this);
 
     loadCart = (() => {
         try{
-            JSON.parse(window.localStorage.getItem('cart')).forEach(a => this.items.push(a));
+            JSON.parse(window.localStorage.getItem('cart')).forEach(a =>{ 
+                this.addToCart(a.product, a.count)});
         }catch (e) {
 //            Oh crap, we should do something
 //            ...
@@ -104,19 +103,19 @@ export  class Cart {
                     if (!this.isCartHasElem(elem.product.id))
                     this.items.push(elem);
                 });
-                window.localStorage.setItem('cart',JSON.stringify(data.body));
-                ModifyCart(this.items);
             }
+        }).then(() => {
+            this.saveCart();
+            ModifyCart(this.items);
         })
     });
 
     @computed get Total() {
-        console.log(toJS(this.items));
         return toJS(this.items).reduce((acc, el) => {
             if (el.product.avaliable)
                 return acc + el.product.price * el.count;
             else return acc;
-        },0)
+        },0).toFixed(2) - 0
     }
 
     @computed
@@ -132,6 +131,16 @@ export  class Cart {
         });
         this.saveCart();
         ModifyCart(this.items);
+
+    };
+
+    @action
+    setPrice(id, price) {
+        this.items = this.items.map(el => {
+            if (el.product.id === id) el.product.price = price;
+            return el;
+        });
+        this.saveCart();
     };
 
     @action

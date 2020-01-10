@@ -8,6 +8,9 @@ import {inject, observer} from "mobx-react";
 import {changeUserData, me} from "../../api/Users";
 import Preloader from "../public/Preloader";
 import MetaTags from "react-meta-tags";
+import ReactNotification, {store} from "react-notifications-component";
+import Notification from "../public/Notification";
+import ReactGA from "react-ga";
 
 @inject('store')
 @observer
@@ -20,7 +23,7 @@ export default class Contacts extends React.Component{
             .then(respose => {
                 if (respose){
                     this.setState({ready: true});
-
+                    if (respose) store.addNotification(Notification('Сохранено'));
                 }
             })
     }).bind(this);
@@ -40,6 +43,7 @@ export default class Contacts extends React.Component{
     }
 
     componentWillMount() {
+        ReactGA.pageview(location.pathname);
         me().then(data => {
             this.setState({
                 userInfo: data,
@@ -149,6 +153,7 @@ export default class Contacts extends React.Component{
                             >Сохранить</Button>
                     </div>
                 </Form>
+                <ReactNotification/>
                 </React.Fragment>
             </ThemeProvider>
         );
@@ -174,10 +179,12 @@ const Form = styled.form`
         padding-left: 10px;
         font-size: 12pt;
         color: #000;
+        outline: none;
    }
    .flatpickr-input.active{
         border: ${props => props.theme.primary_light} 1px solid;
         box-shadow: ${props => props.theme.primary_light} 0 0 2px 2px;
+        outline: none;
    }
 `;
 
@@ -191,7 +198,7 @@ const Input = styled.input`
     padding-left: 10px;
     font-size: 12pt;
     color: #000;
-    
+    outline: none;
     &:focus{
       border: 1px solid ${props => props.theme.primary_light};
       box-shadow: ${props => props.theme.primary_light} 0 0 2px 2px;
@@ -220,6 +227,7 @@ const Button = styled.button`
     border: none;
     margin-top: 34px;
     cursor: pointer; 
+    outline: none;
     &:hover{
       background: ${props => props.theme.primary_light};
     }

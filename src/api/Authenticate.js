@@ -1,5 +1,5 @@
 import {UrlStore} from "../stores/UrlStore";
-import {getCookie, setCookie} from "../controllers/Cookies";
+import {deleteAuthData, getAuthData, setAuthData} from "../controllers/Cookies";
 import {userStore} from "../components/App";
 
 /**
@@ -20,7 +20,7 @@ async function Login(identifier, password) {
         });
     if (response.status >= 200 && response.status < 300) {
         let data = await response.json();
-        setCookie('jwt', data.jwt);
+        setAuthData('jwt', data.jwt);
         return data;
     } else return undefined;
 }
@@ -44,7 +44,7 @@ async function Register(username, email, password, name, surname, gender) {
         });
     if (response.status >= 200 && response.status < 300){
         let data = await response.json();
-        setCookie('jwt', data.jwt);
+        setAuthData('jwt', data.jwt);
         return true;
     } else {
         return false;
@@ -54,8 +54,7 @@ async function Register(username, email, password, name, surname, gender) {
 
  function Logout() {
     userStore.setUser({});
-    document.cookie = 'jwt=false'
-    console.log(getCookie('jwt'));
+    deleteAuthData('jwt')
     location.pathname = '/';
 }
 

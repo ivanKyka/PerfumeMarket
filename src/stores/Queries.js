@@ -61,10 +61,12 @@ export let PRODUCTS_BY_FILTERS_PAGINATED = gql`query PRODUCTS_BY_FILTERS($filter
                           comments{
                             rate
                           }
+                          gift_status
                           name_ru
                           _id
                           desc
                           price
+                          discount_price
                           createdAt
                       }
                 }`;

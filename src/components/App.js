@@ -19,15 +19,20 @@ import {Cart as CartStore} from '../stores/Cart';
 import BlogCatalog from './Blog/BlogCatalog';
 import BlogPage from "./Blog/BlogPage";
 import {me} from "../api/Users";
-import Payment from "./public/Payment";
+import Payment from "./InfoPages/Payment";
 import Contacts from "./Contacts/Contacts";
-import License from "./public/License";
-import UserAgreement from "./public/UserAgreement";
-import Delivery from "./public/Delivery";
-import Warranty from "./public/Warranty";
+import License from "./InfoPages/License";
+import UserAgreement from "./InfoPages/UserAgreement";
+import Delivery from './InfoPages/Delivery'
+import Warranty from "./InfoPages/Warranty";
 import ForgotPassword from "./Auth/ForgotPassword";
 import ResetPassword from "./Auth/ResetPassword";
-import icon from '../resources/image/icon.svg';
+import '../index.css';
+import AlertTest from "./public/AlertTest";
+import 'react-notifications-component/dist/theme.css'
+import Order from "./Order/Order";
+import ReactGA from 'react-ga';
+import {isMobile} from 'react-device-detect';
 
 const httpLink = createHttpLink({
     uri: UrlStore.MAIN_GRAPHQL_URI
@@ -48,10 +53,14 @@ const store = {
     cart: cart
 };
 
+
 class App extends Component {
 
 
     componentWillMount() {
+        if (isMobile) location.href = 'https://m.profumo.com.ua' + location.pathname + location.search;
+        ReactGA.initialize('UA-128259482-2');
+
         me().then(data => {
             if (data) userStore.setUser(data);
 
@@ -63,29 +72,30 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <ApolloProvider client={client}>
-                    <BrowserRouter>
-                        <Switch>
-                            <Route exact path={'/'} component={MainPage}/>
-                            <Route path={'/cart'} component={Cart}/>
-                            <Route path={'/catalog/:id'} component={Catalog}/>
-                            <Route path={'/checkout'} component={Checkout}/>
-                            <Route path={'/product/:id'} component={Product}/>
-                            <Route path={'/signUp'} component={Register}/>
-                            <Route path={'/aboutUs'} component={AboutUs}/>
-                            <Route path={'/cabinet/:page'} component={Cabinet}/>
-                            <Route exact path={'/blog'} component={BlogCatalog}/>
-                            <Route path={'/blog/:id'} component={BlogPage}/>
-                            <Route path={'/checkout'} component={Checkout}/>
-                            <Route path={'/contacts'} component={Contacts}/>
-                            <Route exact path={'/payment'} component={Payment}/>
-                            <Route exact path={'/license'} component={License}/>
-                            <Route exact path={'/user_agreement'} component={UserAgreement}/>
-                            <Route exact path={'/delivery'} component={Delivery}/>
-                            <Route exact path={'/warranty'} component={Warranty}/>
-                            <Route exact path={'/forgotPassword'} component={ForgotPassword}/>
-                            <Route exact path={'/resetPassword'} component={ResetPassword}/>
-                        </Switch>
-                    </BrowserRouter>
+                        <BrowserRouter>
+                            <Switch>
+                                <Route exact path={'/'} component={MainPage}/>
+                                <Route path={'/cart'} component={Cart}/>
+                                <Route path={'/catalog/:id'} component={Catalog}/>
+                                <Route path={'/checkout'} component={Checkout}/>
+                                <Route path={'/product/:id'} component={Product}/>
+                                <Route path={'/signUp'} component={Register}/>
+                                <Route path={'/aboutUs'} component={AboutUs}/>
+                                <Route path={'/cabinet/:page'} component={Cabinet}/>
+                                <Route exact path={'/blog'} component={BlogCatalog}/>
+                                <Route path={'/blog/:id'} component={BlogPage}/>
+                                <Route path={'/checkout'} component={Checkout}/>
+                                <Route path={'/contacts'} component={Contacts}/>
+                                <Route exact path={'/payment'} component={Payment}/>
+                                <Route exact path={'/license'} component={License}/>
+                                <Route exact path={'/user_agreement'} component={UserAgreement}/>
+                                <Route exact path={'/delivery'} component={Delivery}/>
+                                <Route exact path={'/warranty'} component={Warranty}/>
+                                <Route exact path={'/forgotPassword'} component={ForgotPassword}/>
+                                <Route exact path={'/resetPassword'} component={ResetPassword}/>
+                                <Route exact path={'/order'} component={Order}/>
+                            </Switch>
+                        </BrowserRouter>
                 </ApolloProvider>
             </Provider>
         );

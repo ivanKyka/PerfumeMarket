@@ -53,7 +53,8 @@ const OptionsTitleContainer = styled.div`
 `;
 
 const OptionsTitle = styled.span`
-    font-size: 12px;
+    font-size: 13px;
+    color: black;
 `;
 
 const OptionsHideButton = styled.img`

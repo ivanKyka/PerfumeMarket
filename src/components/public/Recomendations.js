@@ -40,7 +40,7 @@ export default class Recomendations extends React.Component {
     }
 
     render() {
-        if (!this.state.ready) return '';
+        if (!this.state.ready || this.state.data.length === 0) return '';
 
         return(
             <React.Fragment>
@@ -71,7 +71,7 @@ export default class Recomendations extends React.Component {
                                         if (error) {
                                             return '';
                                         }
-                                        return <Block>
+                                        return <Block to={'/product/' + elem}>
                                             <Image src={UrlStore.MAIN_URL + data.product.photos[0].url}/>
                                             <Name to={'/product/' + elem}>{data.product.name_ru}</Name>
                                             <Vendor>{data.product.vendor}</Vendor>
@@ -93,28 +93,34 @@ const Title = styled.h2`
     
 `;
 
-const Block = styled.div`
+const Block = styled(Link)`
     display: grid;
     grid-template-rows: 250px repeat(3, min-content);
     grid-gap: 5px;
     height: 400px;
     width: 300px;
     text-align: center;
+    
+    &:hover {
+        p{
+            color: ${theme.primary_light};
+        }
+    }
 `;
 
 const Image = styled.img`
     object-fit: contain;
     max-height: 250px;
     justify-self: center;
+    max-width: 250px;
 `;
 
-const Name = styled(Link)`
+const Name = styled.p`
     font-size: 11pt;
-    color: ${theme.primary};
-    &:hover{
-        color: ${theme.primary_light};
-        text-decoration: underline;
-    }
+    color: ${theme.bgCol};
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
 `;
 
 const Vendor = styled.span`
@@ -125,7 +131,7 @@ const Vendor = styled.span`
 `;
 
 const Price = styled.span`
-    
+    color: ${theme.bgCol}
     
 `;
 
@@ -141,21 +147,3 @@ const Group = styled(Slide)`
     }    
     
 `;
-
-
-
-//                             return(
-//                                 <React.Fragment>
-//                                     <MetaTags>
-//                                         <title>{data.product.name_ru}</title>
-//                                         <meta name='title' content={data.product.meta_title}/>
-//                                         <meta name='keywords' content={data.product.meta_keywords}/>
-//                                         <meta name='decription' content={data.product.meta_decription}/>
-//                                     </MetaTags>
-//                                     <ProductName>{data.product.name_ru}</ProductName>
-//                                     <Vendor>{data.product.vendor}</Vendor>
-//                                 </React.Fragment>
-//
-//                             );
-//                         }}
-//                     </Query>

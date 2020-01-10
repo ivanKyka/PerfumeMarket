@@ -8,6 +8,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import {theme} from "../../stores/StyleStore";
+import ReactNotification, {store} from "react-notifications-component";
+import Notification from "../public/Notification";
 
 @inject('store')
 export default class ProductCard extends React.Component {
@@ -29,6 +31,7 @@ export default class ProductCard extends React.Component {
     deleteFromCart = (e => {
         e.preventDefault();
         this.props.store.cart.removeFromCart(this.props.ProductID);
+        store.addNotification(Notification('Товар удален из корзины'));
     }).bind(this);
 
 render() {
@@ -62,6 +65,8 @@ render() {
                                             price
                                             vendor
                                             avaliable
+                                            discount_price
+                                            amount
                                               }
                                             }`}
                            variables={{"id": this.props.ProductID}}>
@@ -70,18 +75,33 @@ render() {
                             if (error) {
                                 return <p>Error :(</p>;
                             }
-
+                            if (data.product.amount < this.props.Count) {
+                                this.props.store.cart.setCount(this.props.ProductID, data.product.amount);
+                            }
+                            if (!data.product.avaliable && this.props.store.cart.getElemFromCart(this.props.ProductID).count > 0){
+                                this.props.store.cart.setCount(this.props.ProductID, 0);
+                            }
+                            if (data.product.discount_price > 0 && data.product.discount_price < this.props.Price) {
+                                this.props.store.cart.setPrice(this.props.ProductID, data.product.discount_price);
+                            }
                             return (
                                 <DescriptionBlock>
                                     <Name
                                         to={'/product/' + this.props.ProductID}
                                     >{data.product.name_ru}</Name>
                                     <Vendor>{data.product.vendor}</Vendor>
-                                    {data.product.avaliable?
-                                        <Price>{data.product.price}грн * {this.state.countOfProducts}</Price>:
+                                    {data.product.avaliable && data.product.amount > 0?
+                                        data.product.discount_price > 0?
+                                            <div>
+                                                <OldPrice>{data.product.price}</OldPrice>
+                                                <Price>{data.product.discount_price} грн.</Price>
+                                            </div>:
+                                            <Price>{data.product.price} грн.</Price>:
                                         <Price>Нет в наличии</Price>}
-                                    {data.product.avaliable?
-                                        <Counter setVal={this.setCountHandler} defaultValue={this.props.Count}/>:''}
+                                    {data.product.avaliable && data.product.amount > 0?
+                                        <Counter setVal={this.setCountHandler}
+                                                 defaultValue={data.product.amount > this.props.Count?this.props.Count:data.product.amount}
+                                                 max={data.product.amount}/>:''}
                                 </DescriptionBlock>
                             )
                         }}
@@ -93,6 +113,7 @@ render() {
                         size={'lg'}
                     />
                 </CloseButton>
+                <ReactNotification/>
             </Container>
         </ThemeProvider>
         )
@@ -136,10 +157,18 @@ const Vendor = styled.span`
 
 `;
 const Price = styled.span`
+    display: inline-block;
     font-size: 24px;
     color: #4A4A4A;
     font-weight: bold;
     margin-bottom: 10px;
+    margin-right: 10px;
+`;
+
+const OldPrice = styled(Price)`
+    text-decoration: line-through;
+    color: #661412;
+    font-size: 20px;
 `;
 
 const DescriptionBlock = styled.div`

@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faKey, faUser, faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import {Login} from "../../api/Authenticate";
-import {setCookie} from "../../controllers/Cookies";
+import {setAuthData} from "../../controllers/Cookies";
 import {inject} from "mobx-react";
 import User from "../../entities/User";
 import ForgotPassword from "./ForgotPassword";
@@ -32,7 +32,7 @@ export default class SignIn extends React.Component {
             this.loginInfo.password
         ).then(data => {
             if (data && true) {
-                setCookie('jwt',data.jwt,{expires: 864000});
+                setAuthData('jwt',data.jwt,{expires: 864000});
                 this.props.store.userStore.setUser(new User(data.user));
                 this.setState({
                     messageVisible: false
@@ -60,9 +60,14 @@ export default class SignIn extends React.Component {
         });
     };
 
+    closeForgotPassword = () => {
+        this.setState({isForgotPassword: false})
+        this.props.closeLogin();
+    }
+
     render() {
         if (this.state.isForgotPassword) return <ForgotPassword open={this.props.open}
-                                                                closeLogin={this.props.closeLogin}/>
+                                                                closeLogin={this.closeForgotPassword}/>
         return(
             <React.Fragment>
 
@@ -167,6 +172,7 @@ const Input = styled.input`
   z-index: 1;
   font-size: 12pt;
   color: black;
+  outline: none;
 `;
 
 const Field = styled.div`
@@ -198,6 +204,7 @@ const Button = styled.button`
   border-radius: 10px;
   font-size: 16pt;
   cursor: pointer;
+  outline: none;
   &:hover {
       background: ${props => props.theme.primary_light};
   }

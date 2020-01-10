@@ -13,6 +13,9 @@ import marked from 'marked'
 import viber from "../../resources/image/SocialIcons/viber.png";
 import whatsap from "../../resources/image/SocialIcons/whatsap.png";
 import telegram from "../../resources/image/SocialIcons/telegram.png";
+import ReactNotification, {store} from "react-notifications-component";
+import Notification from "../public/Notification";
+import ReactGA from "react-ga";
 
 export default class Contacts extends React.Component {
 
@@ -50,11 +53,19 @@ export default class Contacts extends React.Component {
                 email: this.info.email,
                 name: this.info.name
             }
-            sendFeedback(data).then(response => setTimeout(() => this.setState({sending: response?'success':'error'}),1500));
+            sendFeedback(data).then(response =>
+                setTimeout(() => {
+                    this.setState({sending: response?'success':'error'})
+                    store.addNotification(Notification('Спасибо за ваше сообщение. Мы обязательно вам ответим!'));
+                },1500));
 
         }
     }
 
+    componentWillMount() {
+        ReactGA.pageview(location.pathname);
+        window.scrollTo(0,0);
+    }
     
 
     render() {
@@ -73,12 +84,21 @@ export default class Contacts extends React.Component {
                                     telegram
                                     whats_app
                                     viber
+                                    meta_title
+                                    meta_keywords
+                                    meta_decription
                                   }
                                 }`}>
                     {({loading,error,data}) => {
                         if (loading) return <p/>
                         if (error) return <p></p>
                         return (
+                            <>
+                                <MetaTags>
+                                    <meta name='title' content={data.contacts[0].meta_title}/>
+                                    <meta name='keywords' content={data.contacts[0].meta_keywords}/>
+                                    <meta name='decription' content={data.contacts[0].meta_decription}/>
+                                </MetaTags>
                             <MarkdownContainer id={'container'}>
                                 <div dangerouslySetInnerHTML={{__html: marked(data.contacts[0].contacts_block).replace('!social_links', `<div
                                     class="links-container">
@@ -86,7 +106,8 @@ export default class Contacts extends React.Component {
                                     <a href="${data.contacts[0].whats_app}"><img src="src//resources/image/SocialIcons/whatsap.png"/></a>
                                     <a href="${data.contacts[0].telegram}"><img src="src/resources/image/SocialIcons/telegram.png"/></a>
                                 </div>`)}}/>
-                            </MarkdownContainer>)
+                            </MarkdownContainer>
+                            </>)
                     }}
                 </Query>
                 <Form onSubmit={() => {}}>
@@ -126,6 +147,7 @@ export default class Contacts extends React.Component {
                     </StyledProgressButton>
                 </Form>
 
+                <ReactNotification/>
             </Container>
             <Footer/>
         </React.Fragment>
@@ -221,9 +243,12 @@ const Input = styled.input`
     box-shadow: 0 0 1px 1px #949494, 0 0 1px 1px #949494 inset;
     border: none;
     font-size: 12pt;
-    
+    outline: none;
     &:focus {
         box-shadow: 0 0 1px 1px ${theme.primary}, 0 0 1px 1px ${theme.primary} inset;
+    }
+    &::placeholder {
+        font-family: "Gotham Pro";
     }
 `;
 
@@ -239,27 +264,12 @@ const Textarea = styled.textarea`
     resize: none;
     font-size: 12pt;
     font-family: "Gotham Pro" !important;
+    outline: none;
     &:focus {
         box-shadow: 0 0 1px 1px ${theme.primary}, 0 0 1px 1px ${theme.primary} inset;
     }
 `;
 
-const Button = styled.button`
-    height: 35px;
-    width: 250px;
-    margin: 10px auto;
-    background: ${theme.primary};
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-    font-size: 12pt;
-    cursor: pointer;
-    
-    &:hover {
-        background: ${theme.primary_light};
-    }  
-`;
 
 const StyledProgressButton = styled(ProgressButton)`
     margin-top: 15px;

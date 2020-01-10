@@ -48,6 +48,9 @@ export default class FilterComponentContainer extends Component {
                     query($id: ID!){
                       category(id: $id){
                         name_ru
+                        meta_title
+                        meta_keywords
+                        meta_decription
                       }
                     }`}
                         variables={{'id': location.pathname.split('/').pop()}}
@@ -56,6 +59,9 @@ export default class FilterComponentContainer extends Component {
                             if (loading) return ''
                             return <MetaTags>
                                 <title>Категория: {data.category.name_ru}</title>
+                                <meta name='title' content={data.category.meta_title}/>
+                                <meta name='keywords' content={data.category.meta_keywords}/>
+                                <meta name='decription' content={data.category.meta_decription}/>
                             </MetaTags>
                         }
                         }

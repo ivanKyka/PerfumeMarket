@@ -1,5 +1,5 @@
 import {UrlStore} from "../stores/UrlStore";
-import {getCookie} from "../controllers/Cookies";
+import {getAuthData} from "../controllers/Cookies";
 import User from "../entities/User";
 
 export async function me() {
@@ -7,7 +7,7 @@ export async function me() {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${getCookie('jwt')}`
+                "Authorization": `Bearer ${getAuthData('jwt')}`
             }
         });
     if (response.status >= 200 && response.status <= 400) {
@@ -22,9 +22,9 @@ export async function changeUserData(data) {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${getCookie('jwt')}`
+            "Authorization": `Bearer ${getAuthData('jwt')}`
         },
         body: JSON.stringify(data)
     });
-    return response.status === 200;
+    return response.status >= 200 && response.status < 400;
 }

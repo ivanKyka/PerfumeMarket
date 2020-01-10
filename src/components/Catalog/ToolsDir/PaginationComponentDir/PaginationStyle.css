@@ -15,7 +15,7 @@
 }
 
 .page > a, .break > a {
-    color: #3f3f3f;
+    color: #e36f64;
 }
 
 .page:hover, .break:hover {
@@ -43,5 +43,5 @@
 }
 
 .selected > a {
-    color: #3f3f3f !important;
+    color: #ffffff !important;
 }

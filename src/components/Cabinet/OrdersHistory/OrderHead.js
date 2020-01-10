@@ -6,11 +6,16 @@ export default class OrderHead extends React.Component {
 
     getStatusString = status => {
         switch (status) {
-            case 'success': return 'Успешно доставлено'
+            case 'success': return 'Оплачено'
             case 'error': return 'Ошибка'
+            case 'failure': return 'Ошибка'
+            case 'revoke': return 'Отменен'
+            case 'in_post': return 'На почте'
             case 'processing': return 'Обрабатывается'
+            case 'ordered': return 'Доставлено'
         }
     }
+
 
     render() {
         return(
@@ -20,6 +25,8 @@ export default class OrderHead extends React.Component {
                 <p>Статус доставки: {this.getStatusString(this.props.order.status)}</p>
                 <p>Товаров: {this.props.order.orders.length}</p>
                 <Price>Сумма: {this.props.order.orders.reduce((acc, elem) => {
+                    if (elem.discount_price && elem.discount_price > 0)
+                    return acc + elem.count * elem.product.discount_price
                     return acc + elem.count * elem.product.price
                 }, 0)} грн.</Price>
             </Container>

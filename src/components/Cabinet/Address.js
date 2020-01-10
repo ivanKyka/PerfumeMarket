@@ -7,44 +7,44 @@ import {me} from "../../api/Users";
 import {changeUserData} from "../../api/Users";
 import Preloader from "../public/Preloader";
 import MetaTags from "react-meta-tags";
-import {Link} from "react-router-dom";
+import ReactNotification, {store} from "react-notifications-component";
+import Notification from "../public/Notification";
+import ReactGA from "react-ga";
 
 const reactSelectStyles = {
-        container: styles => ({...styles, height: '38px', display: 'block'}),
-        control: (styles, state) => (
-            {...styles,
-                boxShadow: state.isFocused?`${theme.primary_light} 0 0 2px 2px`:'none',
-                border: state.isFocused?`1px solid ${theme.primary} !important`:'1px solid black',
-                height: state.isFocused?'36px':'38px',
-                borderRadius: '10px',
-                cursor: 'text',
-                '&:hover':{
-                    border: `1px solid black`,
-                }
-            }),
-        dropdownIndicator: styles => ({...styles, color: 'black',cursor: 'pointer', '&:hover':{color: 'black'}}),
-        indicatorSeparator: styles => ({...styles, backgroundColor: 'black', '&:hover':{backgroundColor: 'black'}}),
-        input: styles => ({...styles, fontSize: '14pt', color: 'black', cursor: 'text'}),
-        singleValue: styles  => ({...styles, color: 'black',fontSize: '12pt'}),
-        clearIndicator: styles  => ({...styles, cursor: 'pointer'})
+    container: styles => ({...styles, height: '38px', display: 'block'}),
+    control: (styles, state) => (
+        {...styles,
+            boxShadow: state.isFocused?`${theme.primary_light} 0 0 2px 2px`:'none',
+            border: state.isFocused?`1px solid ${theme.primary} !important`:'1px solid black',
+            height: state.isFocused?'36px':'38px',
+            borderRadius: '10px',
+            cursor: 'text',
+            '&:hover':{
+                border: `1px solid black`,
+            }
+        }),
+    dropdownIndicator: styles => ({...styles, color: 'black',cursor: 'pointer', '&:hover':{color: 'black'}}),
+    indicatorSeparator: styles => ({...styles, backgroundColor: 'black', '&:hover':{backgroundColor: 'black'}}),
+    input: styles => ({...styles, fontSize: '14pt', color: 'black', cursor: 'text'}),
+    singleValue: styles  => ({...styles, color: 'black',fontSize: '12pt'}),
+    clearIndicator: styles  => ({...styles, cursor: 'pointer'})
 };
 
 
 
 export default class Address extends React.Component {
 
-
     setPostOffice = (option => {
         this.setState({
             cityName: option.label,
-            cityCode: option.value.code,
-            cityDescription: option.value.desc
+            cityCode: option.value,
         })
         if (option !== null)
-        getPostOffices(option.value.code).then(data => {return data.map(elem => {
+        getPostOffices(option.value).then(data => {return data.map(elem => {
             return {
                 value: elem.Ref,
-                label: elem.Description
+                label: elem.DescriptionRu
             }
         })}).then(options => this.setState({
             postOffices: options,
@@ -58,16 +58,20 @@ export default class Address extends React.Component {
             postOfficeCode: ''
         })
     }).bind(this);
+
     setCities = (name => {
         if (name.length >= 3)
             getCitiesByName(name).then(data => {return data.map(elem => {
                 return {
-                    value: {code: elem.DeliveryCity, desc: elem.MainDescription},
-                    label: elem.Present
+                    value: elem.Ref,
+                    label: elem.SettlementTypeDescriptionRu + ' ' + elem.DescriptionRu
                 }
-            })}).then(options => this.setState({
-                cities: options
-            }));
+            })}).then(options => {
+                console.log(options);
+                this.setState({
+                    cities: options
+                })
+            });
     }).bind(this);
 
     constructor(props){
@@ -88,6 +92,7 @@ export default class Address extends React.Component {
     }
 
     componentWillMount() {
+        ReactGA.pageview(location.pathname);
         me().then(data => {
             if (data !== false) {
                 this.setState({
@@ -115,7 +120,10 @@ export default class Address extends React.Component {
         data.postOfficeName = this.state.postOfficeName;
         data.postOfficeCode = this.state.postOfficeCode;
         data.cityDescription = this.state.cityDescription;
-        changeUserData({adress: data});
+        changeUserData({adress: data}).then(resp =>{
+            if (resp) store.addNotification(Notification('Сохранено'));
+        });
+
     }
 
     setName = e => {
@@ -194,7 +202,7 @@ render() {
                     />
                 </Label>
                 <Label>
-                    <span>Отделение</span>
+                    <span>Отделение Новой Пошты</span>
                     <ReactSelect
                         noOptionsMessage={() => 'Выберите отделение'}
                         placeholder={''}
@@ -211,6 +219,7 @@ render() {
                 <Button onClick={this.saveData}>Сохранить</Button>
             </div>
         </Form>
+        <ReactNotification/>
         </React.Fragment>
     )
     }
@@ -234,6 +243,7 @@ const Input = styled.input`
     padding-left: 10px;
     font-size: 14pt;
     color: #000;
+    outline: none;
     &:focus{
       border: 1px solid ${props => props.theme.primary_light};
       box-shadow: ${props => props.theme.primary_light} 0 0 2px 2px;
@@ -260,6 +270,7 @@ const Button = styled.button`
     margin-top: 34px;
     margin-left: calc(50% - 100px);
     cursor: pointer; 
+    outline: none;
     &:hover{
       background: ${props => props.theme.primary_light};
     }

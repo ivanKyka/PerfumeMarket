@@ -24,7 +24,6 @@ export default class PhotoGalerry extends React.Component {
             currentImage: e.target.src,
             currentIndex: e.target.id
         });
-        console.log(this.state.currentIndex);
     };
 
 

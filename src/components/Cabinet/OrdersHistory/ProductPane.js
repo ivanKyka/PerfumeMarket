@@ -30,7 +30,9 @@ render() {
                                     <Name>{data.product.name_ru}</Name>
                                 </PhotoNameBlock>
                                 <Count>{this.props.order.count} шт.</Count>
-                                <Price>{this.props.order.count * data.product.price} грн.</Price>
+                                <Price>{this.props.order.count *
+                                this.props.order.product.discount_price && this.props.order.product.discount_price > 0 ?
+                                    this.props.order.product.discount_price : this.props.order.product.price} грн.</Price>
                             </React.Fragment>
                 }}
             </Query>

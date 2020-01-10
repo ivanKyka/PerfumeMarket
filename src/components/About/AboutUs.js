@@ -7,8 +7,14 @@ import Query from "react-apollo/Query";
 import gql from "graphql-tag";
 import {UrlStore} from "../../stores/UrlStore";
 import MetaTags from 'react-meta-tags';
+import ReactGA from "react-ga";
 
 export default class AboutUs  extends React.Component{
+
+    componentWillMount() {
+        window.scrollTo(0,0);
+        ReactGA.pageview(location.pathname);
+    }
 
     render(){
         return (
@@ -28,6 +34,9 @@ export default class AboutUs  extends React.Component{
                                 first_block
                                 second_block
                                 third_block
+                                meta_title
+                                meta_keywords
+                                meta_decription
                                 brands {
                                   url
                                 }
@@ -41,6 +50,11 @@ export default class AboutUs  extends React.Component{
 
                             return (
                                 <React.Fragment>
+                                    <MetaTags>
+                                        <meta name='title' content={data.aboutuses[0].meta_title}/>
+                                        <meta name='keywords' content={data.aboutuses[0].meta_keywords}/>
+                                        <meta name='decription' content={data.aboutuses[0].meta_decription}/>
+                                    </MetaTags>
                                     <Articles>
                                         <div>
                                             <ReactMarkdown source={data.aboutuses[0].first_block||''}/>

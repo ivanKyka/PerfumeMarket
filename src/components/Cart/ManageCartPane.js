@@ -20,7 +20,7 @@ export default class ManageCartPane extends React.Component {
                         </tr>
                         <tr>
                             <td>Доставка</td>
-                            <td>Бесплатно</td>
+                            <td>Новая Почта</td>
                         </tr>
 
                         <tr>
@@ -80,6 +80,7 @@ const Button = styled.button`
     font-size: 35px;
     color: ${props => props.theme.primary};
     cursor: pointer;
+    outline: none;
     &:hover {
       text-decoration: underline;
       color: ${props => props.theme.primary_light};

@@ -138,21 +138,22 @@ export default class ContentQuery extends React.Component {
                     return (
                         <Fragment>
                             {(data.products || []).map((content, index) => {
+                                let options = {
+                                    image: `${content.photos[0] ? this.urlStore.MAIN_URL + content.photos[0].url : ""}`,
+                                    rating: content.rating,
+                                    reviews: content.comments.length,
+                                    name: content.name_ru,
+                                    id: content._id,
+                                    vendor: content.vendor,
+                                    price: content.price,
+                                    avaliable: content.avaliable,
+                                    gift_status: content.gift_status,
+                                    discount_price: content.discount_price
+                                }
                                 return (
                                     <ContentBlock
                                         key={index}
-                                        options={
-                                            {
-                                                image: `${content.photos[0] ? this.urlStore.MAIN_URL + content.photos[0].url : ""}`,
-                                                rating: content.rating,
-                                                reviews: content.comments.length,
-                                                name: content.name_ru,
-                                                id: content._id,
-                                                vendor: content.vendor,
-                                                price: content.price,
-                                                avaliable: content.avaliable
-                                            }
-                                        }
+                                        options={options}
                                         openCheckout={this.openCheckout}
                                     />
                                 )

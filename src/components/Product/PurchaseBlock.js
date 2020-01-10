@@ -16,6 +16,8 @@ import {AddToWishList} from "../../api/WishList";
 import {FacebookShareButton, TwitterShareButton} from "react-share";
 import {UrlStore} from "../../stores/UrlStore";
 import Checkout from "../Checkout/Checkout";
+import ReactNotification, {store} from "react-notifications-component";
+import Notification from "../public/Notification";
 
 @inject('store')
 export default class PurchaseBlock extends React.Component {
@@ -24,8 +26,10 @@ export default class PurchaseBlock extends React.Component {
         this.props.store.cart.addToCart({
             id: this.props.ProductID,
             price: this.price,
+            discount_price: this.discount_price,
             avaliable: this.avaliable
         }, this.state.countOfProducts - 0);
+        store.addNotification(Notification('Товар добавлен в корзину'));
     })
 
     constructor(props) {
@@ -49,7 +53,8 @@ export default class PurchaseBlock extends React.Component {
         return [{product: {
             id: this.props.ProductID,
             avaliable: this.avaliable,
-            price: this.price - 0
+            price: this.price - 0,
+            discount_price: this.discount_price - 0,
             }, count: this.state.countOfProducts}]
     }
 
@@ -78,6 +83,7 @@ export default class PurchaseBlock extends React.Component {
                         gql`query MyProductCategory($id: ID!){
                           product(id: $id){
                             price
+                            discount_price
                           }
                         }`
                     }
@@ -87,11 +93,16 @@ export default class PurchaseBlock extends React.Component {
                             if (error) {
                                 return <p>Error :(</p>;
                             }
-                            this.price = data.product.price;
-
-                            return (
-                                <Price>Цена: {data.product.price} грн.</Price>
-                            );
+                            this.price = data.product.discount_price > 0 ? data.product.discount_price: data.product.price;
+                            this.discount_price = data.product.discount_price;
+                            if (data.product.discount_price > 0){
+                                return (
+                                <div>
+                                    <OldPrice>Цена: {data.product.price} грн.</OldPrice>
+                                    <Price>Новая цена: {data.product.discount_price} грн.</Price>
+                                </div>)
+                            }
+                            return <Price>Цена: {data.product.price} грн.</Price>
                         }}
                     </Query>
                     <Query query={
@@ -115,7 +126,7 @@ export default class PurchaseBlock extends React.Component {
 
                             return (
                                 <StarRatings
-                                    rating={data.commentsConnection.aggregate.avg.rate || 0}
+                                    rating={data.commentsConnection.aggregate.avg.rate || 4}
                                     starRatedColor={"black"}
                                     starEmptyColor={'gray'}
                                     numberOfStars={5}
@@ -130,6 +141,7 @@ export default class PurchaseBlock extends React.Component {
                         gql`query MyProductCategory($id: ID!){
                           product(id: $id){
                             avaliable
+                            amount
                           }
                         }`
                     }
@@ -143,13 +155,14 @@ export default class PurchaseBlock extends React.Component {
                             return (
                                 <React.Fragment>
                                     <AddToCartBlock>
-                                        <Counter
+                                        {data.product.avaliable?<Counter
+                                            max={data.product.amount}
                                             setVal={this.setCountOfProducts}
-                                        />
+                                        />:<span/>}
                                         {data.product.avaliable?<AddToCartButton
                                             onClick={this.addToCart}>
                                             <span>В корзину</span>
-                                            <object data={CartImage} type="image/svg+xml"/>
+                                            <img src={CartImage}/>
                                         </AddToCartButton>:''}
                                     </AddToCartBlock>
                                     <BuyButton
@@ -158,7 +171,7 @@ export default class PurchaseBlock extends React.Component {
                                     >
                                         {data.product.avaliable ? <React.Fragment>
                                                 <span>КУПИТЬ</span>
-                                                <object data={CardImage} type="image/svg+xml"/>
+                                                <img src={CardImage}/>
                                             </React.Fragment> :
                                             <span>Нет в наличии</span>}
                                     </BuyButton>
@@ -173,12 +186,14 @@ export default class PurchaseBlock extends React.Component {
                             onClick={e => {
                                 e.preventDefault();
                                 AddToWishList(this.props.ProductID);
+                                store.addNotification(Notification('Товар добавлен в избранное'));
                             }}
                         />
                         <TwitterShare url={UrlStore.MAIN_URL + location.pathname}/>
                         <FacebookShare url={UrlStore.MAIN_URL + location.pathname}/>
                     </SocialLinks>
                     <Checkout open={this.state.checkoutOpen} closeCheckout={this.closeCheckout} getCart={this.getProduct}/>
+                    <ReactNotification/>
                 </Container>
             </ThemeProvider>
         )
@@ -188,15 +203,17 @@ export default class PurchaseBlock extends React.Component {
 const Container = styled.div`
     display: grid;
     width: calc(100% - 60px);
-    grid-template-rows: minmax(min-content, min-content) 80px 50px 60px 100px 30px 16px 55px;
+    grid-template-rows: minmax(min-content, min-content) 80px 50px 60px 100px 30px 55px 1px;
     padding: 0 30px;
 `;
 
 const Price = styled.span`
-    font-size: 25px;
+    display: block;
+    font-size: 19px;
     font-weight: bold;
     justify-self: left;
     align-self: center;
+    margin-top: 10px;
 `;
 
 const AddToCartBlock = styled.div`
@@ -263,6 +280,7 @@ const BuyButton = styled.div`
       text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     }
     svg {
+      display: ${props => props.disabled ? 'block' : 'none'};
       color: #fff;
       align-self: center;
       filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
@@ -333,4 +351,10 @@ const FacebookShare = styled(FacebookShareButton)`
     &:hover{
         box-shadow:  inset 2px 2px 2px rgba(255, 255, 255, 0.75);
     }
+`;
+
+const OldPrice = styled(Price)`
+    color: #666666;
+    text-decoration:line-through;
+    
 `;

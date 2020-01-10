@@ -159,7 +159,7 @@ class CatalogStore {
 
         this.startFrom = 0;
 
-        filtersCopy = {...filtersCopy, ...filters, desc_contains: filters.name_ru_contains, name_rozetka_contains: filters.name_ru_contains};
+        filtersCopy = {...filtersCopy, ...filters, _q: filters._q};
         this.filters = filtersCopy;
 
         this.refetch();

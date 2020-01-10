@@ -48,7 +48,7 @@ const Desc = styled.div`
 const Name = styled(Link)`
     font-size: 14pt;
     color: ${props => props.theme.primary};
-    justify-self: center;
+    justify-self: left;
     cursor: pointer;
     margin-bottom: 5px;
     &:hover {

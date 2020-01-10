@@ -204,6 +204,7 @@ export default class FiltersLeftBar extends Component {
                                     if (loading) return this.renderSkeletonOptions();
                                     if (error) return "";
 
+
                                     let propertiesIndexed = this.aggregationForSimpleMode(data.category);
 
                                     return (

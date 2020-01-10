@@ -1,12 +1,12 @@
 import {UrlStore} from "../stores/UrlStore";
-import {getCookie} from "../controllers/Cookies";
+import {getAuthData} from "../controllers/Cookies";
 import {userStore} from "../components/App";
 
 export async function sendOrder(order) {
     let headers = {
         'Content-Type': 'application/json'
     };
-    if (userStore.isLogged) headers.Authorization = `Bearer ${getCookie('jwt')}`;
+    if (userStore.isLogged) headers.Authorization = `Bearer ${getAuthData('jwt')}`;
         let response = await fetch(UrlStore.MAIN_URL + '/orders', {
             method: 'POST',
             headers: headers,
@@ -21,7 +21,7 @@ export async function sendOrder(order) {
 export async function getOrders() {
     let response = await fetch(UrlStore.MAIN_URL + '/orders', {
         headers: {
-            'Authorization': `Bearer ${getCookie('jwt')}`,
+            'Authorization': `Bearer ${getAuthData('jwt')}`,
         }
     });
     if (response.status >= 200 && response.status < 400)

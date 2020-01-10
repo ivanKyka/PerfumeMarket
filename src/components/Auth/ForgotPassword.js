@@ -7,6 +7,7 @@ import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {inject} from "mobx-react";
 import {forgotPassword} from "../../api/Authenticate";
 import PreloaderSmall from "../public/PreloaderSmall";
+import ReactGA from "react-ga";
 
 @inject('store')
 export default class ForgotPassword extends React.Component {
@@ -22,6 +23,7 @@ export default class ForgotPassword extends React.Component {
     }
 
     componentWillMount() {
+        ReactGA.pageview(location.pathname);
         setTimeout(() => {
             this.setState({
                 isLoad: false
@@ -57,7 +59,7 @@ export default class ForgotPassword extends React.Component {
                         padding: '0',
                         borderRadius: '12px',
                         height: '168px',
-                        width: '300px'
+                        width: '450px'
                     },
                     closeIcon: {
                         fill: 'white',
@@ -79,7 +81,7 @@ export default class ForgotPassword extends React.Component {
                     padding: '0',
                     borderRadius: '12px',
                     height: '168px',
-                    width: '300px'
+                    width: '450px'
                 },
                 closeIcon: {
                     fill: 'white',
@@ -100,7 +102,8 @@ export default class ForgotPassword extends React.Component {
                             modal:{
                                 marginTop: '50px',
                                 padding: '0',
-                                borderRadius: '12px'
+                                borderRadius: '12px',
+                                width: '450px'
                             },
                             closeIcon: {
                                 fill: 'white',
@@ -131,7 +134,7 @@ const LoginForm = styled.form`
     display: grid;
     justify-items: center;
     grid-gap: 15px;
-    width: 300px;
+    width: 450px;
     align-self: center;
     border-radius: 10px;
     background: rgba(239,244,230,0.8);
@@ -156,7 +159,7 @@ const Head = styled.span`
 `;
 
 const Input = styled.input`
-  width: 240px;
+  width: 380px;
   background: rgba(239,244,230,0.8);
   justify-self: center;
   height: 40px;
@@ -167,6 +170,7 @@ const Input = styled.input`
   z-index: 1;
   font-size: 12pt;
   color: black;
+  outline: none;
 `;
 
 const Field = styled.div`
@@ -190,7 +194,7 @@ const Field = styled.div`
 
 const Button = styled.button`
   color: white;
-  width: 80%;
+  width: 60%;
   align-self: center;
   height: 40px;
   background: ${props => props.theme.primary};
@@ -198,6 +202,7 @@ const Button = styled.button`
   border-radius: 10px;
   font-size: 16pt;
   cursor: pointer;
+  outline: none;
   &:hover {
       background: ${props => props.theme.primary_light};
   }

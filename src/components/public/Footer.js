@@ -131,12 +131,13 @@ const Foot2 = styled.div`
 const Menu = styled.ul`
   list-style: none;
   text-align: center;
+  padding: 0;
 `;
 const ListPoint = styled.li`
   display: inline-block;
   color: #ffffff;
   font-size: 1.1vw;
-  padding-left: 10px;
+  margin-right: 10px;
   a{
     text-decoration: none;
     color: white;

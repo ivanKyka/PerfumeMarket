@@ -51,6 +51,8 @@ const Container = styled.div`
     grid-template-columns: 1fr 1fr;
     width: 100%;
     justify-items: center;
+    grid-gap: 20px;
+    margin-bottom: 30px;
 `;
 
 const Title = styled.h2`

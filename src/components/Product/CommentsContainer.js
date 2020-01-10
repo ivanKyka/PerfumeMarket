@@ -35,7 +35,7 @@ render() {
         <ThemeProvider theme={theme}>
             <Container>
                 <div>
-                    <Title>Коментарии</Title>
+                    <Title>Комментарии</Title>
                     {this.props.store.userStore.isLogged?<AddCommentButton onClick={this.createComment}>Добавить комментарий</AddCommentButton>:''}
 
                 </div>
@@ -71,7 +71,7 @@ render() {
                             return (
                                 <React.Fragment>
                                     <NoCommentsBlock>
-                                        <h2>Коментариев пока нет :(</h2>
+                                        <h2>Комментариев пока нет :(</h2>
                                         {userStore.isLogged?<p>Но вы можете <AddCommentSign onClick={this.createComment}>оставить свой</AddCommentSign></p>:''}
                                     </NoCommentsBlock>
                                     <AddComentModalPane closeWindow={this.closeCommentCreation}

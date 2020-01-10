@@ -69,22 +69,42 @@ export default class Description extends React.Component {
                         )
                     }}
                 </Query>
-                <SpecialOffer>
-                    <SpecialOfferLogo>
+
+                <Query
+                    query={gql`query ($id: ID!){
+                        product(id: $id){
+                        gift_status
+                        gift_text
+                        }
+                        }
+                    `}
+                    variables={{"id": this.props.ProductID}}
+                >
+                    {({loading,error,data}) => {
+                        if (loading) return null
+                        if (error) return null
+                        if (data.product.gift_status) return (
+                            <SpecialOffer>
+                                <SpecialOfferLogo>
                         <span>
                         <i>SPECIAL</i>
                         <i>&nbsp;&nbsp;OFFER</i>
                         </span>
-                    </SpecialOfferLogo>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam beatae expedita nostrum quas
-                        unde
-                    </p>
-                </SpecialOffer>
+                                </SpecialOfferLogo>
+                                <p>
+                                    {data.product.gift_text}
+                                </p>
+                            </SpecialOffer>
+                        )
+                        return null;
+                    }}
+                </Query>
+
             </Container>
         )
     }
 }
+
 
 const Table = styled.table`
     padding: 10px;

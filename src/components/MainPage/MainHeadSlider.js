@@ -10,6 +10,27 @@ export default class MainHeadSlider extends React.Component {
 
     urlStore = this.props.store.urlStore;
 
+    constructor(props){
+        super(props);
+
+        this.galerry = React.createRef();
+        this.disableSwipe = this.disableSwipe.bind(this);
+        this.enableSwipe = this.enableSwipe.bind(this);
+    }
+
+    disableSwipe(e){
+        e.stopPropagation();
+        this.galerry.current.pause();
+    }
+
+
+    enableSwipe(e){
+        e.stopPropagation();
+        this.galerry.current.play();
+    }
+
+
+
     render() {
         return (
             <Query query={gql`{
@@ -28,8 +49,7 @@ export default class MainHeadSlider extends React.Component {
                     }
                     const images = data.slidercontents.map((content, index) => {
                         return ({
-                            original: `${this.urlStore.MAIN_URL}${content.image.url}`,
-                            thumbnail: `${this.urlStore.MAIN_URL}${content.image.url}`,
+                            original: `${this.urlStore.MAIN_URL}${content.image[1] ? content.image[1].url : content.image[0].url}`,
                             link: `${content.link}`
                         });
                     });
@@ -40,6 +60,9 @@ export default class MainHeadSlider extends React.Component {
                                           slideInterval={5000}
                                           showPlayButton={false}
                                           showFullscreenButton={false}
+                                          onMouseOver={this.disableSwipe}
+                                          onMouseLeave={this.enableSwipe}
+                                          ref={this.galerry}
                                           renderItem={(item, index) => {
                                               return (
                                                   <div className={'image-gallery-image'}>

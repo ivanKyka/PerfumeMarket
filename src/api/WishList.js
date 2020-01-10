@@ -1,5 +1,5 @@
 import {UrlStore} from "../stores/UrlStore";
-import {getCookie} from "../controllers/Cookies";
+import {getAuthData} from "../controllers/Cookies";
 
 
 
@@ -8,7 +8,7 @@ export async function GetWishList() {
     let response = await fetch(`${UrlStore.MAIN_URL}/users/me`,
         {
             headers: {
-                "Authorization": `Bearer ${getCookie('jwt')}`
+                "Authorization": `Bearer ${getAuthData('jwt')}`
             },
         });
     if (response.status >= 200 && response.status < 300){
@@ -29,7 +29,7 @@ export async function AddToWishList(id) {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${getCookie('jwt')}`
+                    "Authorization": `Bearer ${getAuthData('jwt')}`
 
                 },
                 body: JSON.stringify({
@@ -56,7 +56,7 @@ export async function RemoveFromWishList(id) {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${getCookie('jwt')}`
+                "Authorization": `Bearer ${getAuthData('jwt')}`
 
             },
             body: JSON.stringify({
@@ -82,7 +82,7 @@ export async function ClearWishList() {
         {
             method: 'POST',
             headers: {
-                "Authorization": `Bearer ${getCookie('jwt')}`
+                "Authorization": `Bearer ${getAuthData('jwt')}`
             },
             body: `[]`
         });

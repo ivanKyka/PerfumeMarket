@@ -50,6 +50,8 @@ const Container = styled.div`
     width: 100%;
     justify-content: center;
     margin: 30px 0;
+    grid-gap: 20px;
+    margin-bottom: 30px;
     @media(min-width: 1000px) {
       grid-template-columns: repeat(3, 300px);
     }

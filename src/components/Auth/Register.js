@@ -15,8 +15,13 @@ import {Register as Reg} from "../../api/Authenticate";
 import {UrlStore} from "../../stores/UrlStore";
 import {Link} from "react-router-dom";
 import MetaTags from "react-meta-tags";
+import ReactGA from "react-ga";
 
 export default class Register  extends React.Component{
+
+    componentWillMount() {
+        ReactGA.pageview(location.pathname);
+    }
 
     sendRegInfo = (e => {
         e.preventDefault();
@@ -150,12 +155,13 @@ render() {
                                         <p>Пароль</p>
                                         <InputBlock>
                                             <FontAwesomeIcon icon={faKey} size={'1x'}/>
-                                            <Input pattern="((?=.*\d)(?=.*[a-zа-яё])(?=.*[A-ZA-ЯЁ]).{6,})"
+                                            <Input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$"
                                                    type="password"
                                                    placeholder="Введите пароль"
                                                    id="password" required
                                                    onChange={this.passEnterHandler}
                                                    ref={this.passwordRef}
+                                                   title={'Пароль должен содержать большые и маленькие буквы и цифры. Не менее восьми символов'}
                                             />
                                         </InputBlock>
                                     </div>
@@ -164,7 +170,7 @@ render() {
                                         <p>Повторите пароль</p>
                                         <InputBlock>
                                             <FontAwesomeIcon icon={faKey} size={'1x'}/>
-                                            <Password pattern="((?=.*\d)(?=.*[a-zа-яё])(?=.*[A-ZA-ЯЁ]).{6,})"
+                                            <Password pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$"
                                                       type="password"
                                                       placeholder="Повторно введите пароль"
                                                       id="confirm_password" required
@@ -197,7 +203,7 @@ render() {
                                             onChange={e => {this.setState({isAgree: e.target.checked})}}
                                         />
                                         <label htmlFor="agree"> </label>
-                                        <p>Я соглашаюсь c <Link to={'/license'}>условиями использования</Link> данного сайта и политикой обработки <Link to={'/user_agreement'}>персональньх данньх</Link></p>
+                                        <p>Я соглашаюсь c <Link to={'/license'}>условиями использования</Link> данного сайта и политикой обработки <Link to={'/user_agreement'}>персональных данньх</Link></p>
                                     </Agree>
                                     <BoxBut>
                                         <But
@@ -340,6 +346,7 @@ const But = styled.button`
     cursor: pointer;
     color: white;
     font-size: 16pt;
+    outline: none;
     &[disabled]{
         background: #4d4d4d;
     }

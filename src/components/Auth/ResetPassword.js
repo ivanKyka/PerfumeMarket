@@ -9,9 +9,11 @@ import {Link} from "react-router-dom";
 import Header from "../public/Header";
 import Footer from "../public/Footer";
 import MetaTags from 'react-meta-tags';
+import ReactGA from "react-ga";
 
 
 export default class ResetPassword extends React.Component {
+
 
     constructor(props){
         super(props);
@@ -135,7 +137,7 @@ const LoginForm = styled.form`
     display: grid;
     justify-items: center;
     grid-gap: 15px;
-    width: 300px;
+    width: 450px;
     align-self: center;
     border-radius: 10px;
     background: rgba(239,244,230,0.8);
@@ -161,7 +163,7 @@ const Head = styled.span`
 `;
 
 const Input = styled.input`
-  width: 240px;
+  width: 380px;
   background: rgba(239,244,230,0.8);
   justify-self: center;
   height: 40px;
@@ -172,6 +174,7 @@ const Input = styled.input`
   z-index: 1;
   font-size: 12pt;
   color: black;
+  outline: none;
 `;
 
 const Field = styled.div`
@@ -195,7 +198,7 @@ const Field = styled.div`
 
 const Button = styled.button`
   color: white;
-  width: 80%;
+  width: 50%;
   align-self: center;
   height: 40px;
   background: ${theme.primary};
@@ -203,13 +206,14 @@ const Button = styled.button`
   border-radius: 10px;
   font-size: 16pt;
   cursor: pointer;
+  outline: none;
   &:hover {
       background: ${theme.primary_light};
   }
 `;
 
 const Err = styled.span`
-  width: 280px;
+  width: 380px;
   color: red;
   display: ${props => props.visible?'block':'none'};
   justify-self: center;

@@ -7,9 +7,6 @@ import {Link} from "react-router-dom";
 
 export default class SignInButton extends React.Component {
 
-
-
-
     render() {
             if (this.props.authorized)
                 return (
@@ -71,7 +68,7 @@ const Button = styled.button`
 
 const Name = styled.div`
     justify-self: right;
-
+    padding-left: 10px;
    a{
         display: grid;
         grid-template-columns: 20px 1fr;

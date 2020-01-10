@@ -9,8 +9,14 @@ import RecomendedBlock from "./RecomendedBlock";
 import {UrlStore} from "../../stores/UrlStore";
 import MetaTags from 'react-meta-tags';
 import Recomendations from "../public/Recomendations";
+import ReactGA from "react-ga";
 
 export default class BlogPage extends React.Component {
+
+    componentWillUpdate() {
+        ReactGA.pageview(location.pathname);
+        window.scrollTo(0,0);
+    }
 
 render() {
     return(
@@ -25,6 +31,9 @@ render() {
                             newsBody
                             link
                             short_desc
+                            meta_title
+                            meta_keywords
+                            meta_decription
                             header_photo {
                                   url
                                 }
@@ -41,6 +50,9 @@ render() {
                         <React.Fragment>
                             <MetaTags>
                                 <title>{data.blog.title}</title>
+                                <meta name='title' content={data.blog.meta_title}/>
+                                <meta name='keywords' content={data.blog.meta_keywords}/>
+                                <meta name='decription' content={data.blog.meta_decription}/>
                             </MetaTags>
                             <Content>
                                 <h1>{data.blog.title}</h1>

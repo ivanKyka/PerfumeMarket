@@ -9,6 +9,7 @@ import {Link} from "react-router-dom";
 import ManageCartPane from "./ManageCartPane";
 import Checkout from '../Checkout/Checkout'
 import MetaTags from "react-meta-tags";
+import ReactGA from "react-ga";
 
 @inject("store")
 @observer
@@ -22,6 +23,11 @@ export default class Cart extends React.Component {
 
         this.closeCheckout = this.closeCheckout.bind(this);
         this.openCheckout = this.openCheckout.bind(this);
+    }
+
+    componentWillMount() {
+        ReactGA.pageview(location.pathname);
+        window.scrollTo(0,0);
     }
 
     openCheckout = e => {
@@ -52,6 +58,7 @@ export default class Cart extends React.Component {
                                         ProductID={el.product.id}
                                         Count={el.count}
                                         key={el.product.id}
+                                        Price={el.product.price}
                                     />
                                 })
                             }

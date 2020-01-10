@@ -12,7 +12,8 @@ import {Redirect} from "react-router";
 import {inject} from "mobx-react";
 import {Logout} from "../../api/Authenticate";
 import {Link} from "react-router-dom";
-import MetaTags from "react-meta-tags";
+import Preloader from "../public/Preloader";
+import ReactGA from "react-ga";
 
 @inject('store')
 export default class Cabinet extends React.Component {
@@ -22,23 +23,28 @@ export default class Cabinet extends React.Component {
         super(props);
         this.state = {
             currentPage: props.match.params.page,
-            authorized: true
+            authorized: true,
+            ready: false
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
+        ReactGA.pageview(location.pathname);
+        window.scrollTo(0,0);
         me().then(data => {
             if(!data){
                 this.setState({
-                    authorized: false
+                    authorized: false,
                 })
             } else {
                 this.setState({
-                    authorized: true
+                    authorized: true,
+                    ready: true
                 })
             }
         });
     }
+
 
     setPage = ((e,page) => {
         e.preventDefault();
@@ -60,6 +66,7 @@ render() {
     if (!this.state.authorized){
         return <Redirect to={'/'}/>
     }
+    if (!this.state.ready) return <Preloader/>
     return(
         <ThemeProvider  theme={theme}>
         <React.Fragment>
@@ -79,7 +86,7 @@ render() {
                 <Li active={this.state.currentPage === 'wishList'}
                     onClick={e => {this.setPage(e,'wishList')}}
                 >
-                    <Link to={'/cabinet/wishList'}>Пожелания</Link>
+                    <Link to={'/cabinet/favorite'}>Избранное</Link>
                 </Li>
                 <Li active={this.state.currentPage === 'purchase'}
                     onClick={e => {this.setPage(e,'purchase')}}
@@ -110,7 +117,6 @@ render() {
 const Container = styled.div`
     display: block;
     min-height: calc(100vh - 300px) !important;
-    overflow: hidden;
     @media(min-width: 1100px){
         padding: 20px 50px;
     }
@@ -147,8 +153,9 @@ const Li = styled.li`
     
     a {
         color: inherit;
-        &:hover {
-            text-decoration: underline;
-        }
+    }
+    a:hover {
+        text-decoration: underline;
+        color: ${props => props.theme.primary};
     }
 `;

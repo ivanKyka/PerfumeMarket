@@ -25,9 +25,7 @@ export default class HeadCatalog extends React.Component{
     searchHandler = (e => {
         e.preventDefault();
         if (this.searchExpr !== '')
-        this.setState({
-            isSearch: true
-        })
+        location.pathname = '/catalog/&' + this.searchExpr;
     }).bind(this);
 
     componentDidMount() {
@@ -67,8 +65,6 @@ export default class HeadCatalog extends React.Component{
 
 
     render() {
-        if (this.state.isSearch)
-            return <Redirect to={'/catalog/&' + this.searchExpr}/>;
         return(
             <ThemeProvider theme={theme}>
             <Container>
@@ -139,7 +135,7 @@ const SearchInput = styled.input`
   
   &:focus{
   cursor: text;
-  width: 300px;
+  width: 200px;
   z-index: 1;
   border-bottom: 2px solid #222328;
   padding: 0 0 0 15px;

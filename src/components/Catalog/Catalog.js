@@ -4,6 +4,7 @@ import Header from "../public/Header";
 import FilterComponentContainer from "./FilterComponentContainer";
 import styled from 'styled-components'
 import HeadCatalog from "../public/HeadCatalog";
+import ReactGA from "react-ga";
 
 
 export default class Catalog extends React.Component {
@@ -13,6 +14,10 @@ export default class Catalog extends React.Component {
         this.state = {
             searchMode: props.match.params.id.charAt(0) === '&',
         }
+    }
+    componentWillMount() {
+        ReactGA.pageview(location.pathname);
+        window.scrollTo(0,0);
     }
 
     render() {

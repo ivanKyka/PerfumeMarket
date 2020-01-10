@@ -40,10 +40,15 @@ export default class Header extends React.Component{
     }).bind(this);
 
     updateAuthData = (() => {
+        if (this.props.store.userStore.isLogged) this.setState({
+            data: this.props.store.userStore.getUser(),
+            authorized: true,
+        })
         me().then(data => {
             if(!data){
                 this.setState({
-                    ready: true
+                    ready: true,
+                    authorized: false
                 })
             } else {
                 this.props.store.userStore.setUser(new User(data));
@@ -55,11 +60,13 @@ export default class Header extends React.Component{
             }
         })
     }).bind(this);
+
     closeLogin = (() => {
         this.setState({
             loginOpen: false
         })
     }).bind(this);
+
     openLogin = (e => {
         e.preventDefault();
         this.setState({
@@ -69,7 +76,7 @@ export default class Header extends React.Component{
 
     componentWillMount() {
         this.updateAuthData();
-        this.props.store.cart.getCartFromServer();
+        this.props.store.cart.mergeCart();
     }
 
     render() {
@@ -100,7 +107,7 @@ export default class Header extends React.Component{
                         <Cart to={'/cart'}>
                             <FontAwesomeIcon icon={faShoppingCart}/>
                             <span>Корзина</span>
-                            <Counter>{this.props.store.cart.sizeOfCart}</Counter>
+                            <Counter><span>{this.props.store.cart.sizeOfCart}</span></Counter>
                         </Cart>
                         <SignInButton
                             openLogin={this.openLogin}
@@ -122,7 +129,7 @@ export default class Header extends React.Component{
 const Container = styled.div`
   display: grid;
   @media(min-width: 1000px) {
-      grid-template-columns:  1fr 4fr 1fr 150px ;
+      grid-template-columns:  1fr 4fr 1fr 170px ;
       padding: 0 50px;
       grid-template-rows: 60px;
       align-items: center;
@@ -142,12 +149,10 @@ const Container = styled.div`
 
 const Menu = styled.ul`
   list-style: none;
-  margin: 0;
+  margin: 0 !important;
   height: 100%;
-  
+  justify-self: center;
   @media(min-width: 1000px) {
-      padding: 0 10px;
-      margin: 0 auto;
       justify-self: center;
       li {
           display: inline-block;
@@ -155,7 +160,6 @@ const Menu = styled.ul`
       }
   }
   @media(max-width: 999px) {
-      padding: 0;
       li {
           display: block;
           width: 100%;
@@ -215,20 +219,30 @@ const Logo = styled.div`
 `;
 
 const Counter = styled.div`
+  display: grid;
+  justify-items: center;
+  align-items: center;
   justify-self: left;
-  padding: 3px 2px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
-  border-radius: 10px;
+  border-radius: 50%;
   background: #fff;
-  color: ${props => props.theme.colors.bgCol};
-  width: 18px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   margin-top: -2px;
   text-decoration: none;
+  padding: 0;
+  margin-left: 5px;
+  span {
+    display: block;
+    width: 20px;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    color: ${props => props.theme.colors.bgCol};
+    text-align: center;
+    text-decoration: none !important;
+  }
 `;
 
 const Cart = styled(Link)`
@@ -251,13 +265,9 @@ const Cart = styled(Link)`
   align-content: center;
   grid-template-columns: 20px 1fr 15px;
   cursor: pointer;
-  padding: 10px;
+  padding: 10px 15px;
   height: 60px;
   color: white;
-  span {
-    padding: 0 10px;
-    font-size: 14pt;
-  }
   
   a:visited {
     color: white;

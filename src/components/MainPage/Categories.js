@@ -62,7 +62,7 @@ export default class Categories extends React.Component {
                                         }
                                         if (data.category.category_photo === null) return ''
                                         return (
-                                            <Category>
+                                            <Category to={'/catalog/' + id}>
                                                 <Image src={UrlStore.MAIN_URL + data.category.category_photo.url}/>
                                                 <LinkToCategory to={'/catalog/' + id}>{data.category.name_ru}</LinkToCategory>
                                                 <p>{data.category.desc}</p>
@@ -71,6 +71,11 @@ export default class Categories extends React.Component {
                                     }}
                                 </Query>
                             )}
+                            <span/>
+                            <span/>
+                            <span/>
+                            <span/>
+                            <span/>
                         </Container>
                     </React.Fragment>
                 </ThemeProvider>
@@ -79,24 +84,38 @@ export default class Categories extends React.Component {
 }
 
 const Container = styled.div`
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 15px;
-    justify-items: center;
+    display: flex;
+    flex: 25%;
+    justify-content: space-around;
     padding: 20px;
     margin: 10px auto;
+    flex-wrap: wrap;
+    
+    span{
+        height: 1px;
+        width: 250px;
+        margin: 0 20px;
+        display: block;
+    }
 `;
 
-const Category = styled.div`
+const Category = styled(Link)`
     width: 250px;
     display: grid;
     grid-template-rows: 250px 15px min-content;
-    margin-bottom: 20px;
+    margin: 20px;
     border: none;
     border-radius: 5px;
-    box-shadow: 0 0 3px 3px rgba(226,92,75,0.51);
+    box-shadow: 0 0 3px 3px rgba(226,92,75,0.25);
+    cursor: pointer;
     p {
         text-align: center;
+    }
+    &:hover{
+        box-shadow: 0 0 3px 3px rgba(226,92,75,0.5);
+        p{
+            color: ${theme.primary_light};
+        }
     }
 `;
 
@@ -107,15 +126,13 @@ const Image = styled.img`
     justify-self: center;  
 `;
 
-const LinkToCategory = styled(Link)`
-    color: ${props => props.theme.primary};
+const LinkToCategory = styled.p`
+    color: ${props => props.theme.bgCol};
     cursor: pointer;
     text-align: center;
-    
-    &:hover {
-        color: ${props => props.theme.primary_light};
-        text-decoration: underline;
-    }
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
 `;
 
 const Title = styled.h2`

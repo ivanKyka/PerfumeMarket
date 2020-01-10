@@ -1,5 +1,5 @@
 import {UrlStore} from "../stores/UrlStore";
-import {getCookie} from "../controllers/Cookies";
+import {getAuthData} from "../controllers/Cookies";
 
 export async function addComment(text, rating, product) {
         let response = await fetch(`${UrlStore.MAIN_URL}/comments`,
@@ -11,7 +11,7 @@ export async function addComment(text, rating, product) {
                     product: product
                 }),
                 headers: {
-                    "Authorization": `Bearer ${getCookie('jwt')}`,
+                    "Authorization": `Bearer ${getAuthData('jwt')}`,
                     "Content-Type": 'application/json'
                 }
             });
@@ -25,7 +25,7 @@ export async function deleteComment(id){
     let response = await fetch(`${UrlStore.MAIN_URL}/comments/${id}`,{
         method: 'DELETE',
         headers: {
-            "Authorization": `Bearer ${getCookie('jwt')}`
+            "Authorization": `Bearer ${getAuthData('jwt')}`
         }
     });
     return response.status >= 200 && response.status < 400;

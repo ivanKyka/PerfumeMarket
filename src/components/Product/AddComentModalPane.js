@@ -4,6 +4,8 @@ import styled, {ThemeProvider} from 'styled-components'
 import {theme} from "../../stores/StyleStore";
 import StarRatings from 'react-star-ratings';
 import {addComment} from "../../api/Comments";
+import ReactNotification, {store} from "react-notifications-component";
+import Notification from "../public/Notification";
 
 export default class AddComentModalPane extends React.Component {
 
@@ -30,10 +32,13 @@ export default class AddComentModalPane extends React.Component {
                     this.props.refetch();
                 }
             })
+        store.addNotification(Notification('Спасибо за ваш коментарий. Ваше мнение очень ценнно для нас!'));
+
     }
 
 render() {
     return(
+    <React.Fragment>
         <Modal
             open={this.props.open}
             onClose={this.props.closeWindow}
@@ -58,6 +63,8 @@ render() {
                     <Button onClick={this.sendComment}>Добавить коментарий</Button>
                 </Container>
         </Modal>
+        <ReactNotification/>
+    </React.Fragment>
     )
     }
 }

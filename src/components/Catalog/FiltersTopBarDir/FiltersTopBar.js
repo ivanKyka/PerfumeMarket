@@ -87,7 +87,7 @@ export default class FiltersTopBar extends Component {
                         <ButtonsBlock>
                             <ApplyButton onClick={() => {
                                 CatalogStore.setFiltersFromTopBar({
-                                    name_ru_contains: this.state.keyWords === "" ? null : this.state.keyWords,
+                                    _q: this.state.keyWords === "" ? null : this.state.keyWords,
                                     price_lte: this.state.higherPrice === "" ? null : this.state.higherPrice,
                                     price_gte: this.state.lowerPrice === "" ? null : this.state.lowerPrice
                                 })
@@ -111,7 +111,7 @@ const Container = styled.div`
     grid-column-start: 1;
     grid-column-end: 3;
     color: grey;
-    
+    z-index: 21;
     opacity: 0.9;
 `;
 

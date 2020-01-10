@@ -7,10 +7,14 @@ import Categories from '../Product/Categories';
 import {theme} from "../../stores/StyleStore";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faTimes, faCartPlus} from "@fortawesome/free-solid-svg-icons";
 import {inject} from "mobx-react";
 import StarRatings from "react-star-ratings";
 import MetaTags from "react-meta-tags";
+import {me} from "../../api/Users";
+import ReactNotification, {store} from "react-notifications-component";
+import Notification from "../public/Notification";
+import ReactGA from "react-ga";
 
 @inject('store')
 export default class WishList extends React.Component{
@@ -32,6 +36,7 @@ export default class WishList extends React.Component{
     }
     
     componentWillMount() {
+        ReactGA.pageview(location.pathname);
         GetWishList().then(data => {
             this.setState({
                 dataList: data,
@@ -87,7 +92,7 @@ export default class WishList extends React.Component{
                                                         to={'/product/' + el}
                                                     >{data.product.name_ru}</Name>
                                                     <StarRatings
-                                                        rating={data.product.rating}
+                                                        rating={data.product.rating > 0? data.product.rating : 4}
                                                         starRatedColor={"black"}
                                                         starEmptyColor={'gray'}
                                                         numberOfStars={5}
@@ -98,12 +103,27 @@ export default class WishList extends React.Component{
                                                     <Vendor>{data.product.vendor}</Vendor>
                                                     <Price>{data.product.avaliable?data.product.price + ' грн':'Нет в наличии'}</Price>
                                                 </InfoBlock>
-                                                <CloseButton onClick={e =>{
-                                                    e.preventDefault();
-                                                    this.removeFromWishList(el);
-                                                }}>
-                                                    <FontAwesomeIcon icon={faTimes} size={'lg'}/>
-                                                </CloseButton>
+                                                <div>
+                                                    <CloseButton onClick={e =>{
+                                                        e.preventDefault();
+                                                        this.removeFromWishList(el);
+                                                    }}>
+                                                        <FontAwesomeIcon icon={faTimes} size={'lg'}/>
+                                                    </CloseButton>
+                                                    {data.product.avaliable && <CartButton
+                                                        icon={faCartPlus}
+                                                        size={'lg'}
+                                                        onClick={() => {
+                                                            let product = {
+                                                                id: el,
+                                                                price: data.product.price,
+                                                                avaliable: data.product.avaliable
+                                                            }
+                                                            this.props.store.cart.addToCart(product, 1);
+                                                            store.addNotification(Notification('Товар добавлен в корзину'));
+                                                        }}
+                                                    />}
+                                                </div>
                                             </ProductCard>
                                         );
                                     }}
@@ -111,6 +131,7 @@ export default class WishList extends React.Component{
                             )}
                         </Container>}
                 </ThemeProvider>
+                <ReactNotification/>
             </React.Fragment>
         )
         else return ''
@@ -124,7 +145,7 @@ const Container = styled.div`
 
 const ProductCard = styled.div`
     display: grid;
-    grid-template-columns: 200px 1fr 30px;
+    grid-template-columns: 200px 500px 30px;
     padding: 10px;
     height: 200px;
     max-width: 800px;
@@ -204,4 +225,14 @@ const ToMain = styled(Link)`
     &:hover {
       color: ${props => props.theme.primary}
     } 
+`;
+
+const CartButton = styled(FontAwesomeIcon)`
+    color: ${props => props.theme.primary};
+    cursor: pointer;
+    margin-top: 10px;
+    &:hover{
+        color: ${props => props.theme.primary_light};
+    }
+    
 `;

@@ -13,21 +13,21 @@ import Preloader from "../public/Preloader";
 import Order from '../../entities/Order';
 import {sendOrder} from "../../api/Order";
 import {Link} from "react-router-dom";
+import {inject} from "mobx-react";
 
-
+@inject('store')
 export default class Checkout extends React.Component {
 
     setPostOffice = (option => {
         this.setState({
             cityName: option.label,
-            cityCode: option.value.code,
-            cityDescription: option.value.desc
+            cityCode: option.value,
         })
         if (option !== null)
-            getPostOffices(option.value.code).then(data => {return data.map(elem => {
+            getPostOffices(option.value).then(data => {return data.map(elem => {
                 return {
                     value: elem.Ref,
-                    label: elem.Description
+                    label: elem.DescriptionRu
                 }
             })}).then(options => this.setState({
                 postOffices: options,
@@ -41,17 +41,22 @@ export default class Checkout extends React.Component {
             postOfficeCode: ''
         })
     }).bind(this);
+
     setCities = (name => {
         if (name.length >= 3)
             getCitiesByName(name).then(data => {return data.map(elem => {
                 return {
-                    value: {code: elem.DeliveryCity, desc: elem.MainDescription},
-                    label: elem.Present
+                    value: elem.Ref,
+                    label: elem.SettlementTypeDescriptionRu + ' ' + elem.DescriptionRu
                 }
-            })}).then(options => this.setState({
-                cities: options
-            }));
+            })}).then(options => {
+                console.log(options);
+                this.setState({
+                    cities: options
+                })
+            });
     }).bind(this);
+
     setCurrentPostOffice = (e => {
         this.setState({
             postOfficeName: e.label,
@@ -80,7 +85,7 @@ export default class Checkout extends React.Component {
             response: {},
             key: 1
         }
-
+        this.sendedCart = [];
         this.payment = 'nova_poshta';
         this.comment = '';
 
@@ -127,6 +132,7 @@ export default class Checkout extends React.Component {
         this.setState({
             modal: 'preloader'
         });
+        this.props.store.cart.clearCart();
         let postData = {
             cityName: this.state.cityName,
             cityCode: this.state.cityCode,
@@ -139,7 +145,7 @@ export default class Checkout extends React.Component {
             cityDescription: this.state.cityDescription,
             cityID: this.state.cityID
         }
-        let order = new Order(this.comment, this.state.cart, postData, this.payment);
+        let order = new Order(this.comment, this.sendedCart, postData, this.payment);
         sendOrder(order)
             .then(data => {
                 if (this.payment === 'liqpay') {
@@ -149,7 +155,7 @@ export default class Checkout extends React.Component {
                      })
                 } else if (this.payment === 'nova_poshta') {
                     this.setState({
-                        response: data[0],
+                        response: data,
                         modal: 'complete'
                     });
                 }
@@ -180,6 +186,7 @@ export default class Checkout extends React.Component {
     }
 
     goToNext = e => {
+        if (this.state.modal === 'firstModal' && this.sendedCart.length === 0) return;
         if (this.state.modal === 'firstModal')
             this.setState({modal: 'secondModal'});
         if (this.state.modal === 'secondModal') {
@@ -192,12 +199,7 @@ export default class Checkout extends React.Component {
     }
 
     postNextClick = e => {
-        if (this.payment === 'liqpay') {
-           this.goToNext(e);
-        }
-        if (this.payment === 'nova_poshta') {
-            this.saveData(e);
-        }
+       this.goToNext(e);
     }
 
     goToPrev = () => {
@@ -228,9 +230,11 @@ export default class Checkout extends React.Component {
                                 }
                                 name_ru
                                 avaliable
+                                discount_price
                                 rating
                                 price
                                 vendor
+                                amount
                               }
                             }`
                         }
@@ -242,23 +246,38 @@ export default class Checkout extends React.Component {
                                 return <p>Error :(</p>;
                             }
                             const images = data.product.photos.map(a => a.url).reverse();
-                            return(
+                            if (data.product.avaliable) {
+                                this.sendedCart.push({
+                                    product: elem.product,
+                                    count: data.product.amount > elem.count ? elem.count : data.product.amount
+                                });
+
+                                return (
                                     <ProductCard>
                                         <Image src={UrlStore.MAIN_URL + images[0]}/>
                                         <InfoBlock>
                                             <Name>{data.product.name_ru}</Name>
-                                            <Counter setVal={this.setCount(elem.product.id)} defaultValue={elem.count} key={this.state.key}/>
-                                            <Price>{data.product.avaliable?data.product.price + '₴':'Нет в наличии'}</Price>
+                                            <Counter
+                                                setVal={this.setCount(elem.product.id)}
+                                                defaultValue={data.product.amount > elem.count ?elem.count:data.product.amount}
+                                                key={this.state.key}
+                                                max={data.product.amount}/>
+                                            {data.product.avaliable && data.product.amount > 0?
+                                                data.product.discount_price > 0?
+                                                        <Price>{data.product.discount_price} грн.</Price> :
+                                                    <Price>{data.product.price} грн.</Price>:
+                                                <Price>Нет в наличии</Price>}
                                         </InfoBlock>
                                     </ProductCard>
-
-                            );
+                                );
+                            }
+                            else return null
                         }}
                         </Query>)}
                     <AmountPrice>
                         <span>Всего:</span>
                         <Price>{this.state.cart.reduce((acc, el) =>  {
-                            return acc += el.count * el.product.price}, 0)
+                            return acc += el.count * el.product.price}, 0).toFixed(2)
                         }₴</Price>
                     </AmountPrice>
                     <Comment placeholder={'Коментарии и пожелания'} onChange={this.setComment}/>
@@ -344,7 +363,7 @@ export default class Checkout extends React.Component {
                             <ButtonBlock>
                                 <BackButton onClick={this.goToPrev}>Назад</BackButton>
                                 <Button
-                                    onClick={this.postNextClick}
+                                    onClick={this.goToNext}
                                     disabled={
                                         this.state.name === '' ||
                                         this.state.surname === '' ||
@@ -352,7 +371,7 @@ export default class Checkout extends React.Component {
                                         this.state.cityCode === '' ||
                                         this.state.postOfficeCode === ''
                                     }
-                                >Сохранить</Button>
+                                >{this.payment === 'nova_poshta'?'Отправить':'Сохранить'}</Button>
                             </ButtonBlock>
                         </div>
                     </Form>
@@ -371,38 +390,53 @@ export default class Checkout extends React.Component {
                         <h3>Перейти к оплате</h3>
                         <input type="text" name={'data'} value={this.state.response.data} style={{display: 'none'}}/>
                         <input type="text" name={'signature'} value={this.state.response.signature} style={{display: 'none'}}/>
-                        <Button>Оплата</Button>
+                        <Button onClick={this.props.store.cart.clearCart}>Оплата</Button>
                     </form>
                 </Container>
             </Modal>)
         }
-        case 'complete': return (
-            <Modal
-                open={this.props.open}
-                onClose={this.props.closeCheckout}
-            >
-                <Container>
-                    <h2>Заказ отправлен в обработку</h2>
-                    <h3>Наш сотрудник свяжется с вами</h3>
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td>Стоимость доставки: </td>
-                            <td>{this.state.response.CostOnSite} грн</td>
-                        </tr>
-                        <tr>
-                            <td>ТТН: </td>
-                            <td>{this.state.response.IntDocNumber}</td>
-                        </tr>
-                        <tr>
-                            <td>Предполагаемая дата доставки: </td>
-                            <td>{this.state.response.EstimatedDeliveryDate}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <Link to={'/'}><Button>На главную</Button></Link>
-                </Container>
-            </Modal>)
+        case 'complete': {
+            if (Array.isArray(this.state.response)) return (
+                <Modal
+                    open={this.props.open}
+                    onClose={this.props.closeCheckout}
+                >
+                    <Container>
+                        <h2>Заказ отправлен в обработку</h2>
+                        <h3>Наш сотрудник свяжется с вами</h3>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>Стоимость доставки: </td>
+                                <td>{this.state.response[0].CostOnSite} грн</td>
+                            </tr>
+                            <tr>
+                                <td>ТТН: </td>
+                                <td>{this.state.response[0].IntDocNumber}</td>
+                            </tr>
+                            <tr>
+                                <td>Предполагаемая дата доставки: </td>
+                                <td>{this.state.response[0].EstimatedDeliveryDate}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <Link to={'/'} onClick={this.props.store.cart.clearCart}>
+                            <Button onClick={this.props.store.cart.clearCart}>Вернуться к покупкам</Button>
+                        </Link>
+                    </Container>
+                </Modal>)
+            else return (
+                <Modal
+                    open={this.props.open}
+                    onClose={this.props.closeCheckout}
+                >
+                    <Container>
+                        <h2>Произошла ошибка</h2>
+                        <h3>Ошибка: {this.state.response.error}</h3>
+                        <Link to={'/'}><Button>На главную</Button></Link>
+                    </Container>
+                </Modal>)
+        }
         case 'preloader': return(
             <Modal
                 open={this.props.open}
@@ -492,6 +526,19 @@ const Price = styled.span`
     vertical-align: center;
 `;
 
+const OldPrice = styled(Price)`
+    text-decoration: line-through;
+    color: #661412;
+    font-size: 20px;
+`;
+
+const PriceBlock = styled.div`
+    display: grid;
+    grid-template-columns: 3fr 5fr;
+    grid-gap: 10px;
+    justify-items: left;
+    align-items: center;    
+`;
 
 const DeliveryBlock = styled.div`
     display: grid;
@@ -513,7 +560,7 @@ const Select = styled.select`
     border-radius: 3px;
     height: 30px;
     font-size: 12pt;
-    
+    outline: none;
     &:focus {
         border: 1px solid ${theme.primary_light};
         box-shadow: 0 0 1px 1px ${theme.primary_light};
@@ -549,6 +596,7 @@ const BackButton = styled.button`
     border: none;
     margin-top: 25px;
     cursor: pointer; 
+    outline: none;
     &:hover{
       background: #bbbbbb;
     }
@@ -570,6 +618,7 @@ const Input = styled.input`
     padding-left: 10px;
     font-size: 14pt;
     color: #000;
+    outline: none;
     &:focus{
       border: 1px solid ${theme.primary_light};
       box-shadow: ${theme.primary_light} 0 0 2px 2px;
@@ -601,6 +650,8 @@ const Comment = styled.textarea`
     box-shadow: #ccc 0 0 1px 1px;
     border: none;
     font-size: 12pt;
+    font-family: "Gotham Pro" !important;
+    outline: none;
     &:focus {
       box-shadow: ${theme.primary_light} 0 0 2px 2px;
     }

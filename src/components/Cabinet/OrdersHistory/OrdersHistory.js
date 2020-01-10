@@ -6,6 +6,7 @@ import OrderPane from "./OrderPane";
 import Preloader from "../../public/Preloader";
 import MetaTags from "react-meta-tags";
 import {Link} from "react-router-dom";
+import ReactGA from "react-ga";
 
 
 export default class OrdersHistory extends React.Component {
@@ -22,9 +23,12 @@ export default class OrdersHistory extends React.Component {
     }
 
     componentWillMount() {
+        ReactGA.pageview(location.pathname);
         getOrders().then(data => {
             this.setState({
-                orders: data,
+                orders: data.sort((a,b) => {
+                    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                }),
                 ready: true
             })
         })
